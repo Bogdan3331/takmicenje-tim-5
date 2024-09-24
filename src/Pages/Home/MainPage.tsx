@@ -1,7 +1,7 @@
 import Header from "../../Components/Header";
 import Pozadina from "../../Components/Assets/Pozadina1.jpg";
 
-export default function MainPage() {
+function MainPage() {
   return (
     <div
       className="relative flex flex-col items-center justify-center min-h-screen"
@@ -42,3 +42,5 @@ export default function MainPage() {
     </div>
   );
 }
+
+export default MainPage;
