@@ -4,9 +4,7 @@ import ApiService from "../../Shared/api";
 
 interface RegisterForm {
   name: string;
-  surname: string;
   email: string;
-  username: string;
   password: string;
   password_confirmation: string;
 }
@@ -14,9 +12,7 @@ interface RegisterForm {
 const RegisterPage: React.FC = () => {
   const [form, setForm] = useState<RegisterForm>({
     name: "",
-    surname: "",
     email: "",
-    username: "",
     password: "",
     password_confirmation: "",
   });
@@ -60,9 +56,7 @@ const RegisterPage: React.FC = () => {
       <form id="register-form" onSubmit={handleSubmit}>
         {Object.entries({
           name: "Name:",
-          surname: "Surname:",
           email: "Email:",
-          username: "Username:",
           password: "Password:",
           password_confirmation: "Confirm Password:",
         }).map(([key, label]) => (
