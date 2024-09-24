@@ -3,12 +3,12 @@ import "./SignIn.css";
 import ApiService from "../../Shared/api";
 
 const SignInPage: React.FC = () => {
-  const [username, setUsername] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
 
   const handleUsernameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setUsername(event.target.value);
+    setEmail(event.target.value);
   };
 
   const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -19,7 +19,7 @@ const SignInPage: React.FC = () => {
     event.preventDefault();
 
     try {
-      const response = await ApiService.signIn(username, password);
+      const response = await ApiService.signIn(email, password);
 
       if (response.error) {
         setError(response.error);
@@ -39,7 +39,7 @@ const SignInPage: React.FC = () => {
       <form onSubmit={handleSubmit}>
         <label>
           Username:
-          <input type="text" value={username} onChange={handleUsernameChange} />
+          <input type="text" value={email} onChange={handleUsernameChange} />
         </label>
         <label>
           Password:

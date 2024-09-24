@@ -92,10 +92,10 @@ const ApiService = {
   },
 
   // SIGN IN AND REGISTER CALLS
-  async signIn(username, password) {
+  async signIn(email, password) {
     return this.post(
       "login",
-      { username, password, device: "Dev" },
+      { email, password, device: "Dev" },
       {
         headers: {
           Authorization: "Bearer b3Rvcmlub2xhcmluZ29sb2dpamE=", //hard coded token
