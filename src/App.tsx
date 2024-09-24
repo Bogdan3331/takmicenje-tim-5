@@ -34,7 +34,7 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/signin" element={<SignInPage />} />
+        <Route path="/login" element={<SignInPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/main" element={<MainPage />} />
         <Route path="/" element={<PrivateRoute element={<Home />} />} />

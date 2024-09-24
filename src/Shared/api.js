@@ -5,8 +5,8 @@ export const API_BASE_URL = "";
 export const logout = () => {
   // destroy local storage auth_token
   localStorage.removeItem("auth_token");
-  // send user via react router to /signin
-  window.location.href = "/signin";
+  // send user via react router to /login
+  window.location.href = "/login";
 };
 
 const ApiService = {
