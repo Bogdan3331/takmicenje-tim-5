@@ -8,7 +8,7 @@ interface PrivateRouteProps extends BrowserRouterProps {
 const PrivateRoute: React.FC<PrivateRouteProps> = ({ element: Component }) => {
   const authToken = localStorage.getItem("auth_token");
 
-  return authToken ? Component : <Navigate to="/login" replace />;
+  return authToken ? Component : <Navigate to="/signin" replace />;
 };
 
 export default PrivateRoute;

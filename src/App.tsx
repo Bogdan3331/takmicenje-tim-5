@@ -1,5 +1,4 @@
 import PrivateRoute from "./Pages/PrivateRoute";
-import Home from "./Pages/Home/MainPage";
 import SignInPage from "./Pages/SignIn/SignIn";
 import RegisterPage from "./Pages/Register/Register";
 import MainPage from "./Pages/Home/MainPage";
@@ -34,10 +33,34 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/login" element={<SignInPage />} />
-        <Route path="/register" element={<RegisterPage />} />
-        <Route path="/main" element={<MainPage />} />
-        <Route path="/" element={<PrivateRoute element={<Home />} />} />
+        <Route
+          path="/signin"
+          element={
+            <LayoutWrapper>
+              <SignInPage />
+            </LayoutWrapper>
+          }
+        />
+        <Route
+          path="/"
+          element={
+            <PrivateRoute
+              element={
+                <LayoutWrapper>
+                  <MainPage />
+                </LayoutWrapper>
+              }
+            />
+          }
+        />
+        <Route
+          path="/register"
+          element={
+            <LayoutWrapper>
+              <RegisterPage />
+            </LayoutWrapper>
+          }
+        />
       </Routes>
     </BrowserRouter>
   );

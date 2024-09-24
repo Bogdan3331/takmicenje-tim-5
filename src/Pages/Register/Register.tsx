@@ -42,7 +42,7 @@ const RegisterPage: React.FC = () => {
         return;
       } else {
         alert("Successfully registered");
-        window.location.href = "/login";
+        window.location.href = "/signin";
       }
     } catch (error) {
       console.error(error);
