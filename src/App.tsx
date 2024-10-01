@@ -1,8 +1,10 @@
 import PrivateRoute from "./Pages/PrivateRoute";
 import SignInPage from "./Pages/SignIn/SignIn";
 import RegisterPage from "./Pages/Register/Register";
-import MainPage from "./Pages/Home/MainPage";
+import MainPage from "./Pages/StartPage/MainPage";
 import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
+import Dashboard from "./Pages/Dashboard/Dashboard";
+import User from "./Pages/User/User";
 
 type LayoutWrapperProps = {
   children: React.ReactNode; // Fixing the type of children prop
@@ -34,6 +36,14 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route
+          path="/register"
+          element={
+            <LayoutWrapper>
+              <RegisterPage />
+            </LayoutWrapper>
+          }
+        />
+        <Route
           path="/signin"
           element={
             <LayoutWrapper>
@@ -44,20 +54,28 @@ function App() {
         <Route
           path="/"
           element={
+            <LayoutWrapper>
+              <MainPage />
+            </LayoutWrapper>
+          }
+        />
+        <Route
+          path="/dashboard"
+          element={
             <PrivateRoute
               element={
                 <LayoutWrapper>
-                  <MainPage />
+                  <Dashboard />
                 </LayoutWrapper>
               }
             />
           }
         />
         <Route
-          path="/register"
+          path="/user-profile "
           element={
             <LayoutWrapper>
-              <RegisterPage />
+              <User />
             </LayoutWrapper>
           }
         />

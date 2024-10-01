@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const API_BASE_URL = "";
+export const API_BASE_URL = "https://biblioteka.simonovicp.com/api";
 
 export const logout = () => {
   // destroy local storage auth_token
@@ -16,9 +16,18 @@ const ApiService = {
     axios.interceptors.response.use(
       (response) => response,
       (error) => {
+        // FIXME: if error response is 401, logout user (maybe it is 403 instead of 401)
         if (error.response && error.response.status === 401) {
           logout();
         }
+
+        // FIXME: dummy logic here
+        // if (error.response && error.response.status === 429) {
+        //     setTimeout(() => {
+        //         // replay request
+        //         axios.request(error.config);
+        //     }, 1000);
+        // }
 
         return Promise.reject(error);
       }
@@ -92,13 +101,13 @@ const ApiService = {
   },
 
   // SIGN IN AND REGISTER CALLS
-  async signIn(email, password) {
+  async signIn(username, password) {
     return this.post(
       "login",
-      { email, password, device: "Dev" },
+      { username, password, device: "Dev" },
       {
         headers: {
-          Authorization: "Bearer b3Rvcmlub2xhcmluZ29sb2dpamE=", //hard coded token
+          Authorization: "Bearer b3Rvcmlub2xhcmluZ29sb2dpamE=",
         },
       }
     );
@@ -107,9 +116,29 @@ const ApiService = {
   async register(registrationData) {
     return this.post("register", registrationData, {
       headers: {
-        Authorization: "Bearer b3Rvcmlub2xhcmluZ29sb2dpamE=", //hard coded token
+        Authorization: "Bearer b3Rvcmlub2xhcmluZ29sb2dpamE=",
       },
     });
+  },
+
+  async getUser() {
+    return this.post("users/me");
+  },
+
+  async deleteUser(id) {
+    return this.delete("");
+  },
+
+  async getCars(searchQuery) {
+    return this.getFilter("", { search: searchQuery });
+  },
+
+  async deleteCar(id) {
+    return this.delete("");
+  },
+
+  async getReservations(auth_token) {
+    return this.get("/reservations", auth_token);
   },
 };
 
