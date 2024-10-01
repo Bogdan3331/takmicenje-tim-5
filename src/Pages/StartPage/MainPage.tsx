@@ -1,52 +1,38 @@
-import Header from "../../Components/Header";
-import Pozadina from "./Pozadina1.jpg";
-import { useNavigate } from "react-router-dom";
+import React from 'react';
+import { useNavigate } from 'react-router-dom'; // Importuj useNavigate
+import Porsche from "../../assets/Porsche.png";
 
-function MainPage() {
-  const navigate = useNavigate();
+export default function MainPage() {
+  const navigate = useNavigate(); // Inicijalizuj useNavigate
+
+  const handleButtonClick = () => {
+    navigate('/cars'); // Navigacija na stranicu Cars.tsx
+  };
 
   return (
-    <div
-      className="relative flex flex-col items-center justify-center min-h-screen"
-      style={{
-        width: "100vw",
-        height: "100vh",
-        backgroundImage: `url(${Pozadina})`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-      }}
-    >
-      {/* Providna boja preko pozadine */}
-      <div
-        style={{
-          backgroundColor: "rgba(0, 0, 0, 0.5)", // Crna boja sa 50% providnosti
-          position: "absolute", // Omogućava da se prostire preko pozadine
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          zIndex: 1, // Stavi sloj boje iza sadržaja
-        }}
-      />
+    <div className="flex justify-center items-center h-screen bg-gray-900 text-white overflow-hidden">
+      {/* Leva strana - Slika */}
+      <div className="w-1/2 flex justify-center">
+        <img src={Porsche} alt="Porsche" className="w-1/2 h-auto" />
+      </div>
 
-      {/* Header će biti prikazan iznad slike */}
-      <Header />
+      {/* Desna strana - Tekst i dugme */}
+      <div className="w-1/2 flex flex-col justify-center items-start p-8">
+        <h2 className="text-4xl font-bold mb-4">Dobrodošli u Rent A Car</h2>
+        <h6 className="text-lg mb-8">
+          Nudimo širok spektar luksuznih i sportskih vozila za iznajmljivanje, uključujući najnovije modele poput Porsche-a.
+        </h6>
 
-      {/* Glavni sadržaj */}
-      <div className="relative flex flex-col items-center justify-center flex-grow z-10 mt-16 text-center">
-        <h1 className="text-6xl font-bold text-white mb-4">Rent-a-car</h1>
-        <h3 className="text-2xl font-semibold text-white mb-6">
-          Drive your dream car for a fraction of a cost
-        </h3>
-        <button
-          onClick={() => navigate("/dashboard")}
-          className="bg-transparent border-2 border-blue-500 text-blue-500 font-semibold py-2 px-4 rounded-lg transition-colors duration-300 hover:bg-blue-500 hover:text-white"
-        >
-          Order Cars
-        </button>
+        {/* Dugme centrirano ispod teksta */}
+        <div className="w-full flex justify-center">
+          <button 
+            className="px-6 py-3 border-2 border-white text-white font-semibold rounded-lg hover:bg-blue-500 hover:border-transparent transition duration-300"
+            onClick={handleButtonClick} // Dodaj onClick handler
+          >
+            Pogledajte naša vozila
+          </button>
+        </div>
       </div>
     </div>
   );
 }
-
-export default MainPage;

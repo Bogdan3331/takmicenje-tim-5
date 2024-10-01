@@ -3,6 +3,8 @@ import ApiService from "../../Shared/api";
 import MoreBtn from "../../Components/Buttons/MoreBtn";
 import { MenuProps, message } from "antd";
 import { useNavigate } from "react-router-dom";
+
+
 interface Car {
   //props
 }
@@ -24,10 +26,6 @@ const CarsTable: React.FC<CarsTableProps> = ({ searchQuery }) => {
         icon: <i className="bi bi-eye" style={{ fontSize: "1rem" }}></i>,
         label: <p style={{ margin: "0" }}>Detalji</p>,
         key: "0",
-        // onClick: () => {
-        //   console.log("View user with id:", car.id);
-        //   navigate(`/bibliotekar/${car.id}`);
-        // },
       },
       {
         icon: (
@@ -35,22 +33,7 @@ const CarsTable: React.FC<CarsTableProps> = ({ searchQuery }) => {
         ),
         label: <p style={{ margin: "0" }}>Rezervisi</p>,
         key: "1",
-        // onClick: () => {
-        //   console.log("Edit user with id:", user.id);
-        //   navigate(`/bibliotekar/${user.id}/edit`);
-        // },
       },
-      //Probably won't be needed
-      // {
-      //   icon: <i className="bi bi-trash3" style={{ fontSize: "1rem" }}></i>,
-      //   label: <p style={{ margin: "0" }}>Obrisi</p>,
-      //   key: "2",
-      //   onClick: () => {
-      //     // console.log("Delete user with id:", user.id);
-      //     // ApiService.deleteCar(user.id);
-      //     message.success("Korisnik obrisan");
-      //   },
-      // },
     ];
 
     return menuItems;
@@ -104,106 +87,90 @@ const CarsTable: React.FC<CarsTableProps> = ({ searchQuery }) => {
         <div className="grid-header">Dostupnost</div>
         <div className="grid-header"></div>
         {filteredCars.map((car) => (
-          // <React.Fragment key={car.id}>
-          //   <div className="grid-item">
-          //     <img
-          //       src={car.photoPath || "https://via.placeholder.com/100"}
-          //       alt={`${car.name || "Unknown"}`}
-          //       className="car-photo"
-          //     />
-          //   </div>
-          //   <div className="grid-item">
-          //     {car.name || "No Name"}
-          //   </div>
-          //   <div className="grid-item">{car.status || "N/A"}</div>
-          //   <div className="grid-item action-column">
-          //     <MoreBtn items={renderMenuItems(car)} />
-          //   </div>
-          // </React.Fragment>
-          <div className="this div is just until backend code arrives arrives"></div>
+          <div className="this div is just until backend code arrives"></div>
         ))}
       </div>
       <style>{`
-  .wrapper {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 3rem;
-    width: 100%;
-    padding: 0 1rem;
-    box-sizing: border-box;
-  }
+        .wrapper {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          margin-top: 3rem;
+          width: 100%;
+          padding: 0 1rem;
+          box-sizing: border-box;
+        }
 
-  .grid-container {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr) 5rem;
-    width: 100%;
-    max-width: 100%;
-    box-sizing: border-box;
-    overflow-x: auto;
-  }
+        .grid-container {
+          display: grid;
+          grid-template-columns: repeat(4, 1fr) 5rem;
+          width: 100%;
+          max-width: 100%;
+          box-sizing: border-box;
+          overflow-x: auto;
+        }
 
-  .grid-header {
-    font-weight: bold;
-    border-bottom: 2px solid #ccc;
-    padding: 0.75rem;
-    text-align: center;
-    background-color: #f4f4f4;
-    text-transform: uppercase;
-  }
+        .grid-header {
+          font-weight: bold;
+          border-bottom: 2px solid #ccc;
+          padding: 0.75rem;
+          text-align: center;
+          background-color: #f4f4f4;
+          text-transform: uppercase;
+        }
 
-  .grid-item {
-    border-bottom: 1px solid #ccc;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    background-color: #fff;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-  }
+        .grid-item {
+          border-bottom: 1px solid #ccc;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          text-align: center;
+          background-color: #fff;
+          box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+          transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
 
-  .user-photo {
-    width: 3rem;
-    height: 3rem;
-    border-radius: 50%;
-    object-fit: cover;
-  }
+        .user-photo {
+          width: 3rem;
+          height: 3rem;
+          border-radius: 50%;
+          object-fit: cover;
+        }
 
-  .action-column {
-    display: flex;
-    justify-content: center;
-  }
+        .action-column {
+          display: flex;
+          justify-content: center;
+        }
 
-  @media (max-width: 768px) {
-    .grid-container {
-      grid-template-columns: repeat(3, 1fr) 5rem;
-    }
+        @media (max-width: 768px) {
+          .grid-container {
+            grid-template-columns: repeat(3, 1fr) 5rem;
+          }
 
-    .grid-header:nth-child(3),
-    .grid-item:nth-child(5n + 3) {
-      display: none;
-    }
-  }
+          .grid-header:nth-child(3),
+          .grid-item:nth-child(5n + 3) {
+            display: none;
+          }
+        }
 
-  @media (max-width: 576px) {
-    .grid-container {
-      grid-template-columns: repeat(3, 1fr) 0.3rem;
-    }
+        @media (max-width: 576px) {
+          .grid-container {
+            grid-template-columns: repeat(3, 1fr) 0.3rem;
+          }
 
-    .grid-header:nth-child(4),
-    .grid-item:nth-child(5n + 4),
-    .grid-header:nth-child(3),
-    .grid-item:nth-child(5n + 3) {
-      display: none;
-    }
+          .grid-header:nth-child(4),
+          .grid-item:nth-child(5n + 4),
+          .grid-header:nth-child(3),
+          .grid-item:nth-child(5n + 3) {
+            display: none;
+          }
 
-    .grid-header:nth-child(5),
-    .grid-item:nth-child(5n + 5) {
-      grid-column: span 2;
-    }
-  }
-`}</style>
+          .grid-header:nth-child(5),
+          .grid-item:nth-child(5n + 5) {
+            grid-column: span 2;
+          }
+        }
+      `}</style>
     </div>
   );
 };

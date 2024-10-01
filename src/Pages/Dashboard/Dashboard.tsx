@@ -1,12 +1,7 @@
-import Header from "../../Components/Header";
+import React from 'react'
 
-function Dashboard() {
+export default function Dashboard() {
   return (
-    <div className="dashboard">
-      <Header />
-      <h1>Dash</h1>
-    </div>
-  );
+    <div>Dashboard</div>
+  )
 }
-
-export default Dashboard;
