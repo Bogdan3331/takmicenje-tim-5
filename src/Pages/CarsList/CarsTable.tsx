@@ -9,12 +9,12 @@ interface Car {
   //props
 }
 
-interface CarsTableProps {
+interface VehicleListTableProps {
   searchQuery: string;
 }
 
-const CarsTable: React.FC<CarsTableProps> = ({ searchQuery }) => {
-  const [cars, setCars] = useState<Car[]>([]);
+const VehicleListTable: React.FC<VehicleListTableProps> = ({ searchQuery }) => {
+  const [VehicleList, setVehicleList] = useState<Car[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -41,7 +41,7 @@ const CarsTable: React.FC<CarsTableProps> = ({ searchQuery }) => {
 
   const fetchData = useCallback(async () => {
     try {
-      const response = await ApiService.getCars(searchQuery);
+      const response = await ApiService.getVehicleList(searchQuery);
 
       if (response.error) {
         setError(response.error);
@@ -50,7 +50,7 @@ const CarsTable: React.FC<CarsTableProps> = ({ searchQuery }) => {
       console.log("API Response:", response);
 
       if (Array.isArray(response.data?.data)) {
-        setCars(response.data.filter((car: Car) => car));
+        setVehicleList(response.data.filter((car: Car) => car));
       } else {
         setError("Failed to load data: " + response.error);
       }
@@ -66,7 +66,7 @@ const CarsTable: React.FC<CarsTableProps> = ({ searchQuery }) => {
     fetchData();
   }, [fetchData]);
 
-  const filteredCars = cars.filter((car) => {
+  const filteredVehicleList = VehicleList.filter((car) => {
     // // const fullName = `${car.name}`.toLowerCase();
     // return fullName.startsWith(searchQuery.toLowerCase());
   });
@@ -86,7 +86,7 @@ const CarsTable: React.FC<CarsTableProps> = ({ searchQuery }) => {
         <div className="grid-header">Naziv</div>
         <div className="grid-header">Dostupnost</div>
         <div className="grid-header"></div>
-        {filteredCars.map((car) => (
+        {filteredVehicleList.map((car) => (
           <div className="this div is just until backend code arrives"></div>
         ))}
       </div>
@@ -175,4 +175,4 @@ const CarsTable: React.FC<CarsTableProps> = ({ searchQuery }) => {
   );
 };
 
-export default CarsTable;
+export default VehicleListTable;

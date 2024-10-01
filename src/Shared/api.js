@@ -129,7 +129,7 @@ const ApiService = {
     return this.delete("");
   },
 
-  async getCars(searchQuery) {
+  async getVehicleList(searchQuery) {
     return this.getFilter("", { search: searchQuery });
   },
 
