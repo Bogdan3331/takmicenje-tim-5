@@ -1,7 +1,10 @@
-import React from 'react'
+import RezervationsTable from "./RezervationsTable";
 
 export default function Dashboard() {
   return (
-    <div>Dashboard</div>
-  )
+    <div>
+      <div>Dashboard</div>
+      <RezervationsTable />
+    </div>
+  );
 }
