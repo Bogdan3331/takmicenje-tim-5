@@ -9,23 +9,23 @@ const Header: React.FC = () => {
         </div>
 
         <nav className="flex space-x-8">
-          <a href="/" className="text-white hover:text-blue-500">
-            Početna
+          <a href="/main" className="text-white hover:text-blue-500">
+            Home
           </a>
-          <a href="Vehiclelist" className="text-white hover:text-blue-500">
-            Vozila
+          <a href="/vehicle-list" className="text-white hover:text-blue-500">
+            Cars
           </a>
           <a href="/dashboard" className="text-white hover:text-blue-500">
-            Rezervacije
+            Reservations
           </a>
           <a href="#" className="text-white hover:text-blue-500">
-            Kontakt
+            Contact
           </a>
         </nav>
 
         <div>
           <a href="/user-profile" className="text-white hover:text-blue-500">
-            Moj Profil
+            My Profile
           </a>
         </div>
       </div>

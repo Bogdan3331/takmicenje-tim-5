@@ -16,7 +16,7 @@ const LayoutWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) =>
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-900 text-white">
-      {/* Header komponenta se prikazuje na svim stranicama osim za prijavu i registraciju */}
+      {/* Header component displayed on all pages except for login and register */}
       {!isAuthPage && <Header />}
 
       <div className={`flex-grow ${isAuthPage || isMainPage ? "flex items-center justify-center" : ""}`}>
@@ -25,7 +25,7 @@ const LayoutWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) =>
         </div>
       </div>
 
-      {/* Footer komponenta se prikazuje na svim stranicama osim za prijavu i registraciju */}
+      {/* Footer component displayed on all pages except for login and register */}
       {!isAuthPage && <Footer />}
     </div>
   );
@@ -81,7 +81,7 @@ function App() {
           }
         />
         <Route
-          path="/VehicleList"
+          path="/vehicle-list"
           element={
             <LayoutWrapper>
               <VehicleList />
