@@ -13,7 +13,6 @@ interface Reservation {
     id: number;
     photoPath: string;
     name: string;
-    surname: string;
   } | null;
   status: string;
   action_date: string;
