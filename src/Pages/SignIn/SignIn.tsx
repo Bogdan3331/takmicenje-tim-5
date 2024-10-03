@@ -5,12 +5,14 @@ export default function Form() {
   const navigate = useNavigate();
 
   const handleLogin = () => {
-    navigate("/main");  // Ispravljena ruta
+    navigate("/main");  
   };
 
   return (
-    <div className="bg-white px-20 py-20 rounded-3xl border-2 border-gray">
-      <h1 className="text-5xl font-semibold">Rent-a-car</h1>
+    <div className="bg-white px-20 py-20 rounded-3xl border-2 border-gray-300"> 
+      <h1 className="text-5xl font-semibold text-black"> 
+        Rent-a-car
+      </h1>
       <p className="font-medium text-lg text-gray-500 mt-4">
         Welcome, Please enter your details
       </p>

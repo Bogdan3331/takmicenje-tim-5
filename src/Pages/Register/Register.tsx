@@ -26,49 +26,54 @@ const RegisterPage: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    // Proverite da li se lozinke poklapaju
     if (form.password !== form.password_confirmation) {
-      alert("Passwords do not match");
+      alert("Lozinke se ne poklapaju");
       return;
     }
 
     try {
+      // Poziv API-ja za registraciju
       const response = await ApiService.register({
-        device: "WEB_BROWSER",
-        ...form,
+        name: form.name,
+        email: form.email,
+        password: form.password,
+        password_confirmation: form.password_confirmation,
       });
 
-      if (response.error) {
-        alert(response.error);
-        return;
+      // Provera odgovora
+      if (response.message === "User is created") {
+        alert("Uspešno ste se registrovali!");
+        navigate("/signin");
       } else {
-        alert("Successfully registered");
-        window.location.href = "/signin";
+        alert(response.message || "Došlo je do greške prilikom registracije.");
       }
     } catch (error) {
       console.error(error);
-      alert("An error occurred while registering " + JSON.stringify(error));
+      alert("Dogodila se greška prilikom registracije: " + JSON.stringify(error));
     }
   };
 
   return (
     <div className="bg-white px-20 py-20 rounded-3xl border-2 border-gray xl:flex xl:justify-center xl:items-center w-full h-screen">
       <div className="xl:w-1/2">
-        <h1 className="text-5xl font-semibold text-center">Register</h1>
+        <h1 className="text-5xl font-semibold text-center">Registracija</h1>
         <p className="font-medium text-lg text-gray-500 mt-4 text-center">
-          Enter your details to sign up
+          Unesite svoje podatke za registraciju
         </p>
         <form onSubmit={handleSubmit} className="mt-8">
           <div>
             <label className="text-lg font-medium" htmlFor="name">
-              First Name:
+              Ime:
             </label>
             <input
                 className="w-full border-2 border-gray-100 rounded-xl p-3 mt-1 bg-transparent"
-                placeholder="Enter your first name"
+                placeholder="Unesite svoje ime"
                 type="text"
                 name="name"
                 value={form.name}
                 onChange={handleChange}
+                required
             />
           </div>
           <div className="mt-4">
@@ -77,40 +82,40 @@ const RegisterPage: React.FC = () => {
             </label>
             <input
                 className="w-full border-2 border-gray-100 rounded-xl p-3 mt-1 bg-transparent"
-                placeholder="Enter your email"
+                placeholder="Unesite svoj email"
                 type="email"
                 name="email"
                 value={form.email}
                 onChange={handleChange}
+                required
             />
           </div>
           <div className="mt-4">
             <label className="text-lg font-medium" htmlFor="password">
-              Password:
+              Lozinka:
             </label>
             <input
                 className="w-full border-2 border-gray-100 rounded-xl p-3 mt-1 bg-transparent"
-                placeholder="Enter your password"
+                placeholder="Unesite svoju lozinku"
                 type="password"
                 name="password"
                 value={form.password}
                 onChange={handleChange}
+                required
             />
           </div>
           <div className="mt-4">
-            <label
-                className="text-lg font-medium"
-                htmlFor="password_confirmation"
-            >
-              Confirm Password:
+            <label className="text-lg font-medium" htmlFor="password_confirmation">
+              Potvrdi lozinku:
             </label>
             <input
                 className="w-full border-2 border-gray-100 rounded-xl p-3 mt-1 bg-transparent"
-                placeholder="Confirm your password"
+                placeholder="Potvrdite svoju lozinku"
                 type="password"
                 name="password_confirmation"
                 value={form.password_confirmation}
                 onChange={handleChange}
+                required
             />
           </div>
           <div className="mt-8 flex flex-col gap-y-4">
@@ -118,17 +123,17 @@ const RegisterPage: React.FC = () => {
                 type="submit"
                 className="bg-violet-500 text-white text-lg font-bold rounded-xl p-3"
             >
-              Sign Up
+              Registruj se
             </button>
           </div>
         </form>
         <div className="mt-4 text-center">
-          <p className="text-gray-500">Already have an account?</p>
+          <p className="text-gray-500">Već imate nalog?</p>
           <button
               onClick={() => navigate("/")}
               className="text-violet-500 font-medium"
           >
-            Log In
+            Prijavite se
           </button>
         </div>
       </div>
