@@ -1,8 +1,12 @@
+// src/App.tsx
+import React from "react";
 import PrivateRoute from "./Pages/PrivateRoute";
 import SignInPage from "./Pages/SignIn/SignIn";
 import RegisterPage from "./Pages/Register/Register";
 import MainPage from "./Pages/StartPage/MainPage";
 import VehicleList from "./Pages/CarsList/VehicleList";
+import VehicleCard from "./Pages/CarsList/VehicleCard"; // Uverite se da je putanja tačna
+import VehicleListTable from "./Pages/CarsList/CarsTable"; // Uverite se da je putanja tačna
 import { BrowserRouter, Route, Routes, Navigate, useLocation } from "react-router-dom";
 import Dashboard from "./Pages/Dashboard/Dashboard";
 import User from "./Pages/User/User";
@@ -35,7 +39,6 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* Make the root path '/' display MainPage instead of redirecting to /signin */}
         <Route
           path="/"
           element={

@@ -1,49 +1,72 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 const Footer = () => {
+  const navigate = useNavigate();
+
   return (
-    <footer className="bg-black text-white py-10 shadow-lg rounded-3xl"> {/* Dodata klasa rounded-lg */}
+    <footer className="bg-black text-white py-10 shadow-lg rounded-3xl">
       <div className="container mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 text-center md:text-left">
-        {/* Leva kolona - Info */}
+        {/* Left Column - Info */}
         <div>
-          <h2 className="text-red-500 text-xl font-bold">PLANET RENT A CAR</h2>
+          <h2 className="text-red-500 text-xl font-bold">RENTIFY RENT A CAR</h2>
           <p className="mt-4">
-            Želja da damo maksimalni doprinos u sektoru prevoznih potreba definisala je kao:
+            Our desire to contribute maximally to the transportation sector has defined us as:
           </p>
           <p>
-            Najfleksibilniju rent a car agenciju u Crnoj Gori. Imamo pravila, ali smo uvek spremni da izađemo u susret posebnim potrebama.
+            The most flexible rent-a-car agency in Montenegro. We have rules, but we are always ready to meet special needs.
           </p>
           <p>
-            Vrši se dostava i preuzimanje vozila na bilo kojoj lokaciji sa teritorije Crne Gore, kao i iz zemalja u okruženju.
+            Vehicle delivery and pickup are available at any location within Montenegro, as well as from neighboring countries.
           </p>
         </div>
 
-        {/* Srednja kolona - Online plaćanje */}
-        <div>
-          <h2 className="text-red-500 text-xl font-bold">Online plaćanje</h2>
-          <div className="mt-4 space-y-4">
-            <img
-              src="path/to/visa.jpeg"
-              alt="Visa"
-              className="mx-auto w-32"
-            />
-            <img
-              src="path/to/mastercard.jpg"
-              alt="MasterCard"
-              className="mx-auto w-32"
-            />
+        {/* Middle Column - Links */}
+        <div className="flex flex-col items-center">
+          <h2 className="text-red-500 text-xl font-bold">Quick Links</h2>
+          <div className="mt-4 space-y-2 text-center">
+            <button
+              className="block text-blue-400 hover:underline"
+              onClick={() => navigate("/")}
+            >
+              Home
+            </button>
+            <button
+              className="block text-blue-400 hover:underline"
+              onClick={() => navigate("/vehicle-list")}
+            >
+              Cars
+            </button>
+            <button
+              className="block text-blue-400 hover:underline"
+              onClick={() => navigate("/profile")}
+            >
+              My Profile
+            </button>
+            <button
+              className="block text-blue-400 hover:underline"
+              onClick={() => navigate("/signin")}
+            >
+              Sign In
+            </button>
+            <button
+              className="block text-blue-400 hover:underline"
+              onClick={() => navigate("/register")}
+            >
+              Register
+            </button>
           </div>
         </div>
 
-
+        {/* Right Column - Contact */}
         <div>
-          <h2 className="text-red-500 text-xl font-bold">Kontakt</h2>
+          <h2 className="text-red-500 text-xl font-bold">Contact</h2>
           <ul className="mt-4 space-y-2">
-            <li>📍 Podgorica, Sarajevo, Tirana, Ljubljana, Skoplje</li>
+            <li>📍 Podgorica, Sarajevo, Tirana, Ljubljana, Skopje</li>
             <li>📞 +38269810805</li>
             <li>💬 WhatsApp | Telegram | Viber</li>
             <li>✉️ info@planetrentacar.me</li>
-            <li>🕒 07:00 - 21:00 | Svakim danom</li>
+            <li>🕒 07:00 - 21:00 | Every Day</li>
           </ul>
         </div>
       </div>
