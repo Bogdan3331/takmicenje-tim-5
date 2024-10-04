@@ -35,7 +35,15 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Navigate to="/signin" />} />
+        {/* Make the root path '/' display MainPage instead of redirecting to /signin */}
+        <Route
+          path="/"
+          element={
+            <LayoutWrapper>
+              <MainPage />
+            </LayoutWrapper>
+          }
+        />
         <Route
           path="/register"
           element={

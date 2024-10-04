@@ -5,7 +5,7 @@ const Header: React.FC = () => {
     <header className="bg-gray-900 text-white shadow-md">
       <div className="container mx-auto flex justify-between items-center py-6 px-10">
         <div className="flex items-center">
-          <span className="text-2xl font-bold text-blue-500">Rent A Car</span>
+          <span className="text-2xl font-bold text-blue-500">Rentify</span>
         </div>
 
         <nav className="flex space-x-8">
