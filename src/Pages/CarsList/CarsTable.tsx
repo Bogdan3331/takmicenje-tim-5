@@ -1,12 +1,16 @@
 import React, { useState, useEffect, useCallback } from "react";
 import ApiService from "../../Shared/api";
 import MoreBtn from "../../Components/Buttons/MoreBtn";
-import { MenuProps, message } from "antd";
-import { useNavigate } from "react-router-dom";
-
+import { MenuProps } from "antd";
 
 interface Car {
-  //props
+  id: number;
+  type: string;
+  brand: string;
+  price: number;
+  description: string;
+  fuelType: string;
+  image: string;
 }
 
 interface VehicleListTableProps {
@@ -17,8 +21,6 @@ const VehicleListTable: React.FC<VehicleListTableProps> = ({ searchQuery }) => {
   const [VehicleList, setVehicleList] = useState<Car[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-
-  const navigate = useNavigate();
 
   const renderMenuItems = (car: Car) => {
     var menuItems: MenuProps["items"] = [
@@ -49,7 +51,7 @@ const VehicleListTable: React.FC<VehicleListTableProps> = ({ searchQuery }) => {
 
       console.log("API Response:", response);
 
-      if (Array.isArray(response.data?.data)) {
+      if (Array.isArray(response.data)) {
         setVehicleList(response.data.filter((car: Car) => car));
       } else {
         setError("Failed to load data: " + response.error);
@@ -67,8 +69,8 @@ const VehicleListTable: React.FC<VehicleListTableProps> = ({ searchQuery }) => {
   }, [fetchData]);
 
   const filteredVehicleList = VehicleList.filter((car) => {
-    // // const fullName = `${car.name}`.toLowerCase();
-    // return fullName.startsWith(searchQuery.toLowerCase());
+    const fullName = `${car.brand}`.toLowerCase();
+    return fullName.startsWith(searchQuery.toLowerCase());
   });
 
   if (loading) {
@@ -82,12 +84,31 @@ const VehicleListTable: React.FC<VehicleListTableProps> = ({ searchQuery }) => {
   return (
     <div className="wrapper">
       <div className="grid-container">
-        <div className="grid-header">Slika</div>
-        <div className="grid-header">Naziv</div>
-        <div className="grid-header">Dostupnost</div>
+        <div className="grid-header">Image</div>
+        <div className="grid-header">Type</div>
+        <div className="grid-header">Brand</div>
+        <div className="grid-header">Price</div>
+        <div className="grid-header">Description</div>
+        <div className="grid-header">Fuel Type</div>
         <div className="grid-header"></div>
         {filteredVehicleList.map((car) => (
-          <div className="this div is just until backend code arrives"></div>
+          <React.Fragment key={car.id}>
+            <div className="grid-item">
+              <img
+                src={car.image || "https://via.placeholder.com/100"}
+                alt={`${car.brand || "Unknown"}`}
+                className="user-photo"
+              />
+            </div>
+            <div className="grid-item">{car.type || "No Name"}</div>
+            <div className="grid-item">{car.brand || "N/A"}</div>
+            <div className="grid-item">{car.price || "N/A"}</div>
+            <div className="grid-item">{car.description || "N/A"}</div>
+            <div className="grid-item">{car.fuelType || "N/A"}</div>
+            <div className="grid-item action-column">
+              <MoreBtn items={renderMenuItems(car)} />
+            </div>
+          </React.Fragment>
         ))}
       </div>
       <style>{`
@@ -103,7 +124,7 @@ const VehicleListTable: React.FC<VehicleListTableProps> = ({ searchQuery }) => {
 
         .grid-container {
           display: grid;
-          grid-template-columns: repeat(4, 1fr) 5rem;
+          grid-template-columns: repeat(6, 1fr) 5rem;
           width: 100%;
           max-width: 100%;
           box-sizing: border-box;
