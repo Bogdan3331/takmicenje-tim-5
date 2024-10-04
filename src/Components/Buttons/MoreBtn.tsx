@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { Dropdown, MenuProps } from "antd";
-import "bootstrap-icons/font/bootstrap-icons.css";
 
 interface MoreBtnProp {
   items: MenuProps["items"];

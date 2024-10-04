@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const API_BASE_URL = "https://biblioteka.simonovicp.com/api";
+export const API_BASE_URL = "http://api.tim5.cortexakademija.com";
 
 export const logout = () => {
   // destroy local storage auth_token
@@ -130,7 +130,7 @@ const ApiService = {
   },
 
   async getVehicleList(searchQuery) {
-    return this.getFilter("", { search: searchQuery });
+    return this.getFilter("api/car", { search: searchQuery });
   },
 
   async deleteCar(id) {

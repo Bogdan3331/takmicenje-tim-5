@@ -1,6 +1,7 @@
 // src/components/VehicleList.tsx
 import React, { useState } from "react";
 import VehicleCard from "./VehicleCard";
+import VehicleListTable from "./CarsTable";
 
 const vehicles = [
   {
@@ -37,6 +38,12 @@ const vehicles = [
 
 const VehicleList = () => {
   const [openFilter, setOpenFilter] = useState<string | null>(null); // Stanje za praćenje koji filter je otvoren
+  const [searchQuery, setSearchQuery] = useState<string>("");
+
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(event.target.value);
+  };
+
   const filterOptions = {
     class: ["Hatchback", "Sedan", "SUV"],
     manufacturer: ["BMW", "Audi", "Renault"],
@@ -182,6 +189,16 @@ const VehicleList = () => {
           <VehicleCard key={index} vehicle={vehicle} />
         ))}
       </div>
+      <div className="search-bar">
+        <i className="bi bi-search" />
+        <input
+          className="search-input"
+          type="search"
+          value={searchQuery}
+          onChange={handleSearchChange}
+        />
+      </div>
+      <VehicleListTable searchQuery={searchQuery} />
     </div>
   );
 };
