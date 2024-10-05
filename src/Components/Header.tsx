@@ -24,7 +24,7 @@ const Header: React.FC = () => {
         </nav>
 
         <div>
-          <a href={`/profile`} className="text-white hover:text-blue-500">
+          <a href={"/show-profile"} className="text-white hover:text-blue-500">
             My Profile
           </a>
         </div>

@@ -10,6 +10,7 @@ import Dashboard from "./Pages/Dashboard/Dashboard";
 import Header from "./Components/Header";
 import Footer from "./Pages/Footer/Footer";
 import UserPage from "./Pages/User/User";
+import ApiService from "./Shared/api";
 
 const LayoutWrapper: React.FC<{ children: React.ReactNode }> = ({
   children,
@@ -45,6 +46,9 @@ const LayoutWrapper: React.FC<{ children: React.ReactNode }> = ({
 };
 
 function App() {
+  ApiService.init();
+  ApiService.setHeader();
+
   return (
     <BrowserRouter>
       <Routes>
@@ -73,14 +77,6 @@ function App() {
           }
         />
         <Route
-          path="/main"
-          element={
-            <LayoutWrapper>
-              <MainPage />
-            </LayoutWrapper>
-          }
-        />
-        <Route
           path="/dashboard"
           element={
             <PrivateRoute
@@ -93,7 +89,7 @@ function App() {
           }
         />
         <Route
-          path="/profile"
+          path="/show-profile"
           element={
             <LayoutWrapper>
               <UserPage />

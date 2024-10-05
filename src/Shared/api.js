@@ -122,7 +122,7 @@ const ApiService = {
   },
 
   async getVehiclesList(searchQuery) {
-    return this.getFilter("http://api.tim5.cortexakademija.com/api/car", {
+    return this.getFilter("car", {
       search: searchQuery,
     });
   },
@@ -139,13 +139,8 @@ const ApiService = {
     return this.delete(`users/${id}`);
   },
 
-  async getUser(id) {
-    const token = localStorage.getItem("auth_token");
-    return this.get(`http://api.tim5.cortexakademija.com/api/user/${id}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+  async getUser() {
+    return this.get("show-profile");
   },
 
   async getReservations(auth_token) {
