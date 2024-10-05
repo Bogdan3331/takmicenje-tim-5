@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import VehicleCard from "./VehicleCard";
 import VehicleListTable from "./CarsTable";
-import { FaSearch } from "react-icons/fa"; // Import search icon
+//import { FaSearch } from "react-icons/fa"; // Import search icon
 
 const vehicles = [
   {
@@ -203,7 +203,7 @@ const VehicleList = () => {
             placeholder="Search..."
           />
           <button type="submit" className="text-gray-500 hover:text-gray-800">
-            <FaSearch size={20} />
+            <p>se</p>
           </button>
         </form>
       </div>

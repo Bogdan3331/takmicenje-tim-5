@@ -5,26 +5,35 @@ import SignInPage from "./Pages/SignIn/SignIn";
 import RegisterPage from "./Pages/Register/Register";
 import MainPage from "./Pages/StartPage/MainPage";
 import VehicleList from "./Pages/CarsList/VehicleList";
-import VehicleCard from "./Pages/CarsList/VehicleCard"; // Uverite se da je putanja tačna
-import VehicleListTable from "./Pages/CarsList/CarsTable"; // Uverite se da je putanja tačna
-import { BrowserRouter, Route, Routes, Navigate, useLocation } from "react-router-dom";
+import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
 import Dashboard from "./Pages/Dashboard/Dashboard";
-import User from "./Pages/User/User";
 import Header from "./Components/Header";
 import Footer from "./Pages/Footer/Footer";
+import UserPage from "./Pages/User/User";
 
-const LayoutWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+const LayoutWrapper: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
   const location = useLocation();
   const isMainPage = location.pathname === "/main";
-  const isAuthPage = location.pathname === "/signin" || location.pathname === "/register";
+  const isAuthPage =
+    location.pathname === "/signin" || location.pathname === "/register";
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-900 text-white">
       {/* Header component displayed on all pages except for login and register */}
       {!isAuthPage && <Header />}
 
-      <div className={`flex-grow ${isAuthPage || isMainPage ? "flex items-center justify-center" : ""}`}>
-        <div className={`w-full ${isAuthPage ? "lg:w-full" : "lg:w-4/4"} flex items-center justify-center`}>
+      <div
+        className={`flex-grow ${
+          isAuthPage || isMainPage ? "flex items-center justify-center" : ""
+        }`}
+      >
+        <div
+          className={`w-full ${
+            isAuthPage ? "lg:w-full" : "lg:w-4/4"
+          } flex items-center justify-center`}
+        >
           {children}
         </div>
       </div>
@@ -84,10 +93,10 @@ function App() {
           }
         />
         <Route
-          path="/user-profile"
+          path="/profile"
           element={
             <LayoutWrapper>
-              <User />
+              <UserPage />
             </LayoutWrapper>
           }
         />

@@ -1,11 +1,9 @@
 import axios from "axios";
 
-export const API_BASE_URL = "http://api.tim5.cortexakademija.com";
+export const API_BASE_URL = "http://api.tim5.cortexakademija.com/api";
 
 export const logout = () => {
-  // destroy local storage auth_token
   localStorage.removeItem("auth_token");
-  // send user via react router to /signin
   window.location.href = "/signin";
 };
 
@@ -16,19 +14,9 @@ const ApiService = {
     axios.interceptors.response.use(
       (response) => response,
       (error) => {
-        // FIXME: if error response is 401, logout user (maybe it is 403 instead of 401)
         if (error.response && error.response.status === 401) {
           logout();
         }
-
-        // FIXME: dummy logic here
-        // if (error.response && error.response.status === 429) {
-        //     setTimeout(() => {
-        //         // replay request
-        //         axios.request(error.config);
-        //     }, 1000);
-        // }
-
         return Promise.reject(error);
       }
     );
@@ -40,9 +28,14 @@ const ApiService = {
   },
 
   async get(resource, slug = "") {
-    const slugWithSlash = slug.length ? `/${slug}` : "";
+    // Ensure no double slashes by removing leading slashes in resource
+    const resourcePath = resource.startsWith("/")
+      ? resource.slice(1)
+      : resource;
+    const slugWithSlash = slug ? `/${slug}` : "";
+
     try {
-      const response = await axios.get(`${resource}${slugWithSlash}`);
+      const response = await axios.get(`${resourcePath}${slugWithSlash}`);
       return { message: "Success", data: response.data };
     } catch (error) {
       return {
@@ -53,8 +46,11 @@ const ApiService = {
   },
 
   async getFilter(resource, params) {
+    const resourcePath = resource.startsWith("/")
+      ? resource.slice(1)
+      : resource;
     try {
-      const response = await axios.get(`${resource}`, { params });
+      const response = await axios.get(`${resourcePath}`, { params });
       return { message: "Success", data: response.data };
     } catch (error) {
       return {
@@ -65,8 +61,11 @@ const ApiService = {
   },
 
   async post(resource, params, headers) {
+    const resourcePath = resource.startsWith("/")
+      ? resource.slice(1)
+      : resource;
     try {
-      const response = await axios.post(`${resource}`, params, headers);
+      const response = await axios.post(`${resourcePath}`, params, headers);
       return { message: "Success", data: response.data };
     } catch (error) {
       return {
@@ -77,8 +76,11 @@ const ApiService = {
   },
 
   async put(resource, params) {
+    const resourcePath = resource.startsWith("/")
+      ? resource.slice(1)
+      : resource;
     try {
-      const response = await axios.put(`${resource}`, params);
+      const response = await axios.put(`${resourcePath}`, params);
       return { message: "Success", data: response.data };
     } catch (error) {
       return {
@@ -89,8 +91,11 @@ const ApiService = {
   },
 
   async delete(resource, data = {}) {
+    const resourcePath = resource.startsWith("/")
+      ? resource.slice(1)
+      : resource;
     try {
-      const response = await axios.delete(`${resource}`, { data });
+      const response = await axios.delete(`${resourcePath}`, { data });
       return { message: "Success", data: response.data };
     } catch (error) {
       return {
@@ -100,17 +105,12 @@ const ApiService = {
     }
   },
 
-  // SIGN IN AND REGISTER CALLS
-  async signIn(username, password) {
-    return this.post(
-      "login",
-      { username, password, device: "Dev" },
-      {
-        headers: {
-          Authorization: "Bearer b3Rvcmlub2xhcmluZ29sb2dpamE=",
-        },
-      }
-    );
+  async signIn(email, password) {
+    return this.post("http://api.tim5.cortexakademija.com/api/login", {
+      email,
+      password,
+      device: "Dev",
+    });
   },
 
   async register(registrationData) {
@@ -121,24 +121,35 @@ const ApiService = {
     });
   },
 
-  async getUser() {
-    return this.post("users/me");
+  async getVehiclesList(searchQuery) {
+    return this.getFilter("http://api.tim5.cortexakademija.com/api/car", {
+      search: searchQuery,
+    });
+  },
+
+  async deleteVehicle(id) {
+    return this.delete(`cars/${id}`);
+  },
+
+  async reserveVehicle(car_id) {
+    return this.post("reservation", car_id);
   },
 
   async deleteUser(id) {
-    return this.delete("");
+    return this.delete(`users/${id}`);
   },
 
-  async getVehicleList(searchQuery) {
-    return this.getFilter("api/car", { search: searchQuery });
-  },
-
-  async deleteCar(id) {
-    return this.delete("");
+  async getUser(id) {
+    const token = localStorage.getItem("auth_token");
+    return this.get(`http://api.tim5.cortexakademija.com/api/user/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
   },
 
   async getReservations(auth_token) {
-    return this.get("/reservations", auth_token);
+    return this.get("reservations", auth_token);
   },
 };
 

@@ -18,13 +18,13 @@ const Header: React.FC = () => {
           <a href="/dashboard" className="text-white hover:text-blue-500">
             Reservations
           </a>
-          <a href="#" className="text-white hover:text-blue-500">
+          <a href="/contact" className="text-white hover:text-blue-500">
             Contact
           </a>
         </nav>
 
         <div>
-          <a href="/user-profile" className="text-white hover:text-blue-500">
+          <a href={`/profile`} className="text-white hover:text-blue-500">
             My Profile
           </a>
         </div>
