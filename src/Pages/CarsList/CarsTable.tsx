@@ -2,16 +2,16 @@ import React, { useState, useEffect, useCallback } from "react";
 import ApiService from "../../Shared/api";
 import ReserveBtn from "../../Components/Buttons/ReserveBtn";
 
-//future interface update
+// Future interface update
 /**
  *   image: string;
-  name: string;//no
-  class: string;
-  gear: string;//no
-  passengers: number;//no
-  fuelType: string;
-  fuelConsumption: number;//no
-  price: number;
+ *   name: string; // no
+ *   class: string;
+ *   gear: string; // no
+ *   passengers: number; // no
+ *   fuelType: string;
+ *   fuelConsumption: number; // no
+ *   price: number;
  */
 
 interface Car {
@@ -26,9 +26,10 @@ interface Car {
 
 interface VehicleListTableProps {
   searchQuery: string;
+  selectedBrand: string | null; // Dodato stanje za odabrani brend
 }
 
-const VehicleListTable: React.FC<VehicleListTableProps> = ({ searchQuery }) => {
+const VehicleListTable: React.FC<VehicleListTableProps> = ({ searchQuery, selectedBrand }) => {
   const [VehicleList, setVehicleList] = useState<Car[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -62,7 +63,10 @@ const VehicleListTable: React.FC<VehicleListTableProps> = ({ searchQuery }) => {
 
   const filteredVehicleList = VehicleList.filter((car) => {
     const fullName = `${car.brand}`.toLowerCase();
-    return fullName.startsWith(searchQuery.toLowerCase());
+    return (
+      (!selectedBrand || car.brand.toLowerCase() === selectedBrand.toLowerCase()) &&
+      fullName.startsWith(searchQuery.toLowerCase())
+    );
   });
 
   if (loading) {
@@ -75,7 +79,7 @@ const VehicleListTable: React.FC<VehicleListTableProps> = ({ searchQuery }) => {
 
   return (
     <div className="flex flex-col items-center mt-12 w-full px-4 box-border">
-      <div className="grid grid-cols-1 gap-6 w-full">
+      <div className="grid grid-cols-3 gap-6 w-full">
         {filteredVehicleList.map((car) => (
           <div
             key={car.id}
@@ -98,8 +102,7 @@ const VehicleListTable: React.FC<VehicleListTableProps> = ({ searchQuery }) => {
                     color: "red",
                   }}
                 >
-                  <strong>Brand:</strong>
-                  {car.brand || "No Name"}
+                  <strong>Brand:</strong> {car.brand || "No Name"}
                 </li>
                 <li>
                   <strong>Type:</strong> {car.type || "No Name"}
