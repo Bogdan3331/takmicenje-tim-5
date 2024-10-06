@@ -11,6 +11,7 @@ import Header from "./Components/Header";
 import Footer from "./Pages/Footer/Footer";
 import UserPage from "./Pages/User/User";
 import ApiService from "./Shared/api";
+import CarDetails from "./Pages/CarsList/CarDetails";
 
 const LayoutWrapper: React.FC<{ children: React.ReactNode }> = ({
   children,
@@ -105,6 +106,14 @@ function App() {
           element={
             <LayoutWrapper>
               <VehicleList />
+            </LayoutWrapper>
+          }
+        />
+        <Route
+          path="/vehicle-details/:id"
+          element={
+            <LayoutWrapper>
+              <CarDetails />
             </LayoutWrapper>
           }
         />
