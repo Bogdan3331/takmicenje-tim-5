@@ -41,7 +41,7 @@ const SignInPage: React.FC = () => {
       </p>
       <form onSubmit={handleSubmit} className="mt-8">
         <div>
-          <label className="text-lg text-black font-medium">Username:</label>
+          <label className="text-lg text-black font-medium">Email:</label>
           <input
             type="text"
             value={email}

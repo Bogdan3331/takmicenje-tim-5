@@ -1,41 +1,7 @@
 // src/components/VehicleList.tsx
 import React, { useState } from "react";
-import VehicleCard from "./VehicleCard";
 import VehicleListTable from "./CarsTable";
 //import { FaSearch } from "react-icons/fa"; // Import search icon
-
-const vehicles = [
-  {
-    image: "https://via.placeholder.com/150",
-    name: "SEAT TOLEDO",
-    class: "Hatchback",
-    gear: "Manual 5 gears",
-    passengers: 5,
-    fuel: "Diesel",
-    fuelConsumption: 7,
-    price: 24,
-  },
-  {
-    image: "https://via.placeholder.com/150",
-    name: "BMW 118D",
-    class: "Hatchback",
-    gear: "Manual 6 gears",
-    passengers: 5,
-    fuel: "Diesel",
-    fuelConsumption: 6,
-    price: 25,
-  },
-  {
-    image: "https://via.placeholder.com/150",
-    name: "RENAULT CLIO",
-    class: "Hatchback",
-    gear: "Manual 5 gears",
-    passengers: 5,
-    fuel: "Diesel",
-    fuelConsumption: 6,
-    price: 25,
-  },
-];
 
 const VehicleList = () => {
   const [openFilter, setOpenFilter] = useState<string | null>(null);
@@ -209,11 +175,7 @@ const VehicleList = () => {
       </div>
 
       {/* Vehicle list */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {vehicles.map((vehicle, index) => (
-          <VehicleCard key={index} vehicle={vehicle} />
-        ))}
-      </div>
+
       <VehicleListTable searchQuery={searchQuery} />
     </div>
   );

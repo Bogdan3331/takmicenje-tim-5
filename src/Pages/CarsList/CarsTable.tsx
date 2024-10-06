@@ -2,6 +2,18 @@ import React, { useState, useEffect, useCallback } from "react";
 import ApiService from "../../Shared/api";
 import ReserveBtn from "../../Components/Buttons/ReserveBtn";
 
+//future interface update
+/**
+ *   image: string;
+  name: string;//no
+  class: string;
+  gear: string;//no
+  passengers: number;//no
+  fuelType: string;
+  fuelConsumption: number;//no
+  price: number;
+ */
+
 interface Car {
   id: number;
   type: string;
@@ -63,55 +75,53 @@ const VehicleListTable: React.FC<VehicleListTableProps> = ({ searchQuery }) => {
 
   return (
     <div className="flex flex-col items-center mt-12 w-full px-4 box-border">
-      <div className="grid grid-cols-6 gap-4 overflow-x-auto mb-4">
-        <div className="font-bold border-b-2 border-gray-300 p-3 text-center bg-gray-200 uppercase">
-          Image
-        </div>
-        <div className="font-bold border-b-2 border-gray-300 p-3 text-center bg-gray-200 uppercase">
-          Type
-        </div>
-        <div className="font-bold border-b-2 border-gray-300 p-3 text-center bg-gray-200 uppercase">
-          Brand
-        </div>
-        <div className="font-bold border-b-2 border-gray-300 p-3 text-center bg-gray-200 uppercase">
-          Price
-        </div>
-        <div className="font-bold border-b-2 border-gray-300 p-3 text-center bg-gray-200 uppercase">
-          Description
-        </div>
-        <div className="font-bold border-b-2 border-gray-300 p-3 text-center bg-gray-200 uppercase">
-          Fuel Type
-        </div>
-        <div></div>
+      <div className="grid grid-cols-1 gap-6 w-full">
         {filteredVehicleList.map((car) => (
-          <React.Fragment key={car.id}>
-            <div className="border-b border-gray-300 flex items-center justify-center text-center bg-white shadow-sm transition-transform duration-200 ease-in-out">
-              <img
-                src={car.image || "https://via.placeholder.com/100"}
-                alt={`${car.brand || "Unknown"}`}
-                className="w-12 h-12 rounded-full object-cover"
-              />
+          <div
+            key={car.id}
+            className="border rounded-lg shadow-md overflow-hidden bg-white"
+          >
+            {/* Car image */}
+            <img
+              src={car.image || "https://via.placeholder.com/100"}
+              alt={`${car.brand || "Unknown"}`}
+              className="w-full h-48 object-cover"
+            />
+
+            <div className="p-4">
+              {/* Car details */}
+              <ul className="mt-2 text-gray-600">
+                <li
+                  style={{
+                    fontSize: "large",
+                    fontWeight: "500",
+                    color: "red",
+                  }}
+                >
+                  <strong>Brand:</strong>
+                  {car.brand || "No Name"}
+                </li>
+                <li>
+                  <strong>Type:</strong> {car.type || "No Name"}
+                </li>
+                <li>
+                  <strong>Fuel Type:</strong> {car.fuelType || "N/A"}
+                </li>
+                <li>
+                  <strong>Description:</strong> {car.description || "N/A"}
+                </li>
+              </ul>
+
+              {/* Price and Reserve button */}
+              <div className="mt-4 flex justify-between items-center">
+                <div>
+                  <span className="text-2xl font-bold">{car.price} €</span>
+                  <p className="text-gray-500">per day</p>
+                </div>
+                <ReserveBtn carId={car.id} />
+              </div>
             </div>
-            <div className="border-b border-gray-300 flex items-center justify-center text-center bg-white shadow-sm transition-transform duration-200 ease-in-out">
-              {car.type || "No Name"}
-            </div>
-            <div className="border-b border-gray-300 flex items-center justify-center text-center bg-white shadow-sm transition-transform duration-200 ease-in-out">
-              {car.brand || "N/A"}
-            </div>
-            <div className="border-b border-gray-300 flex items-center justify-center text-center bg-white shadow-sm transition-transform duration-200 ease-in-out">
-              {car.price || "N/A"}
-            </div>
-            <div className="border-b border-gray-300 flex items-center justify-center text-center bg-white shadow-sm transition-transform duration-200 ease-in-out">
-              {car.description || "N/A"}
-            </div>
-            <div
-              style={{ color: "red" }}
-              className="border-b border-gray-300 flex items-center justify-center text-center bg-white shadow-sm transition-transform duration-200 ease-in-out"
-            >
-              {car.fuelType || "N/A"}
-            </div>
-            <ReserveBtn carId={car.id} />
-          </React.Fragment>
+          </div>
         ))}
       </div>
     </div>
