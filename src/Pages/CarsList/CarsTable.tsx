@@ -103,25 +103,39 @@ const VehicleListTable: React.FC<VehicleListTableProps> = ({
     <div className="flex flex-col items-center mt-12 w-full px-4 box-border">
       <div className="grid grid-cols-3 gap-6 w-full">
         {filteredVehicleList.map((car) => (
-          <div
-            key={car.id}
-            className="border rounded-lg shadow-md overflow-hidden bg-white cursor-pointer"
-            onClick={() => handleCardClick(car.id)} // Call the navigate function
-          >
+          <div className="wrapper">
             {/* Car image */}
-            <img
-              src={car.image || "https://via.placeholder.com/100"}
-              alt={`${car.brand || "Unknown"}`}
-              className="w-full h-48 object-cover"
-            />
-
+            <div
+              key={car.id}
+              className="border rounded-lg shadow-md overflow-hidden bg-white cursor-pointer"
+              onClick={() => handleCardClick(car.id)} // Call the navigate function
+            >
+              <img
+                src={car.image || "https://via.placeholder.com/100"}
+                alt={`${car.brand || "Unknown"}`}
+                className="w-full h-48 object-cover"
+              />
+            </div>
             <div className="p-4">
               {/* Car details */}
               <ul className="mt-2 text-gray-600">
                 <li
-                  style={{ fontSize: "large", fontWeight: "500", color: "red" }}
+                  style={{
+                    fontSize: "1.2rem",
+                    fontWeight: "700",
+                    color: "#000060",
+                  }}
                 >
-                  <strong>Brand:</strong> {car.brand || "No Name"}
+                  <strong
+                    style={{
+                      fontSize: "large",
+                      fontWeight: "700",
+                      color: "#000040",
+                    }}
+                  >
+                    Brand:
+                  </strong>{" "}
+                  {car.brand || "No Name"}
                 </li>
                 <li>
                   <strong>Type:</strong> {car.type || "No Name"}

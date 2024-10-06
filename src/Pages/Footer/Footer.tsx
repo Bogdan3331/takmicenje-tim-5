@@ -11,13 +11,16 @@ const Footer = () => {
         <div>
           <h2 className="text-red-500 text-xl font-bold">RENTIFY RENT A CAR</h2>
           <p className="mt-4">
-            Our desire to contribute maximally to the transportation sector has defined us as:
+            Our desire to contribute maximally to the transportation sector has
+            defined us as:
           </p>
           <p>
-            The most flexible rent-a-car agency in Montenegro. We have rules, but we are always ready to meet special needs.
+            The most flexible rent-a-car agency in Montenegro. We have rules,
+            but we are always ready to meet special needs.
           </p>
           <p>
-            Vehicle delivery and pickup are available at any location within Montenegro, as well as from neighboring countries.
+            Vehicle delivery and pickup are available at any location within
+            Montenegro, as well as from neighboring countries.
           </p>
         </div>
 
@@ -39,7 +42,7 @@ const Footer = () => {
             </button>
             <button
               className="block text-blue-400 hover:underline"
-              onClick={() => navigate("/profile")}
+              onClick={() => navigate("/show-profile")}
             >
               My Profile
             </button>
