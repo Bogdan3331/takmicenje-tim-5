@@ -9,7 +9,7 @@ const Header: React.FC = () => {
         </div>
 
         <nav className="flex space-x-8">
-          <a href="/main" className="text-white hover:text-blue-500">
+          <a href="/" className="text-white hover:text-blue-500">
             Home
           </a>
           <a href="/vehicle-list" className="text-white hover:text-blue-500">
@@ -18,8 +18,8 @@ const Header: React.FC = () => {
           <a href="/dashboard" className="text-white hover:text-blue-500">
             Reservations
           </a>
-          <a href="/contact" className="text-white hover:text-blue-500">
-            Contact
+          <a href="/about-us" className="text-white hover:text-blue-500">
+            About Us
           </a>
         </nav>
 

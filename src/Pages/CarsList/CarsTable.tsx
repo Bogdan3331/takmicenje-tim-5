@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import ApiService from "../../Shared/api";
-import MoreBtn from "../../Components/Buttons/MoreBtn";
-import { MenuProps } from "antd";
+import ReserveBtn from "../../Components/Buttons/ReserveBtn";
 
 interface Car {
   id: number;
@@ -21,23 +20,6 @@ const VehicleListTable: React.FC<VehicleListTableProps> = ({ searchQuery }) => {
   const [VehicleList, setVehicleList] = useState<Car[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-
-  const renderMenuItems = (car: Car) => {
-    var menuItems: MenuProps["items"] = [
-      {
-        icon: <i className="bi bi-eye text-xl"></i>,
-        label: <p className="m-0">Detalji</p>,
-        key: "0",
-      },
-      {
-        icon: <i className="bi bi-pencil-square text-xl"></i>,
-        label: <p className="m-0">Rezervisi</p>,
-        key: "1",
-      },
-    ];
-
-    return menuItems;
-  };
 
   const fetchData = useCallback(async () => {
     try {
@@ -128,9 +110,7 @@ const VehicleListTable: React.FC<VehicleListTableProps> = ({ searchQuery }) => {
             >
               {car.fuelType || "N/A"}
             </div>
-            <div className="border-b border-gray-300 flex items-center justify-center text-center bg-white shadow-sm transition-transform duration-200 ease-in-out action-column">
-              <MoreBtn items={renderMenuItems(car)} />
-            </div>
+            <ReserveBtn carId={car.id} />
           </React.Fragment>
         ))}
       </div>

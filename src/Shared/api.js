@@ -121,30 +121,42 @@ const ApiService = {
     });
   },
 
+  async showProfile() {
+    return this.get("show-profile");
+  },
+
+  //admin calls
+
+  // vehicle calls for users
   async getVehiclesList(searchQuery) {
     return this.getFilter("car", {
       search: searchQuery,
     });
   },
 
+  async getVehicleData(id) {
+    return this.get(`car/${id}`);
+  },
+
   async deleteVehicle(id) {
     return this.delete(`cars/${id}`);
   },
 
-  async reserveVehicle(car_id) {
-    return this.post("reservation", car_id);
+  async reserveVehicle(values) {
+    return this.post("reservation", values);
   },
 
-  async deleteUser(id) {
-    return this.delete(`users/${id}`);
+  //user
+  async logoutUser() {
+    return this.delete(`logout`);
   },
 
-  async getUser() {
-    return this.get("show-profile");
+  async editUser(values) {
+    return this.post("update-profile", values);
   },
 
-  async getReservations(auth_token) {
-    return this.get("reservations", auth_token);
+  async getUserReservations() {
+    return this.get("reservation");
   },
 };
 

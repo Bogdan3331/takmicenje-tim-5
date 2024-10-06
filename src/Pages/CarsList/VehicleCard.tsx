@@ -1,5 +1,5 @@
 // src/components/VehicleCard.tsx
-import React from 'react';
+import React from "react";
 
 // Definišemo interfejs za podatke o vozilu
 interface Vehicle {
@@ -21,21 +21,35 @@ const VehicleCard: React.FC<VehicleCardProps> = ({ vehicle }) => {
   return (
     <div className="border rounded-lg shadow-md overflow-hidden bg-white">
       {/* Slika vozila */}
-      <img src={vehicle.image} alt={vehicle.name} className="w-full h-48 object-cover" />
-      
+      <img
+        src={vehicle.image}
+        alt={vehicle.name}
+        className="w-full h-48 object-cover"
+      />
+
       <div className="p-4">
         <h3 className="text-xl font-semibold">{vehicle.name}</h3>
-        
+
         {/* Detalji o vozilu */}
         <ul className="mt-2 text-gray-600">
-          <li><strong>Klasa:</strong> {vehicle.class}</li>
-          <li><strong>Menjač:</strong> {vehicle.gear}</li>
-          <li><strong>Max putnici:</strong> {vehicle.passengers}</li>
-          <li><strong>Gorivo:</strong> {vehicle.fuel}</li>
-          <li><strong>Potrošnja goriva:</strong> {vehicle.fuelConsumption} l/100km</li>
+          <li>
+            <strong>Klasa:</strong> {vehicle.class}
+          </li>
+          <li>
+            <strong>Menjač:</strong> {vehicle.gear}
+          </li>
+          <li>
+            <strong>Max putnici:</strong> {vehicle.passengers}
+          </li>
+          <li>
+            <strong>Gorivo:</strong> {vehicle.fuel}
+          </li>
+          <li>
+            <strong>Potrošnja goriva:</strong> {vehicle.fuelConsumption} l/100km
+          </li>
         </ul>
-        
-        {/* Cena i dugme za najam */}
+
+        {/* Cena i dugme za najam --dugme treba da bude ReserveBtn */}
         <div className="mt-4 flex justify-between items-center">
           <div>
             <span className="text-2xl font-bold">{vehicle.price} €</span>

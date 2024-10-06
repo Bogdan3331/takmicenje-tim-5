@@ -4,28 +4,31 @@ import ApiService from "../../Shared/api";
 // all data is random until we get backend.
 interface Reservation {
   id: number;
-  car: {
-    id: number;
-    name: string;
-    photo: string;
-  };
-  user: {
-    id: number;
-    photoPath: string;
-    name: string;
-  } | null;
-  status: string;
-  action_date: string;
+  userId: number;
+  carId: number;
+  startDate: string;
+  endDate: string;
+}
+
+interface Vehicle {
+  id: number;
+  type: string;
+  photo: string;
+  brand: string;
+  price: number;
 }
 
 const RezervationsTable: React.FC = () => {
   const [reservations, setReservations] = useState<Reservation[]>([]);
+  const [vehicleData, setVehicleData] = useState<{ [key: number]: Vehicle }>(
+    {}
+  ); // Store vehicle data by carId
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
   const fetchData = useCallback(async () => {
     try {
-      const response = await ApiService.getReservations(); //auth token treba da se proslijedi
+      const response = await ApiService.getUserReservations();
 
       if (response.error) {
         setError(response.error);
@@ -33,9 +36,27 @@ const RezervationsTable: React.FC = () => {
 
       console.log("API Response:", response);
 
-      if (response.data) {
-        const activeReservations = response.data.active;
+      if (response.data.data) {
+        const activeReservations = response.data.data;
         setReservations(activeReservations);
+
+        // Fetch vehicle data for each reservation
+        const vehiclePromises = activeReservations.map(
+          async (reservation: Reservation) => {
+            const vehicleResponse = await ApiService.getVehicleData(
+              reservation.carId
+            );
+            return { id: reservation.carId, ...vehicleResponse.data };
+          }
+        );
+
+        const vehicles = await Promise.all(vehiclePromises);
+        const vehiclesById = vehicles.reduce((acc, vehicle) => {
+          acc[vehicle.id] = vehicle;
+          return acc;
+        }, {} as { [key: number]: Vehicle });
+
+        setVehicleData(vehiclesById); // Store the fetched vehicle data
       } else {
         setError("Failed to load data: " + response.error);
       }
@@ -59,34 +80,42 @@ const RezervationsTable: React.FC = () => {
           {error && <div className="error">Error: {error}</div>}
           {!loading && !error && (
             <div className="grid-container">
-              <div className="grid-header">Slika</div>
-              <div className="grid-header">Ime i Prezime</div>
-              <div className="grid-header">Status</div>
-              <div className="grid-header">Datum</div>
-              <div className="grid-header">Odobri</div>
+              <div className="grid-header">Preuzeto</div>
+              <div className="grid-header">Vratiti</div>
+              <div className="grid-header">Auto</div>
               {reservations.map((reservation) => (
                 <React.Fragment key={reservation.id}>
-                  <div className="grid-item">
-                    <img
-                      src={
-                        reservation.car.photo ||
-                        "https://via.placeholder.com/100"
-                      }
-                      alt={reservation.car.name}
-                      className="book-photo"
-                    />
+                  <div className="grid-item" style={{ color: "red" }}>
+                    {reservation.startDate}
+                  </div>
+                  <div className="grid-item" style={{ color: "red" }}>
+                    {reservation.endDate}
                   </div>
                   <div className="grid-item">
-                    {reservation.car?.name || "No Name"}{" "}
-                  </div>
-                  <div className="grid-item">{reservation.status}</div>
-                  <div className="grid-item">{reservation.action_date}</div>
-                  <div className="grid-item tick-x">
-                    <i
-                      className="bi bi-check-lg"
-                      style={{ fontSize: "1.2rem", paddingRight: "1rem" }}
-                    ></i>
-                    <i className="bi bi-x-lg"></i>
+                    {/* Display vehicle data */}
+                    {vehicleData[reservation.carId] ? (
+                      <>
+                        <img
+                          src={
+                            vehicleData[reservation.carId].photo ||
+                            "https://via.placeholder.com/100"
+                          }
+                          alt={vehicleData[reservation.carId].brand}
+                          className="book-photo"
+                        />
+                        <span>
+                          {vehicleData[reservation.carId].type || "No Name"}
+                        </span>
+                        <span>
+                          {vehicleData[reservation.carId].brand || "No Name"}
+                        </span>
+                        <span>
+                          {vehicleData[reservation.carId].price || "No Name"}
+                        </span>
+                      </>
+                    ) : (
+                      "Loading Vehicle..."
+                    )}
                   </div>
                 </React.Fragment>
               ))}
@@ -132,9 +161,9 @@ const RezervationsTable: React.FC = () => {
   }
 
   .book-photo {
-  width: 3rem;
-  height: 3rem;
-  object-fit: cover;
+    width: 3rem;
+    height: 3rem;
+    object-fit: cover;
   }
 
   .grid-item {

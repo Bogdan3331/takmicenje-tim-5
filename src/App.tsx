@@ -3,7 +3,7 @@ import React from "react";
 import PrivateRoute from "./Pages/PrivateRoute";
 import SignInPage from "./Pages/SignIn/SignIn";
 import RegisterPage from "./Pages/Register/Register";
-import MainPage from "./Pages/StartPage/MainPage";
+import MainPage from "./Pages/MainPage/MainPage";
 import VehicleList from "./Pages/CarsList/VehicleList";
 import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
 import Dashboard from "./Pages/Dashboard/Dashboard";
@@ -91,9 +91,13 @@ function App() {
         <Route
           path="/show-profile"
           element={
-            <LayoutWrapper>
-              <UserPage />
-            </LayoutWrapper>
+            <PrivateRoute
+              element={
+                <LayoutWrapper>
+                  <UserPage />
+                </LayoutWrapper>
+              }
+            />
           }
         />
         <Route
