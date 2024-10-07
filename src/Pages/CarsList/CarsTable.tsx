@@ -154,7 +154,7 @@ const VehicleListTable: React.FC<VehicleListTableProps> = ({
                   <span className="text-2xl font-bold">{car.price} €</span>
                   <p className="text-gray-500">per day</p>
                 </div>
-                <ReserveBtn carId={car.id} />
+                <ReserveBtn carId={car.id} carPrice={car.price} />
               </div>
             </div>
           </div>

@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import ApiService from "../../Shared/api";
 
-// all data is random until we get backend.
 interface Reservation {
   id: number;
   userId: number;
@@ -16,6 +15,7 @@ interface Vehicle {
   photo: string;
   brand: string;
   price: number;
+  avgRate: number;
 }
 
 const RezervationsTable: React.FC = () => {
@@ -111,6 +111,9 @@ const RezervationsTable: React.FC = () => {
                         </span>
                         <span>
                           {vehicleData[reservation.carId].price || "No Name"}
+                        </span>
+                        <span>
+                          {vehicleData[reservation.carId].avgRate || "No Name"}
                         </span>
                       </>
                     ) : (

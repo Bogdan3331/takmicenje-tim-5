@@ -106,7 +106,7 @@ const ApiService = {
   },
 
   async signIn(email, password) {
-    return this.post("http://api.tim5.cortexakademija.com/api/login", {
+    return this.post("login", {
       email,
       password,
       device: "Dev",
@@ -148,11 +148,23 @@ const ApiService = {
 
   //user
   async logoutUser() {
-    return this.post(`logout`);
+    return this.post("logout");
   },
 
   async editUser(values) {
     return this.post("update-profile", values);
+  },
+
+  async editPassword(values) {
+    return this.post("change-password", values);
+  },
+
+  async forgetPassword(email) {
+    return this.post("forgot-password", email);
+  },
+
+  async resetPassword(values) {
+    return this.post("reset-password", values);
   },
 
   async getUserReservations() {

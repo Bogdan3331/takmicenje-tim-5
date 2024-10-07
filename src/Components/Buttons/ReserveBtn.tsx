@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Modal, DatePicker, Button } from "antd";
 import ApiService from "../../Shared/api";
@@ -6,13 +6,15 @@ import { Dayjs } from "dayjs";
 
 interface ReserveBtnProps {
   carId: number;
+  carPrice: number;
 }
 
-const ReserveBtn: React.FC<ReserveBtnProps> = ({ carId }) => {
+const ReserveBtn: React.FC<ReserveBtnProps> = ({ carId, carPrice }) => {
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [startDateTime, setStartDateTime] = useState<Dayjs | null>(null);
   const [endDateTime, setEndDateTime] = useState<Dayjs | null>(null);
+  const [totalPrice, setTotalPrice] = useState<number>(0);
   const authToken = localStorage.getItem("auth_token");
 
   const showModal = () => {
@@ -50,6 +52,17 @@ const ReserveBtn: React.FC<ReserveBtnProps> = ({ carId }) => {
     }
   };
 
+  // Calculate total price whenever the dates are updated
+  useEffect(() => {
+    if (startDateTime && endDateTime) {
+      const diffInDays = endDateTime.diff(startDateTime, "day");
+      const calculatedPrice = diffInDays * carPrice;
+      setTotalPrice(calculatedPrice);
+    } else {
+      setTotalPrice(0); // Reset if dates are not fully selected
+    }
+  }, [startDateTime, endDateTime, carPrice]);
+
   return (
     <>
       <Button type="primary" onClick={showModal}>
@@ -86,6 +99,16 @@ const ReserveBtn: React.FC<ReserveBtnProps> = ({ carId }) => {
               format="YYYY-MM-DD HH:mm"
               style={{ marginBottom: "1rem" }}
             />
+          </div>
+          <div className="form-section">
+            <label>
+              Total Price:{" "}
+              <p>
+                {totalPrice > 0
+                  ? `Total Price: $${totalPrice.toFixed(2)}`
+                  : "Please select both start and end dates"}
+              </p>
+            </label>
           </div>
         </div>
       </Modal>

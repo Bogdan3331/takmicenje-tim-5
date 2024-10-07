@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ApiService from "../../Shared/api";
+import PasswordRecovery from "./PasswordRecovery";
 
 const SignInPage: React.FC = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
+  const [showPasswordRecovery, setShowPasswordRecovery] = useState(false);
   const navigate = useNavigate();
 
   const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -26,7 +28,7 @@ const SignInPage: React.FC = () => {
         setError(response.error);
       } else {
         localStorage.setItem("auth_token", response.data.token);
-        navigate("/vehicle-list"); // Redirect to page with vehiclesS
+        navigate("/vehicle-list");
       }
     } catch (error: any) {
       setError(error.message);
@@ -70,7 +72,7 @@ const SignInPage: React.FC = () => {
           </div>
           <button
             className="font-medium text-base text-violet-500"
-            onClick={() => navigate("/forget-password")}
+            onClick={() => setShowPasswordRecovery(true)}
             type="button"
           >
             Forgot your password?
@@ -98,6 +100,8 @@ const SignInPage: React.FC = () => {
           Register
         </button>
       </div>
+      {/* Password Recovery Modals */}
+      {showPasswordRecovery && <PasswordRecovery />}
     </div>
   );
 };

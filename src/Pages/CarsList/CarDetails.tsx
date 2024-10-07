@@ -10,6 +10,8 @@ interface Car {
   description: string;
   fuelType: string;
   image: string;
+  avgRate: number;
+  status: string;
   gear?: string;
   passengers?: number;
 }
@@ -81,8 +83,16 @@ const CarDetails: React.FC = () => {
             <p>{car.gear}</p>
           </div>
           <div className="detail-item">
-            <p className="detail-label">Gear:</p>
+            <p className="detail-label">Passengers:</p>
             <p>{car.passengers}</p>
+          </div>
+          <div className="detail-item">
+            <p className="detail-label">Status:</p>
+            <p>{car.status}</p>
+          </div>
+          <div className="detail-item">
+            <p className="detail-label">avgRate:</p>
+            <p>{car.avgRate}</p>
           </div>
         </div>
       )}
