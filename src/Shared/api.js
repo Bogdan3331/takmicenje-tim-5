@@ -148,7 +148,7 @@ const ApiService = {
 
   //user
   async logoutUser() {
-    return this.delete(`logout`);
+    return this.post(`logout`);
   },
 
   async editUser(values) {

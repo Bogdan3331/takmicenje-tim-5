@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback, Fragment } from "react";
 import ApiService from "../../Shared/api";
 import { message } from "antd";
 import EditProfileModal from "./EditProfileModal";
+import {useNavigate} from "react-router-dom";
 
 interface User {
   id?: number;
@@ -11,6 +12,7 @@ interface User {
 }
 
 const UserPage: React.FC = () => {
+  const navigate = useNavigate();
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -33,6 +35,8 @@ const UserPage: React.FC = () => {
       if (!response.error) {
         localStorage.removeItem("auth_token");
         message.success("Logged out successfully.");
+        navigate('/');
+
       }
     } catch (error) {
       message.error("There was a problem with the logout operation.");
