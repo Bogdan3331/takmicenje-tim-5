@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Modal, DatePicker, Button } from "antd";
+import { Modal, DatePicker, Button, message } from "antd";
 import ApiService from "../../Shared/api";
 import { Dayjs } from "dayjs";
 
@@ -46,6 +46,7 @@ const ReserveBtn: React.FC<ReserveBtnProps> = ({ carId, carPrice }) => {
       const response = await ApiService.reserveVehicle(values);
       console.log("Reservation Response:", response);
       setIsModalOpen(false);
+      message.success("You reserved vehicle successfully");
       // Handle success/failure (e.g., notifications, redirect)
     } catch (error) {
       console.error("Error reserving vehicle:", error);
@@ -56,7 +57,18 @@ const ReserveBtn: React.FC<ReserveBtnProps> = ({ carId, carPrice }) => {
   useEffect(() => {
     if (startDateTime && endDateTime) {
       const diffInDays = endDateTime.diff(startDateTime, "day");
-      const calculatedPrice = diffInDays * carPrice;
+      let calculatedPrice = diffInDays * carPrice + carPrice;
+
+      // Extract the hour from startDateTime
+      const startHour = startDateTime.hour();
+
+      // Check if the start time is between 19:00 and 07:00
+      if (startHour >= 19 || startHour <= 7) {
+        // Leave a line for your custom logic here if you want to apply any additional logic
+      } else {
+        calculatedPrice += carPrice; // Normal calculation
+      }
+
       setTotalPrice(calculatedPrice);
     } else {
       setTotalPrice(0); // Reset if dates are not fully selected

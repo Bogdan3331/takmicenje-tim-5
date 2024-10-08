@@ -53,7 +53,9 @@ const CarDetails: React.FC = () => {
   return (
     <div className="min-h-screen flex items-center justify-center p-4">
       {error && <div className="text-red-500 text-xl font-bold">{error}</div>}
-      {loading && <div className="text-gray-500 text-xl font-bold">Loading...</div>}
+      {loading && (
+        <div className="text-gray-500 text-xl font-bold">Loading...</div>
+      )}
       {car && (
         <div className="bg-white shadow-lg rounded-lg p-6 max-w-4xl w-full">
           <div className="flex flex-col md:flex-row">
@@ -65,18 +67,24 @@ const CarDetails: React.FC = () => {
               />
             </div>
             <div className="md:w-1/2 p-4 space-y-4">
-              <h1 className="text-3xl font-bold text-gray-800 mb-4">{car.brand}</h1>
+              <h1 className="text-3xl font-bold text-gray-800 mb-4">
+                {car.brand}
+              </h1>
               <div className="space-y-2">
                 <div className="flex justify-between">
                   <span className="text-gray-600 font-semibold">Type:</span>
                   <span className="text-black">{car.type}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-gray-600 font-semibold">Price:</span>
+                  <span className="text-gray-600 font-semibold">
+                    Price Per Day:
+                  </span>
                   <span className="text-black">${car.price}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-gray-600 font-semibold">Fuel Type:</span>
+                  <span className="text-gray-600 font-semibold">
+                    Fuel Type:
+                  </span>
                   <span className="text-black">{car.fuelType}</span>
                 </div>
                 <div className="flex justify-between">
@@ -84,7 +92,9 @@ const CarDetails: React.FC = () => {
                   <span className="text-black">{car.gear || "N/A"}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-gray-600 font-semibold">Passengers:</span>
+                  <span className="text-gray-600 font-semibold">
+                    Passengers:
+                  </span>
                   <span className="text-black">{car.passengers || "N/A"}</span>
                 </div>
                 <div className="flex justify-between">
@@ -100,21 +110,25 @@ const CarDetails: React.FC = () => {
               <div className="mt-6 flex space-x-4">
                 <ReserveBtn carId={car.id} carPrice={car.price} />
                 <div
-                    className={`px-4 py-2 rounded-full font-semibold flex items-center space-x-2 ${
-                      car.status === "Available"
-                        ? "bg-green-200 text-green-600"
-                        : "bg-pink-200 text-red-600"
+                  className={`px-4 py-2 rounded-full font-semibold flex items-center space-x-2 ${
+                    car.status === "available"
+                      ? "bg-green-200 text-green-600"
+                      : car.status === "unusable"
+                      ? "bg-yellow-200"
+                      : "bg-red-200"
+                  }`}
+                >
+                  <span
+                    className={`w-2 h-2 rounded-full inline-block ${
+                      car.status === "available"
+                        ? "bg-green-600"
+                        : car.status === "unusable"
+                        ? "bg-yellow-600"
+                        : "bg-red-600"
                     }`}
-                  >
-                    <span
-                      className={`w-2 h-2 rounded-full inline-block ${
-                        car.status === "Available" ? "bg-green-600" : "bg-red-600"
-                      }`}
-                    ></span>
-                    <span>{car.status}</span>
+                  ></span>
+                  <span>{car.status}</span>
                 </div>
-
-
               </div>
             </div>
           </div>

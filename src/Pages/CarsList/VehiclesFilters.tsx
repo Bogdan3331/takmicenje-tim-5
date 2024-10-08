@@ -55,7 +55,7 @@ const VehicleFilters: React.FC<VehicleFiltersProps> = ({
       "station wagon",
       "small",
     ],
-    gear: ["Manual", "Automatic"],
+    gear: ["manual", "automatic"],
     fuel: ["diesel", "gasoline", "electric", "hybrid"],
     passengers: ["2", "4", "5", "7"],
   };
