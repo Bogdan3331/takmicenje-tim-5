@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const API_BASE_URL = "http://api.tim5.cortexakademija.com/api";
+export const API_BASE_URL = "http://api.tim5.cortexakademija.com:8080/api";
 
 export const logout = () => {
   localStorage.removeItem("auth_token");
