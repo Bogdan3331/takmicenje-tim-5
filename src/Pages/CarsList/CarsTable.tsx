@@ -119,34 +119,21 @@ const VehicleListTable: React.FC<VehicleListTableProps> = ({
             <div className="p-4">
               {/* Car details */}
               <ul className="mt-2 text-gray-600">
-                <li
-                  style={{
-                    fontSize: "1.2rem",
-                    fontWeight: "700",
-                    color: "#000060",
-                  }}
-                >
-                  <strong
-                    style={{
-                      fontSize: "large",
-                      fontWeight: "700",
-                      color: "#000040",
-                    }}
-                  >
-                    Brand:
-                  </strong>{" "}
+                <li className="text-[1.2rem] font-bold text-[#000060]">
+                  <strong className="text-lg font-bold text-white">Brand:</strong>{" "}
                   {car.brand || "No Name"}
                 </li>
-                <li>
+                <li className="font-semibold">
                   <strong>Type:</strong> {car.type || "No Name"}
                 </li>
-                <li>
+                <li className="font-semibold">
                   <strong>Fuel Type:</strong> {car.fuelType || "N/A"}
                 </li>
-                <li>
+                <li className="font-semibold">
                   <strong>Description:</strong> {car.description || "N/A"}
                 </li>
               </ul>
+
 
               {/* Price and Reserve button */}
               <div className="mt-4 flex justify-between items-center">

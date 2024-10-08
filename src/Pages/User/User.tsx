@@ -20,10 +20,7 @@ const UserPage: React.FC = () => {
   const [isProfileModalVisible, setIsProfileModalVisible] = useState(false);
   const [isPasswordModalVisible, setIsPasswordModalVisible] = useState(false); // State for password modal
 
-  const handleUpdateProfile = async (values: {
-    name: string;
-    email: string;
-  }) => {
+  const handleUpdateProfile = async (values: { name: string; email: string }) => {
     try {
       await ApiService.editUser(values);
       setUser((prev) => (prev ? { ...prev, ...values } : null));
@@ -83,92 +80,84 @@ const UserPage: React.FC = () => {
   return (
     <Fragment>
       <div className="flex justify-center items-center min-h-screen">
-        <div className="bg-white shadow-lg rounded-lg p-20 w-full max-w-md">
-          {error && <div className="text-red-500">Error: {error}</div>}
+        <div className="bg-white shadow-lg rounded-2xl p-10 w-full max-w-lg">
+          {error && <div className="text-red-500 text-center mb-4">Error: {error}</div>}
           {loading && <div className="text-center">Loading...</div>}
           {!loading && user && (
-            <div className="space-y-6">
+            <div className="space-y-8">
               {/* User Image */}
-              <div className="flex justify-center">
-                <svg
-                  width="96px"
-                  height="96px"
-                  viewBox="-2.4 -2.4 28.80 28.80"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                  stroke="#000000"
-                  strokeWidth="0.8640000000000001"
-                  transform="matrix(1, 0, 0, 1, 0, 0)rotate(0)"
-                  className="w-24 h-24 rounded-full border-2 border-gray-300"
-                >
-                  <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
-                  <g
-                    id="SVGRepo_tracerCarrier"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  ></g>
-                  <g id="SVGRepo_iconCarrier">{/* Your SVG content here */}</g>
-                </svg>
-              </div>
-
-              <div className="space-y-4">
-                {/* Admin Input (Darker and Read-Only without label) */}
-                <div>
-                  <input
-                    type="text"
-                    value="admin 1"
-                    readOnly
-                    className="w-full text-white bg-gray-800 border-2 border-gray-700 rounded-xl p-4 mt-1 cursor-not-allowed"
-                  />
+              <div className="flex justify-center mb-6">
+                  <div className="w-24 h-24 rounded-full bg-gray-300 flex items-center justify-center">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-16 w-16 text-gray-500"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <path d="M12 12c2.21 0 4-1.79 4-4S14.21 4 12 4 8 5.79 8 8s1.79 4 4 4z"></path>
+                      <path d="M12 14c-4.41 0-8 1.79-8 4v2h16v-2c0-2.21-3.59-4-8-4z"></path>
+                    </svg>
+                  </div>
                 </div>
 
-                {/* Name Input (Read-Only) */}
+
+              <div className="space-y-4">
+                {/* Admin Input */}
+                <input
+                  type="text"
+                  value="admin 1"
+                  readOnly
+                  className="w-full text-white bg-gray-800 border-2 border-gray-700 rounded-lg p-4 cursor-default"
+                />
+
+                {/* Name Input */}
                 <div>
-                  <label className="text-lg text-black font-medium">
-                    Name:
-                  </label>
+                  <label className="text-sm text-gray-500">Name</label>
                   <input
                     type="text"
                     value={user.name || "N/A"}
                     readOnly
-                    className="w-full text-black border-2 border-gray-100 rounded-xl p-4 mt-1 bg-gray-100 cursor-not-allowed"
+                    className="w-full text-gray-700 border-2 border-gray-200 rounded-lg p-4 mt-1 bg-gray-100 cursor-default"
                   />
                 </div>
 
-                {/* Email Input (Read-Only) */}
+                {/* Email Input */}
                 <div>
-                  <label className="text-lg text-black font-medium">
-                    Email:
-                  </label>
+                  <label className="text-sm text-gray-500">Email</label>
                   <input
                     type="text"
                     value={user.email || "N/A"}
                     readOnly
-                    className="w-full text-black border-2 border-gray-100 rounded-xl p-4 mt-1 bg-gray-100 cursor-not-allowed"
+                    className="w-full text-gray-700 border-2 border-gray-200 rounded-lg p-4 mt-1 bg-gray-100 cursor-default"
                   />
                 </div>
 
                 {/* Action Buttons */}
                 <div className="flex justify-between space-x-4">
-                  <button
-                    className="px-6 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition duration-200"
-                    onClick={handleLogout}
-                  >
-                    Log Out
-                  </button>
+                  
 
                   <button
-                    className="px-6 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition duration-200"
+                    className="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition duration-200"
                     onClick={() => setIsProfileModalVisible(true)}
                   >
                     Edit Profile
                   </button>
 
                   <button
-                    className="px-6 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition duration-200"
+                    className="px-6 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition duration-200"
                     onClick={() => setIsPasswordModalVisible(true)}
                   >
                     Change Password
+                  </button>
+                  <button
+                    className="px-6 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition duration-200"
+                    onClick={handleLogout}
+                  >
+                    Log Out
                   </button>
                 </div>
               </div>

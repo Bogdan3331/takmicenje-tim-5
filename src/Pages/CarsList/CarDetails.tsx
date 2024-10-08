@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { useParams } from "react-router";
 import ApiService from "../../Shared/api";
+import ReserveBtn from "../../Components/Buttons/ReserveBtn";
 
 interface Car {
   id: number;
@@ -50,49 +51,72 @@ const CarDetails: React.FC = () => {
   }, [fetchData]);
 
   return (
-    <div className="book-details-page">
-      {error && <div>Error: {error}</div>}
-      {loading && <div>Loading...</div>}
+    <div className="min-h-screen flex items-center justify-center p-4">
+      {error && <div className="text-red-500 text-xl font-bold">{error}</div>}
+      {loading && <div className="text-gray-500 text-xl font-bold">Loading...</div>}
       {car && (
-        <div className="book-details-card">
-          <div className="detail-item">
-            <img src={car.image} alt={car.brand} />
-          </div>
-          <div className="detail-item">
-            <p className="detail-label">Car Brand:</p>
-            <p>{car.brand}</p>
-          </div>
-          <div className="detail-item">
-            <p className="detail-label">Type:</p>
-            <p>{car.type}</p>
-          </div>
-          <div className="detail-item">
-            <p className="detail-label">Price:</p>
-            <p>{car.price}</p>
-          </div>
-          <div className="detail-item">
-            <p className="detail-label">Fuel:</p>
-            <p>{car.fuelType}</p>
-          </div>
-          <div className="detail-item">
-            <p className="detail-label">Description:</p>
-            <p>{car.description}</p>
-          </div>
-          <div className="detail-item">
-            <p className="detail-label">Gear:</p>
-            <p>{car.gear}</p>
-          </div>
-          <div className="detail-item">
-            <p className="detail-label">Passengers:</p>
-            <p>{car.passengers}</p>
-          </div>
-          <div className="detail-item">
-            <p className="detail-label">Status:</p>
-            <p>{car.status}</p>
-          </div>
-          <div className="detail-item">
-            <p className="detail-label">avgRate:</p>
-            <p>{car.avgRate}</p>
+        <div className="bg-white shadow-lg rounded-lg p-6 max-w-4xl w-full">
+          <div className="flex flex-col md:flex-row">
+            <div className="md:w-1/2 p-4">
+              <img
+                src={car.image}
+                alt={car.brand}
+                className="rounded-lg object-cover w-full h-auto"
+              />
+            </div>
+            <div className="md:w-1/2 p-4 space-y-4">
+              <h1 className="text-3xl font-bold text-gray-800 mb-4">{car.brand}</h1>
+              <div className="space-y-2">
+                <div className="flex justify-between">
+                  <span className="text-gray-600 font-semibold">Type:</span>
+                  <span className="text-black">{car.type}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-600 font-semibold">Price:</span>
+                  <span className="text-black">${car.price}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-600 font-semibold">Fuel Type:</span>
+                  <span className="text-black">{car.fuelType}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-600 font-semibold">Gear:</span>
+                  <span className="text-black">{car.gear || "N/A"}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-600 font-semibold">Passengers:</span>
+                  <span className="text-black">{car.passengers || "N/A"}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-600 font-semibold">Avg Rate:</span>
+                  <span className="text-black">{car.avgRate}</span>
+                </div>
+              </div>
+              <div className="mt-6">
+                <p className="text-gray-800 font-medium">Description:</p>
+                <p className="text-black">{car.description}</p>
+              </div>
+              {/* Reserve button and status button */}
+              <div className="mt-6 flex space-x-4">
+                <ReserveBtn carId={car.id} carPrice={car.price} />
+                <div
+                    className={`px-4 py-2 rounded-full font-semibold flex items-center space-x-2 ${
+                      car.status === "Available"
+                        ? "bg-green-200 text-green-600"
+                        : "bg-pink-200 text-red-600"
+                    }`}
+                  >
+                    <span
+                      className={`w-2 h-2 rounded-full inline-block ${
+                        car.status === "Available" ? "bg-green-600" : "bg-red-600"
+                      }`}
+                    ></span>
+                    <span>{car.status}</span>
+                </div>
+
+
+              </div>
+            </div>
           </div>
         </div>
       )}
