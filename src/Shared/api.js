@@ -176,6 +176,10 @@ const ApiService = {
   async getUserReservations() {
     return this.get("reservation");
   },
+
+  async RateReservation(id, values) {
+    return this.post(`reservation/${id}/rate`, values);
+  },
 };
 
 export default ApiService;

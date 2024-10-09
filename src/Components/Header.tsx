@@ -1,6 +1,57 @@
 import React from "react";
+import MoreBtn from "./Buttons/MoreBtn";
+import ApiService from "../Shared/api";
+import { MenuProps, message } from "antd";
+import { useNavigate } from "react-router-dom";
 
 const Header: React.FC = () => {
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    try {
+      const response = await ApiService.logoutUser();
+      if (!response.error) {
+        localStorage.removeItem("auth_token");
+        message.success("Logged out successfully.");
+        navigate("/");
+      }
+    } catch (error) {
+      message.error("There was a problem with the logout operation.");
+    }
+  };
+
+  const renderMenuItems = () => {
+    var menuItems: MenuProps["items"] = [
+      {
+        label: <p className="text-white hover:text-blue-500">My Profile</p>,
+        key: "0",
+        onClick: () => {
+          navigate("/show-profile");
+        },
+      },
+      {
+        icon: (
+          <i className="bi bi-pencil-square" style={{ fontSize: "1rem" }}></i>
+        ),
+        label: <p style={{ margin: "0" }}>Izmjeni</p>,
+        key: "1",
+        onClick: () => {
+          navigate(``);
+        },
+      },
+      {
+        icon: <i className="bi bi-trash3" style={{ fontSize: "1rem" }}></i>,
+        label: <p style={{ margin: "0" }}>Log Out</p>,
+        key: "2",
+        onClick: () => {
+          handleLogout;
+          message.success("U have successfully logged out");
+        },
+      },
+    ];
+    return menuItems;
+  };
+
   return (
     <header className="bg-gray-900 text-white shadow-md">
       <div className="container mx-auto flex justify-between items-center py-6 px-10">
@@ -24,9 +75,7 @@ const Header: React.FC = () => {
         </nav>
 
         <div>
-          <a href={"/show-profile"} className="text-white hover:text-blue-500">
-            My Profile
-          </a>
+          <MoreBtn items={renderMenuItems()} />
         </div>
       </div>
     </header>

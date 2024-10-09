@@ -27,11 +27,8 @@ const MoreBtn: React.FC<MoreBtnProp> = ({ items }) => {
         visible={dropdownVisible}
         onVisibleChange={(flag) => setDropdownVisible(flag)}
       >
-        <p onClick={(e) => e.preventDefault()}>
-          <i
-            className="bi bi-three-dots-vertical"
-            style={{ cursor: "pointer" }}
-          ></i>
+        <p style={{ cursor: "pointer" }} onClick={(e) => e.preventDefault()}>
+          Profile
         </p>
       </Dropdown>
     </div>

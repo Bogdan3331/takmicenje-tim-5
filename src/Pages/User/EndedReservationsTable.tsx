@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import ApiService from "../../Shared/api";
+import { Rate, Input, Button } from "antd"; // Ant Design for stars and input
 
 interface Reservation {
   id: number;
@@ -26,6 +27,11 @@ const EndedReservationsTable: React.FC = () => {
   );
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const [rating, setRating] = useState<{ [key: number]: number }>({});
+  const [comment, setComment] = useState<{ [key: number]: string }>({});
+  const [loadingRate, setLoadingRate] = useState<{ [key: number]: boolean }>(
+    {}
+  );
 
   const fetchData = useCallback(async () => {
     try {
@@ -38,7 +44,6 @@ const EndedReservationsTable: React.FC = () => {
       if (response.data.data) {
         const activeReservations = response.data.data;
 
-        // Filter reservations where the endDate has passed the current moment
         const endedReservations = activeReservations.filter(
           (reservation: Reservation) =>
             new Date(reservation.endDate) < new Date()
@@ -77,6 +82,28 @@ const EndedReservationsTable: React.FC = () => {
     fetchData();
   }, [fetchData]);
 
+  const handleRate = async (reservationId: number) => {
+    const selectedRating = rating[reservationId];
+    const selectedComment = comment[reservationId];
+
+    if (selectedRating && selectedComment) {
+      setLoadingRate({ ...loadingRate, [reservationId]: true });
+      try {
+        await ApiService.RateReservation(reservationId, {
+          rate: selectedRating,
+          comment: selectedComment,
+        });
+        alert("Rating submitted successfully!");
+      } catch (error) {
+        console.error("Failed to submit rating", error);
+      } finally {
+        setLoadingRate({ ...loadingRate, [reservationId]: false });
+      }
+    } else {
+      alert("Please provide a rating and a comment.");
+    }
+  };
+
   return (
     <div className="reservations">
       <div className="flex justify-center">
@@ -109,6 +136,9 @@ const EndedReservationsTable: React.FC = () => {
                     <th className="px-4 py-2 text-left font-semibold text-gray-700">
                       Car Details
                     </th>
+                    <th className="px-4 py-2 text-left font-semibold text-gray-700">
+                      Rate & Comment
+                    </th>
                   </tr>
                 </thead>
                 <tbody>
@@ -135,26 +165,47 @@ const EndedReservationsTable: React.FC = () => {
                                 className="w-16 h-16 object-cover"
                               />
                               <div>
-                                <p className="text-lg font-semibold">
-                                  {vehicle.type || "No Name"}
-                                </p>
                                 <p className="text-gray-600">
                                   {vehicle.brand || "No Brand"}
-                                </p>
-                                <p className="text-gray-600">
-                                  Price: ${vehicle.price || 0}
-                                </p>
-                                <p className="text-gray-600">
-                                  Avg Rate: {vehicle.avgRate || 0} / 5
-                                </p>
-                                <p className="text-gray-600">
-                                  {vehicle.description || "No Description"}
                                 </p>
                               </div>
                             </div>
                           ) : (
                             "Loading Vehicle..."
                           )}
+                        </td>
+                        <td className="px-4 py-2">
+                          <div>
+                            <Rate
+                              allowHalf
+                              value={rating[reservation.id]}
+                              onChange={(value) =>
+                                setRating({
+                                  ...rating,
+                                  [reservation.id]: value,
+                                })
+                              }
+                            />
+                            <Input
+                              placeholder="Leave a comment"
+                              maxLength={100}
+                              value={comment[reservation.id]}
+                              onChange={(e) =>
+                                setComment({
+                                  ...comment,
+                                  [reservation.id]: e.target.value,
+                                })
+                              }
+                            />
+                            <Button
+                              type="primary"
+                              onClick={() => handleRate(reservation.id)}
+                              loading={loadingRate[reservation.id]}
+                              className="mt-2"
+                            >
+                              Submit
+                            </Button>
+                          </div>
                         </td>
                       </tr>
                     );
