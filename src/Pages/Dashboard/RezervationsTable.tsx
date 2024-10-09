@@ -92,9 +92,9 @@ const RezervationsTable: React.FC = () => {
           )}
           {!loading && !error && (
             <div className="overflow-x-auto">
-              <table className="min-w-full bg-white border border-gray-200">
+              <table className="min-w-full bg-white border border-gray-200 rounded-lg shadow-lg">
                 <thead>
-                  <tr className="bg-gray-200">
+                  <tr className="bg-gray-200 rounded-lg">
                     <th className="px-4 py-2 text-left font-semibold text-gray-700">
                       Pickup Date
                     </th>
@@ -131,7 +131,7 @@ const RezervationsTable: React.FC = () => {
                                   "https://via.placeholder.com/100"
                                 }
                                 alt={vehicle.brand}
-                                className="w-16 h-16 object-cover"
+                                className="w-16 h-16 object-cover rounded-lg" // Add rounded corners to images
                               />
                               <div>
                                 <p className="text-lg font-semibold">

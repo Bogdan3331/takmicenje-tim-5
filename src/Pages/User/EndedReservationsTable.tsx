@@ -17,21 +17,16 @@ interface Vehicle {
   brand: string;
   price: number;
   avgRate: number;
-  description: string; // Add other properties if needed
 }
 
 const EndedReservationsTable: React.FC = () => {
   const [reservations, setReservations] = useState<Reservation[]>([]);
-  const [vehicleData, setVehicleData] = useState<{ [key: number]: Vehicle }>(
-    {}
-  );
+  const [vehicleData, setVehicleData] = useState<{ [key: number]: Vehicle }>({});
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [rating, setRating] = useState<{ [key: number]: number }>({});
   const [comment, setComment] = useState<{ [key: number]: string }>({});
-  const [loadingRate, setLoadingRate] = useState<{ [key: number]: boolean }>(
-    {}
-  );
+  const [loadingRate, setLoadingRate] = useState<{ [key: number]: boolean }>({});
 
   const fetchData = useCallback(async () => {
     try {
@@ -45,20 +40,15 @@ const EndedReservationsTable: React.FC = () => {
         const activeReservations = response.data.data;
 
         const endedReservations = activeReservations.filter(
-          (reservation: Reservation) =>
-            new Date(reservation.endDate) < new Date()
+          (reservation: Reservation) => new Date(reservation.endDate) < new Date()
         );
 
         setReservations(endedReservations);
 
-        const vehiclePromises = endedReservations.map(
-          async (reservation: Reservation) => {
-            const vehicleResponse = await ApiService.getVehicleData(
-              reservation.carId
-            );
-            return { id: reservation.carId, ...vehicleResponse.data.data };
-          }
-        );
+        const vehiclePromises = endedReservations.map(async (reservation: Reservation) => {
+          const vehicleResponse = await ApiService.getVehicleData(reservation.carId);
+          return { id: reservation.carId, ...vehicleResponse.data.data };
+        });
 
         const vehicles = await Promise.all(vehiclePromises);
         const vehiclesById = vehicles.reduce((acc, vehicle) => {
@@ -105,15 +95,13 @@ const EndedReservationsTable: React.FC = () => {
   };
 
   return (
-    <div className="reservations">
-      <div className="flex justify-center">
-        <div className="mt-8 w-full max-w-6xl mb-12">
-          <h1 className="text-3xl font-bold text-center text-gray-800 mb-4">
+    <div className="reservations py-10 px-4">
+      <div className="flex justify-end"> {/* Aligning the card to the right */}
+        <div className="mt-8 w-full max-w-6xl mb-12 p-6 rounded-lg shadow-md">
+          <h1 className="text-4xl font-bold text-center text-white mb-6">
             Ended Reservations
           </h1>
-          <p className="text-lg text-center text-gray-600 mb-8">
-            Overview of your ended car reservations
-          </p>
+          
           {loading && (
             <div className="text-center text-xl text-gray-700">Loading...</div>
           )}
@@ -123,95 +111,84 @@ const EndedReservationsTable: React.FC = () => {
             </div>
           )}
           {!loading && !error && reservations.length > 0 && (
-            <div className="overflow-x-auto">
-              <table className="min-w-full bg-white border border-gray-200">
-                <thead>
-                  <tr className="bg-gray-200">
-                    <th className="px-4 py-2 text-left font-semibold text-gray-700">
-                      Pickup Date
-                    </th>
-                    <th className="px-4 py-2 text-left font-semibold text-gray-700">
-                      Return Date
-                    </th>
-                    <th className="px-4 py-2 text-left font-semibold text-gray-700">
-                      Car Details
-                    </th>
-                    <th className="px-4 py-2 text-left font-semibold text-gray-700">
-                      Rate & Comment
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {reservations.map((reservation) => {
-                    const vehicle = vehicleData[reservation.carId];
+            <div className="flex flex-col items-end"> {/* Align items to the end */}
+              {reservations.map((reservation) => {
+                const vehicle = vehicleData[reservation.carId];
 
-                    return (
-                      <tr key={reservation.id} className="border-t">
-                        <td className="px-4 py-2 text-red-500 text-sm">
-                          {reservation.startDate}
-                        </td>
-                        <td className="px-4 py-2 text-red-500 text-sm">
-                          {reservation.endDate}
-                        </td>
-                        <td className="px-4 py-2">
-                          {vehicle ? (
-                            <div className="flex items-center space-x-4">
-                              <img
-                                src={
-                                  vehicle.image ||
-                                  "https://via.placeholder.com/100"
-                                }
-                                alt={vehicle.brand}
-                                className="w-16 h-16 object-cover"
-                              />
-                              <div>
-                                <p className="text-gray-600">
-                                  {vehicle.brand || "No Brand"}
-                                </p>
-                              </div>
-                            </div>
-                          ) : (
-                            "Loading Vehicle..."
-                          )}
-                        </td>
-                        <td className="px-4 py-2">
-                          <div>
-                            <Rate
-                              allowHalf
-                              value={rating[reservation.id]}
-                              onChange={(value) =>
-                                setRating({
-                                  ...rating,
-                                  [reservation.id]: value,
-                                })
-                              }
-                            />
-                            <Input
-                              placeholder="Leave a comment"
-                              maxLength={100}
-                              value={comment[reservation.id]}
-                              onChange={(e) =>
-                                setComment({
-                                  ...comment,
-                                  [reservation.id]: e.target.value,
-                                })
-                              }
-                            />
-                            <Button
-                              type="primary"
-                              onClick={() => handleRate(reservation.id)}
-                              loading={loadingRate[reservation.id]}
-                              className="mt-2"
-                            >
-                              Submit
-                            </Button>
-                          </div>
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
+                return (
+                  <div
+                    key={reservation.id}
+                    className="card-container flex flex-col items-center bg-transparent text-white rounded-lg overflow-hidden shadow-lg ml-auto m-4 w-80"
+                    style={{ border: "1px solid rgba(255, 255, 255, 0.2)" }}
+                  >
+                    {/* Car Image */}
+                    <img
+                      src={vehicle?.image || "https://via.placeholder.com/100"}
+                      alt={vehicle?.brand || "Car"}
+                      className="w-full h-40 object-cover"
+                    />
+
+                    {/* Car Details */}
+                    <div className="p-4 flex flex-col items-start">
+                      <p className="text-sm text-gray-400">
+                        Brand: <span className="text-blue-400">{vehicle?.brand}</span>
+                      </p>
+                      <p className="text-sm text-gray-400">
+                        Type: <span className="text-white">{vehicle?.type}</span>
+                      </p>
+
+                      {/* Pickup Date */}
+                      <p className="text-sm text-gray-400 mt-2">
+                        Pickup Date: {new Date(reservation.startDate).toLocaleDateString()}
+                      </p>
+
+                      {/* Return Date */}
+                      <p className="text-sm text-gray-400">
+                        Return Date: {new Date(reservation.endDate).toLocaleDateString()}
+                      </p>
+
+                      {/* Price */}
+                      <p className="text-xl font-bold mt-4">
+                        {vehicle?.price} € / day
+                      </p>
+
+                      {/* Rate & Comment */}
+                      <div className="mt-4 w-full">
+                        <Rate
+                          allowHalf
+                          value={rating[reservation.id]}
+                          onChange={(value) =>
+                            setRating({
+                              ...rating,
+                              [reservation.id]: value,
+                            })
+                          }
+                        />
+                        <Input
+                          placeholder="Leave a comment"
+                          maxLength={100}
+                          value={comment[reservation.id]}
+                          onChange={(e) =>
+                            setComment({
+                              ...comment,
+                              [reservation.id]: e.target.value,
+                            })
+                          }
+                          className="border-gray-300 rounded mt-2 w-full"
+                        />
+                        <Button
+                          type="primary"
+                          onClick={() => handleRate(reservation.id)}
+                          loading={loadingRate[reservation.id]}
+                          className="mt-2 bg-blue-600 w-full"
+                        >
+                          Submit
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
             </div>
           )}
           {!loading && !error && reservations.length === 0 && (

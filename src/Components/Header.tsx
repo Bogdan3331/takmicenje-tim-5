@@ -7,45 +7,46 @@ import { useNavigate } from "react-router-dom";
 const Header: React.FC = () => {
   const navigate = useNavigate();
 
+  // Funkcija za odjavljivanje korisnika
   const handleLogout = async () => {
     try {
-      const response = await ApiService.logoutUser();
+      const response = await ApiService.logoutUser(); // API poziv za odjavu
       if (!response.error) {
-        localStorage.removeItem("auth_token");
-        message.success("Logged out successfully.");
-        navigate("/");
+        localStorage.removeItem("auth_token"); // Brisanje tokena iz lokalne memorije
+        message.success("Logged out successfully."); // Poruka o uspješnoj odjavi
+        navigate("/"); // Redirekcija na početnu stranicu
       }
     } catch (error) {
-      message.error("There was a problem with the logout operation.");
+      message.error("There was a problem with the logout operation."); // Poruka u slučaju greške
     }
   };
 
+  // Funkcija za kreiranje menija
   const renderMenuItems = () => {
     var menuItems: MenuProps["items"] = [
       {
-        label: <p className="text-white hover:text-blue-500">My Profile</p>,
+        icon: <i className="bi bi-person" style={{ fontSize: "1rem", marginRight: "8px" }}></i>, // Ikonica za profil
+        label: <p className="text-black hover:text-blue-500">My Profile</p>,
         key: "0",
         onClick: () => {
-          navigate("/show-profile");
+          navigate("/show-profile"); // Navigacija ka profilu korisnika
         },
       },
       {
-        icon: (
-          <i className="bi bi-pencil-square" style={{ fontSize: "1rem" }}></i>
-        ),
-        label: <p style={{ margin: "0" }}>Izmjeni</p>,
+        icon: <i className="bi bi-pencil-square" style={{ fontSize: "1rem", marginRight: "8px" }}></i>, // Ikonica za editovanje
+        label: <p style={{ margin: "0" }}>Edit</p>,
         key: "1",
         onClick: () => {
-          navigate(``);
+          navigate(""); // Navigacija za izmjenu profila (popuni rutu)
         },
       },
       {
-        icon: <i className="bi bi-trash3" style={{ fontSize: "1rem" }}></i>,
+        icon: <i className="bi bi-box-arrow-right" style={{ fontSize: "1rem", marginRight: "8px" }}></i>, // Ikonica za odjavu
         label: <p style={{ margin: "0" }}>Log Out</p>,
         key: "2",
-        onClick: () => {
-          handleLogout;
-          message.success("U have successfully logged out");
+        onClick: async () => {
+          await handleLogout(); // Pravilno pozivanje funkcije za odjavu
+          message.success("You have successfully logged out"); // Poruka nakon odjave
         },
       },
     ];
