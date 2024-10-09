@@ -46,8 +46,11 @@ const ReserveBtn: React.FC<ReserveBtnProps> = ({ carId, carPrice }) => {
       const response = await ApiService.reserveVehicle(values);
       console.log("Reservation Response:", response);
       setIsModalOpen(false);
-      message.success("You reserved vehicle successfully");
-      // Handle success/failure (e.g., notifications, redirect)
+      if (
+        response.data.message === "Selected car is not available for that dates"
+      ) {
+        message.warning(response.data.message);
+      } else message.success(response.data.message);
     } catch (error) {
       console.error("Error reserving vehicle:", error);
     }

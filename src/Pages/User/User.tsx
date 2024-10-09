@@ -4,6 +4,7 @@ import { message } from "antd";
 import EditProfileModal from "./EditProfileModal";
 import EditPasswordModal from "./EditPasswordModal"; // Import the password modal
 import { useNavigate } from "react-router-dom";
+import EndedReservationsTable from "./EndedReservationsTable";
 
 interface User {
   id?: number;
@@ -20,7 +21,10 @@ const UserPage: React.FC = () => {
   const [isProfileModalVisible, setIsProfileModalVisible] = useState(false);
   const [isPasswordModalVisible, setIsPasswordModalVisible] = useState(false); // State for password modal
 
-  const handleUpdateProfile = async (values: { name: string; email: string }) => {
+  const handleUpdateProfile = async (values: {
+    name: string;
+    email: string;
+  }) => {
     try {
       await ApiService.editUser(values);
       setUser((prev) => (prev ? { ...prev, ...values } : null));
@@ -81,29 +85,30 @@ const UserPage: React.FC = () => {
     <Fragment>
       <div className="flex justify-center items-center min-h-screen">
         <div className="bg-white shadow-lg rounded-2xl p-10 w-full max-w-lg">
-          {error && <div className="text-red-500 text-center mb-4">Error: {error}</div>}
+          {error && (
+            <div className="text-red-500 text-center mb-4">Error: {error}</div>
+          )}
           {loading && <div className="text-center">Loading...</div>}
           {!loading && user && (
             <div className="space-y-8">
               {/* User Image */}
               <div className="flex justify-center mb-6">
-                  <div className="w-24 h-24 rounded-full bg-gray-300 flex items-center justify-center">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-16 w-16 text-gray-500"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    >
-                      <path d="M12 12c2.21 0 4-1.79 4-4S14.21 4 12 4 8 5.79 8 8s1.79 4 4 4z"></path>
-                      <path d="M12 14c-4.41 0-8 1.79-8 4v2h16v-2c0-2.21-3.59-4-8-4z"></path>
-                    </svg>
-                  </div>
+                <div className="w-24 h-24 rounded-full bg-gray-300 flex items-center justify-center">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-16 w-16 text-gray-500"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M12 12c2.21 0 4-1.79 4-4S14.21 4 12 4 8 5.79 8 8s1.79 4 4 4z"></path>
+                    <path d="M12 14c-4.41 0-8 1.79-8 4v2h16v-2c0-2.21-3.59-4-8-4z"></path>
+                  </svg>
                 </div>
-
+              </div>
 
               <div className="space-y-4">
                 {/* Admin Input */}
@@ -138,8 +143,6 @@ const UserPage: React.FC = () => {
 
                 {/* Action Buttons */}
                 <div className="flex justify-between space-x-4">
-                  
-
                   <button
                     className="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition duration-200"
                     onClick={() => setIsProfileModalVisible(true)}
@@ -183,6 +186,7 @@ const UserPage: React.FC = () => {
           )}
         </div>
       </div>
+      <EndedReservationsTable />
     </Fragment>
   );
 };

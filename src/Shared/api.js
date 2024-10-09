@@ -128,9 +128,10 @@ const ApiService = {
   //admin calls
 
   // vehicle calls for users
-  async getVehiclesList(searchQuery) {
+  async getVehiclesList(searchQuery, page) {
     return this.getFilter("car", {
       search: searchQuery,
+      page,
     });
   },
 
@@ -144,6 +145,11 @@ const ApiService = {
 
   async reserveVehicle(values) {
     return this.post("reservation", values);
+  },
+
+  async avaliableVehicles(dates, page) {
+    console.log(dates);
+    return this.getFilter("car", dates, page);
   },
 
   //user

@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom"; // Import useNavigate
 import ApiService from "../../Shared/api";
 import ReserveBtn from "../../Components/Buttons/ReserveBtn";
+import Pagination from "./Pagination"; // Import the new Pagination component
 
 interface Car {
   id: number;
@@ -24,29 +25,40 @@ interface VehicleListTableProps {
     fuel: string;
     passengers: string;
   };
+  availableCars: Car[]; // Passed in availableCars prop
 }
 
 const VehicleListTable: React.FC<VehicleListTableProps> = ({
   searchQuery,
   filters,
+  availableCars,
 }) => {
-  const [VehicleList, setVehicleList] = useState<Car[]>([]);
+  const [vehicleList, setVehicleList] = useState<Car[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  const navigate = useNavigate(); // Initialize useNavigate
+  const [page, setPage] = useState<number>(1); // Track current page
+  const [lastPage, setLastPage] = useState<number>(1); // Track total pages
+  const navigate = useNavigate();
 
   const fetchData = useCallback(async () => {
+    setLoading(true);
+
     try {
-      const response = await ApiService.getVehiclesList(searchQuery);
+      console.log("Fetching vehicles for:", { searchQuery, page }); // Log the searchQuery and currentPage
+
+      const response = await ApiService.getVehiclesList(searchQuery, page);
 
       if (response.error) {
         setError(response.error);
+        return;
       }
 
       console.log("API Response:", response);
 
       if (Array.isArray(response.data?.data)) {
-        setVehicleList(response.data.data.filter((car: Car) => car));
+        setVehicleList(response.data.data.filter((car: Car) => car)); // Filter out any falsy values
+        setLastPage(response.data.lastPage); // Set lastPage from response
+        console.log("Total Pages:", response.data.lastPage); // Log the lastPage to check correctness
       } else {
         setError("Failed to load data: " + response.error);
       }
@@ -56,13 +68,23 @@ const VehicleListTable: React.FC<VehicleListTableProps> = ({
     } finally {
       setLoading(false);
     }
-  }, [searchQuery]);
+  }, [searchQuery, page]); // Only these dependencies
 
   useEffect(() => {
-    fetchData();
-  }, [fetchData]);
+    // Fetch data only if availableCars is empty
+    if (availableCars.length === 0) {
+      fetchData();
+    } else {
+      setVehicleList(availableCars); // If availableCars has data, set it to vehicleList
+      console.log(availableCars);
+    }
+  }, [fetchData, availableCars]); // This will run every time availableCars changes
 
-  const filteredVehicleList = VehicleList.filter((car) => {
+  const handlePageChange = (newPage: number) => {
+    setPage(newPage); // Update current page
+  };
+
+  const filteredVehicleList = vehicleList.filter((car) => {
     const matchesSearchQuery = car.brand
       .toLowerCase()
       .startsWith(searchQuery.toLowerCase());
@@ -76,14 +98,14 @@ const VehicleListTable: React.FC<VehicleListTableProps> = ({
       !filters.passengers ||
       (car.passengers && String(car.passengers) === filters.passengers);
 
-    const matchesFilters =
+    return (
+      matchesSearchQuery &&
       manufacturerMatch &&
       classMatch &&
       gearMatch &&
       fuelMatch &&
-      passengersMatch;
-
-    return matchesSearchQuery && matchesFilters;
+      passengersMatch
+    );
   });
 
   if (loading) {
@@ -103,10 +125,9 @@ const VehicleListTable: React.FC<VehicleListTableProps> = ({
     <div className="flex flex-col items-center mt-12 w-full px-4 box-border">
       <div className="grid grid-cols-3 gap-6 w-full">
         {filteredVehicleList.map((car) => (
-          <div className="wrapper">
+          <div key={car.id} className="wrapper">
             {/* Car image */}
             <div
-              key={car.id}
               className="border rounded-lg shadow-md overflow-hidden bg-white cursor-pointer"
               onClick={() => handleCardClick(car.id)} // Call the navigate function
             >
@@ -148,6 +169,15 @@ const VehicleListTable: React.FC<VehicleListTableProps> = ({
           </div>
         ))}
       </div>
+
+      {/* Conditional Pagination Controls */}
+      {availableCars.length === 0 && ( // Only show pagination if availableCars is empty
+        <Pagination
+          currentPage={page} // Pass current page
+          totalPages={lastPage} // Pass total pages
+          onPageChange={handlePageChange} // Pass the page change handler
+        />
+      )}
     </div>
   );
 };
