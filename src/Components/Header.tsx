@@ -44,7 +44,7 @@ const Header: React.FC = () => {
         label: <p style={{ margin: "0" }}>Log Out</p>,
         key: "2",
         onClick: () => {
-          handleLogout;
+          handleLogout();
           message.success("U have successfully logged out");
         },
       },
