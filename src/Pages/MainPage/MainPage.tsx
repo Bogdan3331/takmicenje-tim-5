@@ -190,7 +190,8 @@ export default function MainPage() {
       <div className="bg-gray-700 text-white py-16 min-h-screen">
         <div className="container mx-auto text-center">
           <h2 className="text-3xl font-bold mb-4">User Reviews</h2>
-          <p className="mb-4">Read what our guests are saying about us</p>
+          <p className="mb-4">Read what our guests are saying
+          </p>
 
           {/* Slider Container */}
           <div className="overflow-x-auto whitespace-nowrap">

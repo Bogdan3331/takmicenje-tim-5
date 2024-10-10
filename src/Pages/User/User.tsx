@@ -176,7 +176,11 @@ const UserPage: React.FC = () => {
           )}
         </div>
       </div>
-      <EndedReservationsTable />
+      <div className="flex justify-end"> {/* Aligning reservations to the right */}
+        <div className="w-full max-w-2xl p-4"> {/* Set max width for the reservations table */}
+          <EndedReservationsTable />
+        </div>
+      </div>
     </Fragment>
   );
 };

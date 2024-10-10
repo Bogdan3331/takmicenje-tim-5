@@ -12,6 +12,8 @@ import Footer from "./Pages/Footer/Footer";
 import UserPage from "./Pages/User/User";
 import ApiService from "./Shared/api";
 import CarDetails from "./Pages/CarsList/CarDetails";
+import 'bootstrap-icons/font/bootstrap-icons.css';
+
 
 const LayoutWrapper: React.FC<{ children: React.ReactNode }> = ({
   children,
