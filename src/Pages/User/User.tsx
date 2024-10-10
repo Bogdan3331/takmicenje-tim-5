@@ -2,24 +2,25 @@ import React, { useState, useEffect, useCallback, Fragment } from "react";
 import ApiService from "../../Shared/api";
 import { message } from "antd";
 import EditProfileModal from "./EditProfileModal";
-import EditPasswordModal from "./EditPasswordModal"; // Import the password modal
-import { useNavigate } from "react-router-dom";
+import EditPasswordModal from "./EditPasswordModal";
 import EndedReservationsTable from "./EndedReservationsTable";
+import { useNavigate } from "react-router-dom";
 
 interface User {
   id?: number;
   name?: string;
-  admin?: string;
+  admin?: number;
   email?: string;
 }
 
 const UserPage: React.FC = () => {
-  const navigate = useNavigate();
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [isProfileModalVisible, setIsProfileModalVisible] = useState(false);
   const [isPasswordModalVisible, setIsPasswordModalVisible] = useState(false); // State for password modal
+
+  const navigate = useNavigate();
 
   const handleUpdateProfile = async (values: {
     name: string;
@@ -49,19 +50,6 @@ const UserPage: React.FC = () => {
     }
   };
 
-  const handleLogout = async () => {
-    try {
-      const response = await ApiService.logoutUser();
-      if (!response.error) {
-        localStorage.removeItem("auth_token");
-        message.success("Logged out successfully.");
-        navigate("/");
-      }
-    } catch (error) {
-      message.error("There was a problem with the logout operation.");
-    }
-  };
-
   const fetchData = useCallback(async () => {
     try {
       const response = await ApiService.showProfile();
@@ -80,6 +68,12 @@ const UserPage: React.FC = () => {
   useEffect(() => {
     fetchData();
   }, [fetchData]);
+
+  useEffect(() => {
+    if (!loading && !user) {
+      navigate("/sign-in"); // Redirect only after the data has been fetched and user is null
+    }
+  }, [loading, user, navigate]);
 
   return (
     <Fragment>
@@ -114,7 +108,9 @@ const UserPage: React.FC = () => {
                 {/* Admin Input */}
                 <input
                   type="text"
-                  value="admin 1"
+                  value={
+                    user.admin === 1 ? "You are admin" : "You are not admin"
+                  }
                   readOnly
                   className="w-full text-white bg-gray-800 border-2 border-gray-700 rounded-lg p-4 cursor-default"
                 />
@@ -155,12 +151,6 @@ const UserPage: React.FC = () => {
                     onClick={() => setIsPasswordModalVisible(true)}
                   >
                     Change Password
-                  </button>
-                  <button
-                    className="px-6 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition duration-200"
-                    onClick={handleLogout}
-                  >
-                    Log Out
                   </button>
                 </div>
               </div>

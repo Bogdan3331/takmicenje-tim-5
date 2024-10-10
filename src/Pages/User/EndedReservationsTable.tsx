@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import ApiService from "../../Shared/api";
-import { Rate, Input, Button } from "antd"; // Ant Design for stars and input
+import RatingForm from "./RatingLogic";
+import { Rate } from "antd";
 
 interface Reservation {
   id: number;
@@ -8,6 +9,7 @@ interface Reservation {
   carId: number;
   startDate: string;
   endDate: string;
+  rate?: { rate: number; comment: string };
 }
 
 interface Vehicle {
@@ -27,38 +29,30 @@ const EndedReservationsTable: React.FC = () => {
   );
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  const [rating, setRating] = useState<{ [key: number]: number }>({});
-  const [comment, setComment] = useState<{ [key: number]: string }>({});
-  const [loadingRate, setLoadingRate] = useState<{ [key: number]: boolean }>(
-    {}
-  );
 
   const fetchData = useCallback(async () => {
     try {
       const response = await ApiService.getUserReservations();
-
+      console.log(response);
       if (response.error) {
         setError(response.error);
       }
 
       if (response.data.data) {
-        const activeReservations = response.data.data;
-
+        const activeReservations: Reservation[] = response.data.data;
         const endedReservations = activeReservations.filter(
-          (reservation: Reservation) =>
-            new Date(reservation.endDate) < new Date()
+          (reservation) => new Date(reservation.endDate) < new Date()
         );
 
         setReservations(endedReservations);
 
-        const vehiclePromises = endedReservations.map(
-          async (reservation: Reservation) => {
-            const vehicleResponse = await ApiService.getVehicleData(
-              reservation.carId
-            );
-            return { id: reservation.carId, ...vehicleResponse.data.data };
-          }
-        );
+        const vehiclePromises = endedReservations.map(async (reservation) => {
+          console.log(endedReservations);
+          const vehicleResponse = await ApiService.getVehicleData(
+            reservation.carId
+          );
+          return { id: reservation.carId, ...vehicleResponse.data.data };
+        });
 
         const vehicles = await Promise.all(vehiclePromises);
         const vehiclesById = vehicles.reduce((acc, vehicle) => {
@@ -70,9 +64,11 @@ const EndedReservationsTable: React.FC = () => {
       } else {
         setError("Failed to load data: " + response.error);
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error("There was a problem with the fetch operation:", error);
-      setError(error.message);
+      if (error instanceof Error) {
+        setError(error.message);
+      }
     } finally {
       setLoading(false);
     }
@@ -81,28 +77,6 @@ const EndedReservationsTable: React.FC = () => {
   useEffect(() => {
     fetchData();
   }, [fetchData]);
-
-  const handleRate = async (reservationId: number) => {
-    const selectedRating = rating[reservationId];
-    const selectedComment = comment[reservationId];
-
-    if (selectedRating && selectedComment) {
-      setLoadingRate({ ...loadingRate, [reservationId]: true });
-      try {
-        await ApiService.RateReservation(reservationId, {
-          rate: selectedRating,
-          comment: selectedComment,
-        });
-        alert("Rating submitted successfully!");
-      } catch (error) {
-        console.error("Failed to submit rating", error);
-      } finally {
-        setLoadingRate({ ...loadingRate, [reservationId]: false });
-      }
-    } else {
-      alert("Please provide a rating and a comment.");
-    }
-  };
 
   return (
     <div className="reservations">
@@ -175,37 +149,30 @@ const EndedReservationsTable: React.FC = () => {
                           )}
                         </td>
                         <td className="px-4 py-2">
-                          <div>
-                            <Rate
-                              allowHalf
-                              value={rating[reservation.id]}
-                              onChange={(value) =>
-                                setRating({
-                                  ...rating,
-                                  [reservation.id]: value,
-                                })
-                              }
+                          {reservation.rate &&
+                          reservation.rate.rate !== undefined ? (
+                            <>
+                              <strong>Rating:</strong>{" "}
+                              <Rate
+                                allowHalf
+                                value={reservation.rate.rate}
+                                disabled
+                              />
+                              <div>
+                                <strong>Comment:</strong>{" "}
+                                {reservation.rate.comment ? (
+                                  <span>{reservation.rate.comment}</span>
+                                ) : (
+                                  <span>No comment</span>
+                                )}
+                              </div>
+                            </>
+                          ) : (
+                            <RatingForm
+                              reservationId={reservation.id}
+                              onRated={() => fetchData()}
                             />
-                            <Input
-                              placeholder="Leave a comment"
-                              maxLength={100}
-                              value={comment[reservation.id]}
-                              onChange={(e) =>
-                                setComment({
-                                  ...comment,
-                                  [reservation.id]: e.target.value,
-                                })
-                              }
-                            />
-                            <Button
-                              type="primary"
-                              onClick={() => handleRate(reservation.id)}
-                              loading={loadingRate[reservation.id]}
-                              className="mt-2"
-                            >
-                              Submit
-                            </Button>
-                          </div>
+                          )}
                         </td>
                       </tr>
                     );

@@ -109,7 +109,6 @@ const ApiService = {
     return this.post("login", {
       email,
       password,
-      device: "Dev",
     });
   },
 
@@ -152,8 +151,13 @@ const ApiService = {
     return this.getFilter("car", dates, page);
   },
 
+  async RateReservation(id, values) {
+    return this.post(`reservation/${id}/rate`, values);
+  },
+
   //user
   async logoutUser() {
+    console.log("pozvana");
     return this.post("logout");
   },
 
@@ -175,10 +179,6 @@ const ApiService = {
 
   async getUserReservations() {
     return this.get("reservation");
-  },
-
-  async RateReservation(id, values) {
-    return this.post(`reservation/${id}/rate`, values);
   },
 };
 

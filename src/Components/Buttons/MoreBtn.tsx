@@ -6,10 +6,10 @@ interface MoreBtnProp {
 }
 
 const MoreBtn: React.FC<MoreBtnProp> = ({ items }) => {
-  const [dropdownVisible, setDropdownVisible] = useState(false);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
 
   const handleResize = () => {
-    setDropdownVisible(false);
+    setDropdownOpen(false);
   };
 
   useEffect(() => {
@@ -24,8 +24,8 @@ const MoreBtn: React.FC<MoreBtnProp> = ({ items }) => {
       <Dropdown
         menu={{ items }}
         trigger={["click"]}
-        visible={dropdownVisible}
-        onVisibleChange={(flag) => setDropdownVisible(flag)}
+        open={dropdownOpen}
+        onOpenChange={(flag) => setDropdownOpen(flag)}
       >
         <p style={{ cursor: "pointer" }} onClick={(e) => e.preventDefault()}>
           Profile

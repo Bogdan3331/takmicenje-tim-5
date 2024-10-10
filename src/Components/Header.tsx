@@ -23,29 +23,28 @@ const Header: React.FC = () => {
   const renderMenuItems = () => {
     var menuItems: MenuProps["items"] = [
       {
-        label: <p className="text-white hover:text-blue-500">My Profile</p>,
+        label: "My Profile",
         key: "0",
         onClick: () => {
           navigate("/show-profile");
         },
       },
       {
-        icon: (
-          <i className="bi bi-pencil-square" style={{ fontSize: "1rem" }}></i>
-        ),
-        label: <p style={{ margin: "0" }}>Izmjeni</p>,
+        label: "Log Out",
         key: "1",
         onClick: () => {
-          navigate(``);
+          handleLogout();
+          message.success("U have successfully logged out");
         },
       },
       {
-        icon: <i className="bi bi-trash3" style={{ fontSize: "1rem" }}></i>,
-        label: <p style={{ margin: "0" }}>Log Out</p>,
+        icon: (
+          <i className="bi bi-pencil-square" style={{ fontSize: "1rem" }}></i>
+        ),
+        label: <p style={{ margin: "0" }}>Admin Page</p>,
         key: "2",
         onClick: () => {
-          handleLogout;
-          message.success("U have successfully logged out");
+          navigate(``); //navigate to admin page when added
         },
       },
     ];
@@ -72,8 +71,10 @@ const Header: React.FC = () => {
           <a href="/about-us" className="text-white hover:text-blue-500">
             About Us
           </a>
+          <a href="/show-profile" className="text-white hover:text-blue-500">
+            Profile
+          </a>
         </nav>
-
         <div>
           <MoreBtn items={renderMenuItems()} />
         </div>
