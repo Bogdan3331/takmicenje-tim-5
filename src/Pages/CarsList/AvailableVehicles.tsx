@@ -46,7 +46,7 @@ const AvailableVehicles: React.FC<AvailableVehiclesProps> = ({ filters }) => {
     const dates = {
       startDate: startDate || undefined,
       endDate: endDate || undefined,
-      available: startDate ? true : null,
+      available: (startDate && endDate) ? true : null,
     };
 
     try {
