@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from "react";
-import { DatePicker, Button, message, Input, Pagination } from "antd"; // Import Input and Pagination from antd
+import React, { useState, useEffect, useCallback } from "react";
+import { DatePicker, Input, Pagination } from "antd";
 import ApiService from "../../Shared/api";
 import ReserveBtn from "../../Components/Buttons/ReserveBtn";
 
-// Define the Car interface
 interface Car {
   id: number;
   type: string;
@@ -16,7 +15,6 @@ interface Car {
   passengers?: number;
 }
 
-// Define the filters interface
 interface Filters {
   manufacturer?: string;
   type?: string;
@@ -26,7 +24,7 @@ interface Filters {
 }
 
 interface AvailableVehiclesProps {
-  filters: Filters; // Accept filters as a prop
+  filters: Filters;
 }
 
 const AvailableVehicles: React.FC<AvailableVehiclesProps> = ({ filters }) => {
@@ -39,57 +37,48 @@ const AvailableVehicles: React.FC<AvailableVehiclesProps> = ({ filters }) => {
   const [lastPage, setLastPage] = useState<number>(1);
   const [searchQuery, setSearchQuery] = useState<string>("");
 
-  const fetchVehicles = async (page: number) => {
-    setLoading(true);
-    setError(null); // Reset error state
+  const fetchVehicles = useCallback(
+    async (page: number) => {
+      setLoading(true);
+      setError(null);
 
-    const dates = {
-      startDate: startDate || undefined,
-      endDate: endDate || undefined,
-      available: (startDate && endDate) ? true : null,
-    };
+      const dates = {
+        startDate: startDate || undefined,
+        endDate: endDate || undefined,
+        available: startDate && endDate ? true : null,
+      };
 
-    try {
-      const response = await ApiService.getVehiclesList(
-        searchQuery,
-        page,
-        dates
-      );
-      console.log(response);
-      if (response.error) {
-        throw new Error(response.error);
+      try {
+        const response = await ApiService.getVehiclesList(
+          searchQuery,
+          page,
+          dates
+        );
+        console.log(response);
+        if (response.error) {
+          throw new Error(response.error);
+        }
+        setVehicles(response.data.data);
+        setLastPage(response.data.lastPage);
+      } catch (error: any) {
+        console.error("Error fetching vehicles:", error);
+        setError(error.message);
+      } finally {
+        setLoading(false);
       }
-      setVehicles(response.data.data);
-      setLastPage(response.data.lastPage);
-    } catch (error: any) {
-      console.error("Error fetching vehicles:", error);
-      setError(error.message);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleSearch = () => {
-    if (!startDate && !endDate) {
-      message.warning(
-        "Please select a date range or clear dates to view all vehicles"
-      );
-      return;
-    }
-    setCurrentPage(1); // Reset to first page on new search
-    fetchVehicles(1); // Fetch vehicles for the first page
-  };
+    },
+    [searchQuery, startDate, endDate]
+  );
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
-    fetchVehicles(page); // Fetch vehicles for the selected page
+    fetchVehicles(page);
   };
 
   useEffect(() => {
-    fetchVehicles(currentPage); // Fetch vehicles when component mounts or current page changes
-  }, [currentPage, searchQuery]); // Add searchQuery as a dependency
+    fetchVehicles(currentPage);
+  }, [currentPage, fetchVehicles]);
 
-  // Apply filtering logic
   const filteredVehicleList = vehicles.filter((car) => {
     const matchesSearchQuery = car.brand
       .toLowerCase()
@@ -119,7 +108,7 @@ const AvailableVehicles: React.FC<AvailableVehiclesProps> = ({ filters }) => {
       <div className="date-picker mb-4">
         <DatePicker
           showTime
-          placeholder="Select start date"
+          placeholder="Select pick up date"
           onChange={(date) =>
             setStartDate(date ? date.format("YYYY-MM-DD HH:mm") : undefined)
           }
@@ -128,26 +117,19 @@ const AvailableVehicles: React.FC<AvailableVehiclesProps> = ({ filters }) => {
         />
         <DatePicker
           showTime
-          placeholder="Select end date"
+          placeholder="Select drop off date"
           onChange={(date) =>
             setEndDate(date ? date.format("YYYY-MM-DD HH:mm") : undefined)
           }
           format="YYYY-MM-DD HH:mm"
         />
-        <Button
-          type="primary"
-          onClick={handleSearch}
-          style={{ marginLeft: "1rem" }}
-        >
-          Search
-        </Button>
       </div>
 
       <Input
         placeholder="Search by brand"
         value={searchQuery}
         onChange={(e) => setSearchQuery(e.target.value)}
-        style={{ marginBottom: "1rem", width: "300px" }} // Adjust width as needed
+        style={{ marginBottom: "1rem", width: "300px" }}
       />
 
       {loading && <div>Loading...</div>}
@@ -202,7 +184,7 @@ const AvailableVehicles: React.FC<AvailableVehiclesProps> = ({ filters }) => {
         pageSize={6}
         total={lastPage * 6}
         onChange={handlePageChange}
-        className="mt-6" // Add margin for better spacing
+        className="mt-6"
       />
     </div>
   );

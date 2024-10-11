@@ -1,4 +1,13 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import ApiService from "../../Shared/api";
+
+interface Vehicle {
+  brand: string;
+  type: string;
+  gear: string;
+  fuelType: string;
+  passengers: number;
+}
 
 interface Filters {
   manufacturer: string;
@@ -19,53 +28,66 @@ interface VehicleFiltersProps {
 const VehicleFilters: React.FC<VehicleFiltersProps> = ({
   openFilter,
   setOpenFilter,
-  filters,
   setFilters,
   handleShowAll,
 }) => {
-  const filterOptions = {
-    manufacturer: [
-      "Alfa Romeo",
-      "Mahindra",
-      "Talbot",
-      "Audi",
-      "Saipa",
-      "Fornasari",
-      "Iveco",
-      "GMC",
-      "Acura",
-      "Buick",
-      "Secma",
-      "MINI",
-      "Scion",
-      "Studebaker",
-      "Ferrari",
-      "Caterham",
-      "Mitsubishi",
-      "Dagger",
-      "Aero",
-    ],
-    type: [
-      "MPV",
-      "convertible",
-      "hatchback",
-      "sedan",
-      "coupe",
-      "SUV",
-      "station wagon",
-      "small",
-    ],
-    gear: ["manual", "automatic"],
-    fuel: ["diesel", "gasoline", "electric", "hybrid"],
-    passengers: ["2", "4", "5", "7"],
+  const [filterOptions, setFilterOptions] = useState<{
+    manufacturer: string[];
+    type: string[];
+    gear: string[];
+    fuel: string[];
+    passengers: string[];
+  }>({
+    manufacturer: [],
+    type: [],
+    gear: [],
+    fuel: [],
+    passengers: [],
+  });
+
+  const fetchFilterOptions = async () => {
+    try {
+      const response = await ApiService.getVehiclesList();
+      const data: Vehicle[] = response.data.data;
+
+      const uniqueManufacturers = Array.from(
+        new Set(data.map((vehicle) => vehicle.brand))
+      );
+      const uniqueTypes = Array.from(
+        new Set(data.map((vehicle) => vehicle.type))
+      );
+      const uniqueGears = Array.from(
+        new Set(data.map((vehicle) => vehicle.gear))
+      );
+      const uniqueFuels = Array.from(
+        new Set(data.map((vehicle) => vehicle.fuelType))
+      );
+      const uniquePassengers = Array.from(
+        new Set(data.map((vehicle) => vehicle.passengers.toString()))
+      );
+
+      setFilterOptions({
+        manufacturer: uniqueManufacturers,
+        type: uniqueTypes,
+        gear: uniqueGears,
+        fuel: uniqueFuels,
+        passengers: uniquePassengers,
+      });
+    } catch (error) {
+      console.error("Error fetching vehicle data:", error);
+    }
   };
+
+  useEffect(() => {
+    fetchFilterOptions();
+  }, []);
 
   const handleFilterChange = (filterType: keyof Filters, value: string) => {
     setFilters((prevFilters) => ({
       ...prevFilters,
       [filterType]: value,
     }));
-    setOpenFilter(null); // Close the dropdown after selection
+    setOpenFilter(null);
   };
 
   const toggleFilter = (filter: string) => {
@@ -76,7 +98,7 @@ const VehicleFilters: React.FC<VehicleFiltersProps> = ({
     <div className="flex space-x-4">
       <button
         className="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600"
-        onClick={handleShowAll} // Show all vehicles
+        onClick={handleShowAll}
       >
         Show All
       </button>
