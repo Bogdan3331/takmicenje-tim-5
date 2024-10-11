@@ -1,17 +1,18 @@
 // src/App.tsx
 import React from "react";
+import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
 import PrivateRoute from "./Pages/PrivateRoute";
 import SignInPage from "./Pages/SignIn/SignIn";
 import RegisterPage from "./Pages/Register/Register";
 import MainPage from "./Pages/MainPage/MainPage";
 import VehicleList from "./Pages/CarsList/VehicleList";
-import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
 import Dashboard from "./Pages/Dashboard/Dashboard";
+import UserPage from "./Pages/User/User";
 import Header from "./Components/Header";
 import Footer from "./Pages/Footer/Footer";
-import UserPage from "./Pages/User/User";
 import ApiService from "./Shared/api";
 import CarDetails from "./Pages/CarsList/CarDetails";
+import AboutUs from "./Pages/AboutUs/AboutUs"; // Import About Us page
 import "bootstrap-icons/font/bootstrap-icons.css";
 
 const LayoutWrapper: React.FC<{ children: React.ReactNode }> = ({
@@ -115,6 +116,14 @@ function App() {
           element={
             <LayoutWrapper>
               <CarDetails />
+            </LayoutWrapper>
+          }
+        />
+        <Route
+          path="/about-us" // About Us route
+          element={
+            <LayoutWrapper>
+              <AboutUs />
             </LayoutWrapper>
           }
         />
