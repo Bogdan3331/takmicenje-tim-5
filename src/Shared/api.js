@@ -131,17 +131,19 @@ const ApiService = {
 
   async getVehiclesList(searchQuery, page, dates) {
     console.log(searchQuery, page, dates);
+    let search = { search: searchQuery, page}
+    try {
+      const { startDate, endDate, available } = dates;
+      search = {
+        search: searchQuery,
+        page,
+        startDate, // Pass startDate directly
+        endDate, // Pass endDate directly
+        available, // Set available to true
+      }
+    }catch (error) {};
 
-    // Destructure dates to get startDate, endDate, and available
-    const { startDate, endDate } = dates;
-
-    return this.getFilter("car", {
-      search: searchQuery,
-      page,
-      startDate, // Pass startDate directly
-      endDate, // Pass endDate directly
-      available: true, // Set available to true
-    });
+    return this.getFilter("car", search);
   },
 
   // async avaliableVehicles(dates, page) {

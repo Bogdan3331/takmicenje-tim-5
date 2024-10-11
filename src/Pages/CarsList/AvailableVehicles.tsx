@@ -30,8 +30,8 @@ interface AvailableVehiclesProps {
 }
 
 const AvailableVehicles: React.FC<AvailableVehiclesProps> = ({ filters }) => {
-  const [startDate, setStartDate] = useState<string | null>(null);
-  const [endDate, setEndDate] = useState<string | null>(null);
+  const [startDate, setStartDate] = useState<string | undefined>(undefined);
+  const [endDate, setEndDate] = useState<string | undefined>(undefined);
   const [vehicles, setVehicles] = useState<Car[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
@@ -46,7 +46,7 @@ const AvailableVehicles: React.FC<AvailableVehiclesProps> = ({ filters }) => {
     const dates = {
       startDate: startDate || undefined,
       endDate: endDate || undefined,
-      available: true,
+      available: startDate ? true : null,
     };
 
     try {
@@ -121,7 +121,7 @@ const AvailableVehicles: React.FC<AvailableVehiclesProps> = ({ filters }) => {
           showTime
           placeholder="Select start date"
           onChange={(date) =>
-            setStartDate(date ? date.format("YYYY-MM-DD HH:mm") : null)
+            setStartDate(date ? date.format("YYYY-MM-DD HH:mm") : undefined)
           }
           format="YYYY-MM-DD HH:mm"
           style={{ marginRight: "1rem" }}
@@ -130,7 +130,7 @@ const AvailableVehicles: React.FC<AvailableVehiclesProps> = ({ filters }) => {
           showTime
           placeholder="Select end date"
           onChange={(date) =>
-            setEndDate(date ? date.format("YYYY-MM-DD HH:mm") : null)
+            setEndDate(date ? date.format("YYYY-MM-DD HH:mm") : undefined)
           }
           format="YYYY-MM-DD HH:mm"
         />
