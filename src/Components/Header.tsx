@@ -38,9 +38,6 @@ const Header: React.FC = () => {
         },
       },
       {
-        icon: (
-          <i className="bi bi-pencil-square" style={{ fontSize: "1rem" }}></i>
-        ),
         label: <p style={{ margin: "0" }}>Admin Page</p>,
         key: "2",
         onClick: () => {
@@ -70,9 +67,6 @@ const Header: React.FC = () => {
           </a>
           <a href="/about-us" className="text-white hover:text-blue-500">
             About Us
-          </a>
-          <a href="/show-profile" className="text-white hover:text-blue-500">
-            Profile
           </a>
         </nav>
         <div>

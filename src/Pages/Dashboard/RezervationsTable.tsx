@@ -37,9 +37,16 @@ const RezervationsTable: React.FC = () => {
 
       if (response.data.data) {
         const activeReservations = response.data.data;
-        setReservations(activeReservations);
 
-        const vehiclePromises = activeReservations.map(
+        // Filter out reservations that have ended
+        const now = new Date();
+        const filteredReservations = activeReservations.filter(
+          (reservation: Reservation) => new Date(reservation.endDate) > now
+        );
+
+        setReservations(filteredReservations); // Update to use filtered reservations
+
+        const vehiclePromises = filteredReservations.map(
           async (reservation: Reservation) => {
             const vehicleResponse = await ApiService.getVehicleData(
               reservation.carId

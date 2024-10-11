@@ -1,19 +1,6 @@
 import React, { useState, useRef } from "react";
-import VehicleListTable from "./CarsTable";
 import VehicleFilters from "./VehiclesFilters";
-import DateFilter from "./DateFilter";
-
-interface Car {
-  id: number;
-  type: string;
-  brand: string;
-  price: number;
-  description: string;
-  fuelType: string;
-  image: string;
-  gear?: string;
-  passengers?: number;
-}
+import AvailableVehicles from "./AvailableVehicles";
 
 const VehicleList = () => {
   const [openFilter, setOpenFilter] = useState<string | null>(null);
@@ -25,7 +12,6 @@ const VehicleList = () => {
     fuel: "",
     passengers: "",
   });
-  const [availableCars, setAvailableCars] = useState<Car[]>([]); // Store fetched available cars
 
   const filterRef = useRef<HTMLDivElement | null>(null);
 
@@ -63,9 +49,6 @@ const VehicleList = () => {
           setFilters={setFilters}
           handleShowAll={handleShowAll}
         />
-        {/* Date Filter */}
-        <DateFilter setAvailableCars={setAvailableCars} />{" "}
-        {/* Add DateFilter here */}
         {/* Search button */}
         <form onSubmit={handleSearchSubmit} className="flex items-center">
           <input
@@ -81,13 +64,8 @@ const VehicleList = () => {
         </form>
       </div>
 
-      {/* Vehicle list */}
-      <VehicleListTable
-        searchQuery={searchQuery}
-        filters={filters}
-        availableCars={availableCars}
-      />
-      {/* Pass availableCars to the table */}
+      {/*  */}
+      <AvailableVehicles filters={filters} />
     </div>
   );
 };

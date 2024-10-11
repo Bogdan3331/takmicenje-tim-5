@@ -50,6 +50,7 @@ const ApiService = {
       ? resource.slice(1)
       : resource;
     try {
+      console.log(resourcePath);
       const response = await axios.get(`${resourcePath}`, { params });
       return { message: "Success", data: response.data };
     } catch (error) {
@@ -127,12 +128,26 @@ const ApiService = {
   //admin calls
 
   // vehicle calls for users
-  async getVehiclesList(searchQuery, page) {
+
+  async getVehiclesList(searchQuery, page, dates) {
+    console.log(searchQuery, page, dates);
+
+    // Destructure dates to get startDate, endDate, and available
+    const { startDate, endDate } = dates;
+
     return this.getFilter("car", {
       search: searchQuery,
       page,
+      startDate, // Pass startDate directly
+      endDate, // Pass endDate directly
+      available: true, // Set available to true
     });
   },
+
+  // async avaliableVehicles(dates, page) {
+  //   console.log(dates);
+  //   return this.getFilter("car", dates, page);
+  // },
 
   async getVehicleData(id) {
     return this.get(`car/${id}`);
@@ -144,11 +159,6 @@ const ApiService = {
 
   async reserveVehicle(values) {
     return this.post("reservation", values);
-  },
-
-  async avaliableVehicles(dates, page) {
-    console.log(dates);
-    return this.getFilter("car", dates, page);
   },
 
   async RateReservation(id, values) {
