@@ -92,31 +92,7 @@ const AvailableVehicles: React.FC<AvailableVehiclesProps> = ({
   useEffect(() => {
     fetchVehicles(currentPage, filters);
   }, [currentPage, fetchVehicles, filters]);
-
-  // const filteredVehicleList = vehicles.filter((car) => {
-  //   const matchesSearchQuery = car.brand
-  //     .toLowerCase()
-  //     .startsWith(searchQuery.toLowerCase());
-  //
-  //   const manufacturerMatch =
-  //     !filters.manufacturer || car.brand === filters.manufacturer;
-  //   const classMatch = !filters.type || car.type === filters.type;
-  //   const gearMatch = !filters.gear || (car.gear && car.gear === filters.gear);
-  //   const fuelMatch = !filters.fuel || car.fuelType === filters.fuel;
-  //   const passengersMatch =
-  //     !filters.passengers ||
-  //     (car.passengers && String(car.passengers) === filters.passengers);
-  //
-  //   return (
-  //     matchesSearchQuery &&
-  //     manufacturerMatch &&
-  //     classMatch &&
-  //     gearMatch &&
-  //     fuelMatch &&
-  //     passengersMatch
-  //   );
-  // });
-
+  
   const handleDeleteCar = async (carId: number) => {
     setLoading(true);
     try {
