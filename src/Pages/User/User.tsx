@@ -52,7 +52,7 @@ const UserPage: React.FC = () => {
 
   const fetchData = useCallback(async () => {
     try {
-      const response = await ApiService.showProfile();
+      const response = await ApiService.getUserData();
       if (response.error) {
         setError(response.error);
       } else {
@@ -176,8 +176,12 @@ const UserPage: React.FC = () => {
           )}
         </div>
       </div>
-      <div className="flex justify-end"> {/* Aligning reservations to the right */}
-        <div className="w-full max-w-2xl p-4"> {/* Set max width for the reservations table */}
+      <div className="flex justify-end">
+        {" "}
+        {/* Aligning reservations to the right */}
+        <div className="w-full max-w-2xl p-4">
+          {" "}
+          {/* Set max width for the reservations table */}
           <EndedReservationsTable />
         </div>
       </div>

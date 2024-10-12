@@ -41,7 +41,7 @@ const Header: React.FC = () => {
         label: <p style={{ margin: "0" }}>Admin Page</p>,
         key: "2",
         onClick: () => {
-          navigate(``); //navigate to admin page when added
+          navigate("/admin-page");
         },
       },
     ];

@@ -1,6 +1,7 @@
-import { useState, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import VehicleFilters from "./VehiclesFilters";
 import AvailableVehicles from "./AvailableVehicles";
+import ApiService from "../../Shared/api"; // Assuming this is where you handle user fetching
 
 const VehicleList = () => {
   const [openFilter, setOpenFilter] = useState<string | null>(null);
@@ -11,7 +12,7 @@ const VehicleList = () => {
     fuel: "",
     passengers: "",
   });
-
+  const [isAdmin, setIsAdmin] = useState<number>(0); // Initializing isAdmin as a number
   const filterRef = useRef<HTMLDivElement | null>(null);
 
   const handleShowAll = () => {
@@ -23,6 +24,19 @@ const VehicleList = () => {
       passengers: "",
     });
   };
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const userResponse = await ApiService.getUserData(); // Fetch user data
+        setIsAdmin(userResponse.data.admin); // Set admin status (1 or 0 as number)
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    };
+
+    fetchUserData();
+  }, []);
 
   return (
     <div className="container mx-auto p-4" ref={filterRef}>
@@ -36,7 +50,7 @@ const VehicleList = () => {
           handleShowAll={handleShowAll}
         />
       </div>
-      <AvailableVehicles filters={filters} />
+      <AvailableVehicles filters={filters} isAdmin={isAdmin} />
     </div>
   );
 };

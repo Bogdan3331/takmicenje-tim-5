@@ -50,7 +50,6 @@ const ApiService = {
       ? resource.slice(1)
       : resource;
     try {
-      console.log(resourcePath);
       const response = await axios.get(`${resourcePath}`, { params });
       return { message: "Success", data: response.data };
     } catch (error) {
@@ -121,11 +120,40 @@ const ApiService = {
     });
   },
 
-  async showProfile() {
+  async getUserData() {
     return this.get("show-profile");
   },
 
   //admin calls
+
+  async getUsers() {
+    return this.get("admin/user");
+  },
+
+  async getAllReservations() {
+    return this.get("admin/reservation");
+  },
+
+  async getUserReservations(id) {
+    return this.get(`admin/user/${id}/reservation`);
+  },
+
+  async deleteCar(id) {
+    return this.delete(`admin/car/${id}`);
+  },
+
+  async updateCar(id, values) {
+    return this.post(`admin/car/${id}`, values);
+  },
+
+  async createCar(values) {
+    console.log(values);
+    return this.post("admin/car", values, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+  },
 
   // vehicle calls for users
 
@@ -163,7 +191,6 @@ const ApiService = {
 
   //user
   async logoutUser() {
-    console.log("pozvana");
     return this.post("logout");
   },
 

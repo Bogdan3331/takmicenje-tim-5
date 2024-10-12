@@ -14,6 +14,7 @@ import ApiService from "./Shared/api";
 import CarDetails from "./Pages/CarsList/CarDetails";
 import AboutUs from "./Pages/AboutUs/AboutUs"; // Import About Us page
 import "bootstrap-icons/font/bootstrap-icons.css";
+import AdminPage from "./Pages/Admin/AdminPage";
 
 const LayoutWrapper: React.FC<{ children: React.ReactNode }> = ({
   children,
@@ -125,6 +126,18 @@ function App() {
             <LayoutWrapper>
               <AboutUs />
             </LayoutWrapper>
+          }
+        />
+        <Route
+          path="/admin-page"
+          element={
+            <PrivateRoute
+              element={
+                <LayoutWrapper>
+                  <AdminPage />
+                </LayoutWrapper>
+              }
+            />
           }
         />
       </Routes>
