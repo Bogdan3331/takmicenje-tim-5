@@ -175,7 +175,8 @@ const ApiService = {
     let search = { search: searchQuery, page };
     try {
       const { startDate, endDate, available, filter } = data;
-      const { type, fuelType, gear, passengers} = filter;
+      const { type, gear, passengers} = filter;
+      const fuelType = filter.fuel
       const brand = filter.manufacturer
       search = {
         page,
