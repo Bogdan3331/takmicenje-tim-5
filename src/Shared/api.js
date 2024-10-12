@@ -163,16 +163,19 @@ const ApiService = {
 
   // vehicle calls for users
 
-  async getVehiclesList(page, searchQuery, dates) {
+  async getVehiclesList(page, searchQuery, data) {
     let search = { search: searchQuery, page };
     try {
-      const { startDate, endDate, available } = dates;
+      const { startDate, endDate, available, filter } = data;
+      const { type, fuelType, gear, passengers} = filter;
+      const brand = filter.manufacturer
       search = {
         page,
         search: searchQuery,
         startDate,
         endDate,
         available,
+        type, brand, fuelType, gear, passengers
       };
     } catch (error) {}
 

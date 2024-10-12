@@ -51,21 +51,23 @@ const AvailableVehicles: React.FC<AvailableVehiclesProps> = ({
   const [searchQuery, setSearchQuery] = useState<string>("");
 
   const fetchVehicles = useCallback(
-    async (page: number) => {
+    async (page: number, filters: Filters) => {
       setLoading(true);
       setError(null);
 
-      const dates = {
+
+      const data = {
         startDate: startDate ? startDate.format("YYYY-MM-DD HH:mm") : undefined,
         endDate: endDate ? endDate.format("YYYY-MM-DD HH:mm") : undefined,
         available: startDate && endDate ? true : null,
+        filter: filters
       };
 
       try {
         const response = await ApiService.getVehiclesList(
           page,
           searchQuery,
-          dates
+          data
         );
         console.log(response);
         if (response.error) {
@@ -88,32 +90,32 @@ const AvailableVehicles: React.FC<AvailableVehiclesProps> = ({
   );
 
   useEffect(() => {
-    fetchVehicles(currentPage);
-  }, [currentPage, fetchVehicles]);
+    fetchVehicles(currentPage, filters);
+  }, [currentPage, fetchVehicles, filters]);
 
-  const filteredVehicleList = vehicles.filter((car) => {
-    const matchesSearchQuery = car.brand
-      .toLowerCase()
-      .startsWith(searchQuery.toLowerCase());
-
-    const manufacturerMatch =
-      !filters.manufacturer || car.brand === filters.manufacturer;
-    const classMatch = !filters.type || car.type === filters.type;
-    const gearMatch = !filters.gear || (car.gear && car.gear === filters.gear);
-    const fuelMatch = !filters.fuel || car.fuelType === filters.fuel;
-    const passengersMatch =
-      !filters.passengers ||
-      (car.passengers && String(car.passengers) === filters.passengers);
-
-    return (
-      matchesSearchQuery &&
-      manufacturerMatch &&
-      classMatch &&
-      gearMatch &&
-      fuelMatch &&
-      passengersMatch
-    );
-  });
+  // const filteredVehicleList = vehicles.filter((car) => {
+  //   const matchesSearchQuery = car.brand
+  //     .toLowerCase()
+  //     .startsWith(searchQuery.toLowerCase());
+  //
+  //   const manufacturerMatch =
+  //     !filters.manufacturer || car.brand === filters.manufacturer;
+  //   const classMatch = !filters.type || car.type === filters.type;
+  //   const gearMatch = !filters.gear || (car.gear && car.gear === filters.gear);
+  //   const fuelMatch = !filters.fuel || car.fuelType === filters.fuel;
+  //   const passengersMatch =
+  //     !filters.passengers ||
+  //     (car.passengers && String(car.passengers) === filters.passengers);
+  //
+  //   return (
+  //     matchesSearchQuery &&
+  //     manufacturerMatch &&
+  //     classMatch &&
+  //     gearMatch &&
+  //     fuelMatch &&
+  //     passengersMatch
+  //   );
+  // });
 
   const handleDeleteCar = async (carId: number) => {
     setLoading(true);
@@ -157,7 +159,7 @@ const AvailableVehicles: React.FC<AvailableVehiclesProps> = ({
       {error && <div>Error: {error}</div>}
 
       <div className="grid grid-cols-3 gap-6 w-full">
-        {filteredVehicleList.map((car) => (
+        {vehicles.map((car) => (
           <div key={car.id} className="wrapper">
             {/* Car image */}
             <div className="border rounded-lg shadow-md overflow-hidden bg-white cursor-pointer">

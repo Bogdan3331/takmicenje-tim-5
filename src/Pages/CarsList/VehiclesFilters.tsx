@@ -90,6 +90,7 @@ const VehicleFilters: React.FC<VehicleFiltersProps> = ({
       ...prevFilters,
       [filterType]: value,
     }));
+
     setOpenFilter(null);
   };
 
