@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { Button, DatePicker, Input, Pagination } from "antd";
+import { Button, DatePicker, Input } from "antd";
 import ApiService from "../../Shared/api";
 import ReserveBtn from "../../Components/Buttons/ReserveBtn";
 import UpdateCarBtn from "./AdminCars/UpdateCarBtn";
@@ -29,19 +29,25 @@ interface Filters {
 interface AvailableVehiclesProps {
   filters: Filters;
   isAdmin: number;
+  currentPage: number; // New prop
+  setCurrentPage: (page: number) => void; // New prop
+  lastPage: number; // New prop
+  setLastPage: (page: number) => void; // New prop
 }
 
-const AvailableVehicles: React.FC<AvailableVehiclesProps> = (
-  { filters },
-  { isAdmin }
-) => {
+const AvailableVehicles: React.FC<AvailableVehiclesProps> = ({
+  filters,
+  isAdmin,
+  currentPage,
+  setCurrentPage,
+  lastPage,
+  setLastPage, // Destructure setLastPage from props
+}) => {
   const [startDate, setStartDate] = useState<Dayjs | undefined>(undefined);
   const [endDate, setEndDate] = useState<Dayjs | undefined>(undefined);
   const [vehicles, setVehicles] = useState<Car[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
-  const [currentPage, setCurrentPage] = useState<number>(1);
-  const [lastPage, setLastPage] = useState<number>(1);
   const [searchQuery, setSearchQuery] = useState<string>("");
 
   const fetchVehicles = useCallback(
@@ -57,16 +63,20 @@ const AvailableVehicles: React.FC<AvailableVehiclesProps> = (
 
       try {
         const response = await ApiService.getVehiclesList(
-          searchQuery,
           page,
+          searchQuery,
           dates
         );
         console.log(response);
         if (response.error) {
           throw new Error(response.error);
         }
+
+        // Set the vehicles data
         setVehicles(response.data.data);
-        setLastPage(response.data.lastPage);
+
+        // Set the lastPage using the response's lastPage value
+        setLastPage(response.data.lastPage); // Ensure this matches your API's response structure
       } catch (error: any) {
         console.error("Error fetching vehicles:", error);
         setError(error.message);
@@ -74,13 +84,8 @@ const AvailableVehicles: React.FC<AvailableVehiclesProps> = (
         setLoading(false);
       }
     },
-    [searchQuery, startDate, endDate]
+    [searchQuery, startDate, endDate, setLastPage] // Add setLastPage to dependencies
   );
-
-  const handlePageChange = (page: number) => {
-    setCurrentPage(page);
-    fetchVehicles(page);
-  };
 
   useEffect(() => {
     fetchVehicles(currentPage);
@@ -147,7 +152,7 @@ const AvailableVehicles: React.FC<AvailableVehiclesProps> = (
         onChange={(e) => setSearchQuery(e.target.value)}
         style={{ marginBottom: "1rem", width: "300px" }}
       />
-      {(isAdmin = 1 && <CreateCarBtn />)}
+      {isAdmin === 1 && <CreateCarBtn />}
       {loading && <div>Loading...</div>}
       {error && <div>Error: {error}</div>}
 
@@ -188,36 +193,28 @@ const AvailableVehicles: React.FC<AvailableVehiclesProps> = (
                   <span className="text-2xl font-bold">{car.price} €</span>
                   <p className="text-gray-500">per day</p>
                 </div>
-                {
-                  (isAdmin = 1 && (
-                    <Button
-                      type="primary"
-                      onClick={() => handleDeleteCar(car.id)}
-                    >
-                      Delete Car
-                    </Button>
-                  ))
-                }
+                {isAdmin === 1 && (
+                  <Button
+                    type="primary"
+                    onClick={() => handleDeleteCar(car.id)}
+                  >
+                    Delete Car
+                  </Button>
+                )}
                 <ReserveBtn
                   carId={car.id}
                   carPrice={car.price}
                   startDateProp={startDate}
                   endDateProp={endDate}
                 />
-                {(isAdmin = 1 && <UpdateCarBtn carId={car.id} />)}
+                {isAdmin === 1 && <UpdateCarBtn carId={car.id} />}
               </div>
             </div>
           </div>
         ))}
       </div>
 
-      <Pagination
-        current={currentPage}
-        pageSize={6}
-        total={lastPage * 6}
-        onChange={handlePageChange}
-        className="mt-6"
-      />
+      {/* Pagination moved to VehicleList */}
     </div>
   );
 };

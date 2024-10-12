@@ -130,6 +130,10 @@ const ApiService = {
     return this.get("admin/user");
   },
 
+  async getUsersNames(id) {
+    return this.get(`user/${id}`);
+  },
+
   async getAllReservations() {
     return this.get("admin/reservation");
   },
@@ -159,13 +163,13 @@ const ApiService = {
 
   // vehicle calls for users
 
-  async getVehiclesList(searchQuery, page, dates) {
+  async getVehiclesList(page, searchQuery, dates) {
     let search = { search: searchQuery, page };
     try {
       const { startDate, endDate, available } = dates;
       search = {
-        search: searchQuery,
         page,
+        search: searchQuery,
         startDate,
         endDate,
         available,
@@ -210,6 +214,10 @@ const ApiService = {
 
   async resetPassword(values) {
     return this.post("reset-password", values);
+  },
+
+  async getUsersReservations() {
+    return this.get("reservation");
   },
 };
 

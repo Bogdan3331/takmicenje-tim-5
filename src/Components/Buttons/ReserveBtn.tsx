@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { Modal, DatePicker, Button, message } from "antd";
 import ApiService from "../../Shared/api";
@@ -73,32 +73,38 @@ const ReserveBtn: React.FC<ReserveBtnProps> = ({
   };
 
   // Calculate total price based on selected or prefilled dates
-  const calculateTotalPrice = (
-    startDate: Dayjs | null,
-    endDate: Dayjs | null
-  ) => {
-    if (startDate && endDate) {
-      const diffInDays = endDate.diff(startDate, "day");
-      const calculatedPrice = diffInDays * carPrice + carPrice;
-      setTotalPrice(calculatedPrice);
-    } else {
-      setTotalPrice(0); // Reset price if dates are not fully selected
-    }
-  };
+  const calculateTotalPrice = useCallback(
+    (startDate: Dayjs | null, endDate: Dayjs | null) => {
+      if (startDate && endDate) {
+        const diffInDays = endDate.diff(startDate, "day");
+        const calculatedPrice = diffInDays * carPrice + carPrice;
+        setTotalPrice(calculatedPrice);
+      } else {
+        setTotalPrice(0); // Reset price if dates are not fully selected
+      }
+    },
+    [carPrice]
+  );
 
   // Initial price calculation if props are provided
   useEffect(() => {
     if (startDateProp && endDateProp) {
       calculateTotalPrice(startDateProp, endDateProp);
     }
-  }, [startDateProp, endDateProp, carPrice]);
+  }, [startDateProp, endDateProp, calculateTotalPrice]);
 
   // Recalculate price when user selects dates in the DatePicker
   useEffect(() => {
     if (!startDateProp && !endDateProp) {
       calculateTotalPrice(startDateTime, endDateTime);
     }
-  }, [startDateTime, endDateTime, carPrice]);
+  }, [
+    startDateTime,
+    endDateTime,
+    calculateTotalPrice,
+    endDateProp,
+    startDateProp,
+  ]);
 
   return (
     <>
@@ -108,7 +114,7 @@ const ReserveBtn: React.FC<ReserveBtnProps> = ({
 
       <Modal
         title="Reserve Car"
-        visible={isModalOpen}
+        open={isModalOpen}
         onCancel={handleCancel}
         onOk={handleReserve}
         okText="Reserve"
@@ -145,16 +151,11 @@ const ReserveBtn: React.FC<ReserveBtnProps> = ({
 
           {/* Show total price */}
           <div className="form-section">
-            <label>
-              Total Price:{" "}
-              <p>
-                {startDateProp && endDateProp
-                  ? `Total Price: $${totalPrice.toFixed(2)} (pre-filled)`
-                  : totalPrice > 0
-                  ? `Total Price: $${totalPrice.toFixed(2)}`
-                  : "Please select both start and end dates"}
-              </p>
-            </label>
+            <p>
+              {totalPrice > 0
+                ? `Total Price: $${totalPrice.toFixed(2)}`
+                : "Please select both start and end dates"}
+            </p>
           </div>
         </div>
       </Modal>

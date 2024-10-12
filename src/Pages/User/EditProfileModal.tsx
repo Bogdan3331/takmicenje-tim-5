@@ -32,7 +32,7 @@ const EditProfileModal: React.FC<EditProfileModalProps> = ({
   return (
     <Modal
       title="Edit Profile"
-      visible={visible}
+      open={visible}
       onOk={handleOk}
       onCancel={onClose}
       okText="Save"

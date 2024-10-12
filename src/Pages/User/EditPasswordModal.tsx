@@ -29,7 +29,7 @@ const EditPasswordModal: React.FC<EditPasswordModalProps> = ({
   return (
     <Modal
       title="Edit Password"
-      visible={visible}
+      open={visible}
       onOk={handleOk}
       onCancel={onClose}
       okText="Save"

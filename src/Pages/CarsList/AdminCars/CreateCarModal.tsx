@@ -39,7 +39,7 @@ const CreateCarModal: React.FC<CarCreateModalProps> = ({
 
   return (
     <Modal
-      visible={visible}
+      open={visible}
       title="Create New Car"
       onCancel={onCancel}
       footer={null}

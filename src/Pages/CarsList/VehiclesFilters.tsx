@@ -23,6 +23,7 @@ interface VehicleFiltersProps {
   filters: Filters;
   setFilters: React.Dispatch<React.SetStateAction<Filters>>;
   handleShowAll: () => void;
+  page: number;
 }
 
 const VehicleFilters: React.FC<VehicleFiltersProps> = ({
@@ -30,6 +31,7 @@ const VehicleFilters: React.FC<VehicleFiltersProps> = ({
   setOpenFilter,
   setFilters,
   handleShowAll,
+  page,
 }) => {
   const [filterOptions, setFilterOptions] = useState<{
     manufacturer: string[];
@@ -47,7 +49,8 @@ const VehicleFilters: React.FC<VehicleFiltersProps> = ({
 
   const fetchFilterOptions = async () => {
     try {
-      const response = await ApiService.getVehiclesList();
+      console.log(page);
+      const response = await ApiService.getVehiclesList(page);
       const data: Vehicle[] = response.data.data;
 
       const uniqueManufacturers = Array.from(

@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import VehicleFilters from "./VehiclesFilters";
 import AvailableVehicles from "./AvailableVehicles";
 import ApiService from "../../Shared/api"; // Assuming this is where you handle user fetching
+import { Pagination } from "antd";
 
 const VehicleList = () => {
   const [openFilter, setOpenFilter] = useState<string | null>(null);
@@ -12,7 +13,9 @@ const VehicleList = () => {
     fuel: "",
     passengers: "",
   });
-  const [isAdmin, setIsAdmin] = useState<number>(0); // Initializing isAdmin as a number
+  const [isAdmin, setIsAdmin] = useState<number>(0);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [lastPage, setLastPage] = useState<number>(1);
   const filterRef = useRef<HTMLDivElement | null>(null);
 
   const handleShowAll = () => {
@@ -28,8 +31,8 @@ const VehicleList = () => {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const userResponse = await ApiService.getUserData(); // Fetch user data
-        setIsAdmin(userResponse.data.admin); // Set admin status (1 or 0 as number)
+        const userResponse = await ApiService.getUserData();
+        setIsAdmin(userResponse.data.admin);
       } catch (error) {
         console.error("Error fetching user data:", error);
       }
@@ -48,9 +51,25 @@ const VehicleList = () => {
           filters={filters}
           setFilters={setFilters}
           handleShowAll={handleShowAll}
+          page={currentPage}
         />
       </div>
-      <AvailableVehicles filters={filters} isAdmin={isAdmin} />
+      <AvailableVehicles
+        filters={filters}
+        isAdmin={isAdmin}
+        currentPage={currentPage}
+        setCurrentPage={setCurrentPage}
+        lastPage={lastPage}
+        setLastPage={setLastPage} // Pass setLastPage to AvailableVehicles
+      />
+
+      {/* Pagination controls */}
+      <Pagination
+        current={currentPage}
+        total={lastPage * 6} // Adjust this based on your item count
+        onChange={(page) => setCurrentPage(page)}
+        pageSize={6}
+      />
     </div>
   );
 };

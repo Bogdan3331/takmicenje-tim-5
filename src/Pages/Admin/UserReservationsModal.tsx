@@ -89,7 +89,7 @@ const UserReservationsModal: React.FC<UserReservationsModalProps> = ({
   return (
     <Modal
       title="User Reservations"
-      visible={visible}
+      open={visible}
       onCancel={onClose}
       footer={null}
     >

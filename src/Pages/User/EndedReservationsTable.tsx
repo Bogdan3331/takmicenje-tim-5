@@ -32,7 +32,7 @@ const EndedReservationsTable: React.FC = () => {
 
   const fetchData = useCallback(async () => {
     try {
-      const response = await ApiService.getUserReservations();
+      const response = await ApiService.getUsersReservations();
       console.log(response);
       if (response.error) {
         setError(response.error);

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Modal, Form, Input, InputNumber, Select, Button } from "antd";
-import ApiService from "../../../Shared/api"; // Assuming this is where you handle API calls
+import ApiService from "../../../Shared/api";
 
 const { Option } = Select;
 
@@ -22,26 +22,26 @@ const CarUpdateModal: React.FC<CarUpdateModalProps> = ({
 
   useEffect(() => {
     if (carId && visible) {
+      const fetchCarData = async () => {
+        try {
+          const response = await ApiService.getVehicleData(carId);
+          const carData = response.data.data;
+          form.setFieldsValue({
+            image: carData.image,
+            fuelType: carData.fuelType,
+            price: carData.price,
+            description: carData.description,
+            brand: carData.brand,
+            type: carData.type,
+          });
+        } catch (error) {
+          console.error("Error fetching car data:", error);
+        }
+      };
+
       fetchCarData();
     }
-  }, [carId, visible]);
-
-  const fetchCarData = async () => {
-    try {
-      const response = await ApiService.getVehicleData(carId);
-      const carData = response.data.data;
-      form.setFieldsValue({
-        image: carData.image,
-        fuelType: carData.fuelType,
-        price: carData.price,
-        description: carData.description,
-        brand: carData.brand,
-        type: carData.type,
-      });
-    } catch (error) {
-      console.error("Error fetching car data:", error);
-    }
-  };
+  }, [carId, visible, form]);
 
   const handleUpdate = async (values: any) => {
     setLoading(true);
@@ -59,7 +59,7 @@ const CarUpdateModal: React.FC<CarUpdateModalProps> = ({
 
   return (
     <Modal
-      visible={visible}
+      open={visible}
       title="Update Car Information"
       onCancel={onCancel}
       footer={null}
@@ -69,8 +69,7 @@ const CarUpdateModal: React.FC<CarUpdateModalProps> = ({
         {/* <Form.Item
           label="Image URL"
           name="image"
-          rules={[{ required: true, message: "Please enter image URL" }]}
-        >
+          rules={[{ required: true, message: "Please enter image URL" }]}>
           <Input placeholder="Enter image URL" />
         </Form.Item> */}
 

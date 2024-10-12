@@ -29,7 +29,7 @@ const RezervationsTable: React.FC = () => {
 
   const fetchData = useCallback(async () => {
     try {
-      const response = await ApiService.getUserReservations();
+      const response = await ApiService.getUsersReservations();
 
       if (response.error) {
         setError(response.error);
@@ -37,7 +37,7 @@ const RezervationsTable: React.FC = () => {
 
       if (response.data.data) {
         const activeReservations = response.data.data;
-
+        console.log(response);
         // Filter out reservations that have ended
         const now = new Date();
         const filteredReservations = activeReservations.filter(
