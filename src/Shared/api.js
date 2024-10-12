@@ -135,6 +135,8 @@ const ApiService = {
   },
 
   async getUserReservations(id) {
+    console.log("ova funkcija");
+    console.log(id);
     return this.get(`admin/user/${id}/reservation`);
   },
 
@@ -208,10 +210,6 @@ const ApiService = {
 
   async resetPassword(values) {
     return this.post("reset-password", values);
-  },
-
-  async getUserReservations() {
-    return this.get("reservation");
   },
 };
 

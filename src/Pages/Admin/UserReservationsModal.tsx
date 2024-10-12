@@ -42,8 +42,8 @@ const UserReservationsModal: React.FC<UserReservationsModalProps> = ({
     const fetchUserReservations = async () => {
       setLoading(true); // Start loading state
       try {
-        const response = await ApiService.getUserReservations(userId); // Adjust to your API call
-
+        const response = await ApiService.getUserReservations(userId);
+        console.log(response);
         if (response.error) {
           setError(response.error);
           return;
