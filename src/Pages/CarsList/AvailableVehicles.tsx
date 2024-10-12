@@ -91,8 +91,13 @@ const AvailableVehicles: React.FC<AvailableVehiclesProps> = ({
 
   useEffect(() => {
     fetchVehicles(currentPage, filters);
-  }, [currentPage, fetchVehicles, filters]);
-  
+  }, [currentPage, fetchVehicles]);
+
+  useEffect(() => {
+    setCurrentPage(1);
+    fetchVehicles(1, filters);
+  }, [filters]);
+
   const handleDeleteCar = async (carId: number) => {
     setLoading(true);
     try {
