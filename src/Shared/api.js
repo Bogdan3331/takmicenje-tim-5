@@ -171,6 +171,10 @@ const ApiService = {
 
   // vehicle calls for users
 
+  async getVehicleFilters() {
+    return this.get(`/get-set-columns`);
+  },
+
   async getVehiclesList(page, searchQuery, data) {
     let search = { search: searchQuery, page };
     try {

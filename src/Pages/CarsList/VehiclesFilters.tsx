@@ -1,14 +1,6 @@
 import React, { useEffect, useState } from "react";
 import ApiService from "../../Shared/api";
 
-interface Vehicle {
-  brand: string;
-  type: string;
-  gear: string;
-  fuelType: string;
-  passengers: number;
-}
-
 interface Filters {
   manufacturer: string;
   type: string;
@@ -50,24 +42,14 @@ const VehicleFilters: React.FC<VehicleFiltersProps> = ({
   const fetchFilterOptions = async () => {
     try {
       console.log(page);
-      const response = await ApiService.getVehiclesList(page);
-      const data: Vehicle[] = response.data.data;
+      const response = await ApiService.getVehicleFilters();
+      const data = response.data.data;
 
-      const uniqueManufacturers = Array.from(
-        new Set(data.map((vehicle) => vehicle.brand))
-      );
-      const uniqueTypes = Array.from(
-        new Set(data.map((vehicle) => vehicle.type))
-      );
-      const uniqueGears = Array.from(
-        new Set(data.map((vehicle) => vehicle.gear))
-      );
-      const uniqueFuels = Array.from(
-        new Set(data.map((vehicle) => vehicle.fuelType))
-      );
-      const uniquePassengers = Array.from(
-        new Set(data.map((vehicle) => vehicle.passengers.toString()))
-      );
+      const uniqueManufacturers = data.brands;
+      const uniqueTypes = data.types
+      const uniqueGears = data.gears
+      const uniqueFuels = data.fuelTypes
+      const uniquePassengers = data.passengers
 
       setFilterOptions({
         manufacturer: uniqueManufacturers,
