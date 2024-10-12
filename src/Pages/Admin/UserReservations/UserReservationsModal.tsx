@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Modal, Spin } from "antd";
-import ApiService from "../../Shared/api";
+import ApiService from "../../../Shared/api";
 
 interface Reservation {
   id: number;

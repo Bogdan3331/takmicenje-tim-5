@@ -130,6 +130,14 @@ const ApiService = {
     return this.get("admin/user");
   },
 
+  async deleteUser(id) {
+    return this.delete(`admin/user/${id}`);
+  },
+
+  async editUserData(id, values) {
+    return this.put(`/user/${id}`, values);
+  },
+
   async getUsersNames(id) {
     return this.get(`user/${id}`);
   },
