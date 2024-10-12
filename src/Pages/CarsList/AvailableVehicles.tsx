@@ -4,6 +4,7 @@ import ApiService from "../../Shared/api";
 import ReserveBtn from "../../Components/Buttons/ReserveBtn";
 import UpdateCarBtn from "./AdminCars/UpdateCarBtn";
 import CreateCarBtn from "./AdminCars/CreateCarBtn";
+import { Dayjs } from "dayjs";
 
 interface Car {
   id: number;
@@ -34,8 +35,8 @@ const AvailableVehicles: React.FC<AvailableVehiclesProps> = (
   { filters },
   { isAdmin }
 ) => {
-  const [startDate, setStartDate] = useState<string | undefined>(undefined);
-  const [endDate, setEndDate] = useState<string | undefined>(undefined);
+  const [startDate, setStartDate] = useState<Dayjs | undefined>(undefined);
+  const [endDate, setEndDate] = useState<Dayjs | undefined>(undefined);
   const [vehicles, setVehicles] = useState<Car[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
@@ -49,8 +50,8 @@ const AvailableVehicles: React.FC<AvailableVehiclesProps> = (
       setError(null);
 
       const dates = {
-        startDate: startDate || undefined,
-        endDate: endDate || undefined,
+        startDate: startDate ? startDate.format("YYYY-MM-DD HH:mm") : undefined,
+        endDate: endDate ? endDate.format("YYYY-MM-DD HH:mm") : undefined,
         available: startDate && endDate ? true : null,
       };
 
@@ -126,18 +127,16 @@ const AvailableVehicles: React.FC<AvailableVehiclesProps> = (
         <DatePicker
           showTime
           placeholder="Select pick up date"
-          onChange={(date) =>
-            setStartDate(date ? date.format("YYYY-MM-DD HH:mm") : undefined)
-          }
+          value={startDate}
+          onChange={(date) => setStartDate(date)}
           format="YYYY-MM-DD HH:mm"
           style={{ marginRight: "1rem" }}
         />
         <DatePicker
           showTime
           placeholder="Select drop off date"
-          onChange={(date) =>
-            setEndDate(date ? date.format("YYYY-MM-DD HH:mm") : undefined)
-          }
+          value={endDate}
+          onChange={(date) => setEndDate(date)}
           format="YYYY-MM-DD HH:mm"
         />
       </div>
@@ -199,7 +198,12 @@ const AvailableVehicles: React.FC<AvailableVehiclesProps> = (
                     </Button>
                   ))
                 }
-                <ReserveBtn carId={car.id} carPrice={car.price} />
+                <ReserveBtn
+                  carId={car.id}
+                  carPrice={car.price}
+                  startDateProp={startDate}
+                  endDateProp={endDate}
+                />
                 {(isAdmin = 1 && <UpdateCarBtn carId={car.id} />)}
               </div>
             </div>

@@ -8,6 +8,7 @@ interface Reservation {
   carId: number;
   startDate: string;
   endDate: string;
+  rate: { comment: string | null }; // Allowing null in case there's no comment
 }
 
 interface Vehicle {
@@ -17,7 +18,7 @@ interface Vehicle {
   brand: string;
   price: number;
   avgRate: number;
-  description: string; // Add other properties if needed
+  description: string;
 }
 
 const GetAllReservations: React.FC = () => {
@@ -32,16 +33,16 @@ const GetAllReservations: React.FC = () => {
     const fetchAllReservations = async () => {
       setLoading(true); // Start loading state
       try {
-        const response = await ApiService.getAllReservations(); // Fetch all reservations
-
+        const response = await ApiService.getAllReservations();
+        console.log(response);
         if (response.error) {
           setError(response.error);
           return;
         }
 
         if (response.data.data) {
-          const allReservations = response.data.data; // Get all reservations
-          setReservations(allReservations); // Set all reservations
+          const allReservations = response.data.data;
+          setReservations(allReservations);
 
           const vehiclePromises = allReservations.map(
             async (reservation: Reservation) => {
@@ -82,9 +83,6 @@ const GetAllReservations: React.FC = () => {
           <thead>
             <tr className="bg-gray-200 rounded-lg">
               <th className="px-4 py-2 text-left font-semibold text-gray-700">
-                User ID
-              </th>
-              <th className="px-4 py-2 text-left font-semibold text-gray-700">
                 Pickup Date
               </th>
               <th className="px-4 py-2 text-left font-semibold text-gray-700">
@@ -92,6 +90,9 @@ const GetAllReservations: React.FC = () => {
               </th>
               <th className="px-4 py-2 text-left font-semibold text-gray-700">
                 Car Details
+              </th>
+              <th className="px-4 py-2 text-left font-semibold text-gray-700">
+                Comment
               </th>
             </tr>
           </thead>
@@ -101,9 +102,6 @@ const GetAllReservations: React.FC = () => {
 
               return (
                 <tr key={reservation.id} className="border-t">
-                  <td className="px-4 py-2 text-gray-500 text-sm">
-                    {reservation.userId}
-                  </td>
                   <td className="px-4 py-2 text-gray-500 text-sm">
                     {reservation.startDate}
                   </td>
@@ -136,6 +134,9 @@ const GetAllReservations: React.FC = () => {
                           <p className="text-gray-600">
                             {vehicle.description || "No Description"}
                           </p>
+                          {/* <p className="text-gray-600">
+                            {reservation.comment || "No Comment"}
+                          </p> */}
                         </div>
                       </div>
                     ) : (
