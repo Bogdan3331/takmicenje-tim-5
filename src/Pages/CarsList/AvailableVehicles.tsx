@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
 import { Button, DatePicker, Input } from "antd";
 import ApiService from "../../Shared/api";
 import ReserveBtn from "../../Components/Buttons/ReserveBtn";
@@ -49,6 +50,8 @@ const AvailableVehicles: React.FC<AvailableVehiclesProps> = ({
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState<string>("");
+
+  const navigate = useNavigate();
 
   const fetchVehicles = useCallback(
     async (page: number, filters: Filters) => {
@@ -142,6 +145,9 @@ const AvailableVehicles: React.FC<AvailableVehiclesProps> = ({
             {/* Car image */}
             <div className="border rounded-lg shadow-md overflow-hidden bg-white cursor-pointer">
               <img
+                onClick={() => {
+                  navigate(`/vehicle-details/${car.id}`);
+                }}
                 src={car.image || "https://via.placeholder.com/100"}
                 alt={car.brand}
                 className="w-full h-48 object-cover"
