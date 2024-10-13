@@ -7,7 +7,6 @@ const SignInPage: React.FC = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
-  const [showPasswordRecovery, setShowPasswordRecovery] = useState(false);
   const navigate = useNavigate();
 
   const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -71,13 +70,7 @@ const SignInPage: React.FC = () => {
               Remember me
             </label>
           </div>
-          <button
-            className="font-medium text-base text-violet-500"
-            onClick={() => setShowPasswordRecovery(true)}
-            type="button"
-          >
-            Forgot your password?
-          </button>
+          <PasswordRecovery />
         </div>
         <div className="mt-8 flex flex-col gap-y-4">
           <button
@@ -101,7 +94,6 @@ const SignInPage: React.FC = () => {
           Register
         </button>
       </div>
-      {showPasswordRecovery && <PasswordRecovery />}
     </div>
   );
 };

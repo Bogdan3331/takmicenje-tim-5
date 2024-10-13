@@ -1,183 +1,118 @@
 import React, { useState } from "react";
-import { Modal, Input, message } from "antd";
+import { Modal, Input, Button, message } from "antd";
+import ApiService from "../../Shared/api"; // Adjust the import path as needed
 
-interface ForgotPasswordModalProps {
-  visible: boolean;
-  onClose: () => void;
-  onSubmit: (email: string) => Promise<void>;
-}
-
-interface ResetPasswordModalProps {
-  visible: boolean;
-  onClose: () => void;
-  onSubmit: (values: {
-    email: string;
-    token: string;
-    newPassword: string;
-    newPasswordConfirmation: string;
-  }) => Promise<void>;
-}
-
-const ForgotPasswordModal: React.FC<ForgotPasswordModalProps> = ({
-  visible,
-  onClose,
-  onSubmit,
-}) => {
-  const [email, setEmail] = useState<string>("");
-
-  const handleOk = async () => {
-    try {
-      await onSubmit(email);
-      message.success("Check your email for the reset token.");
-      onClose();
-    } catch (error) {
-      message.error("Failed to send reset email.");
-    }
-  };
-
-  return (
-    <Modal
-      title="Forgot Password"
-      visible={visible}
-      onOk={handleOk}
-      onCancel={onClose}
-      okText="Submit"
-      cancelText="Cancel"
-    >
-      <div>
-        <label>Email:</label>
-        <Input
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          type="email"
-        />
-      </div>
-    </Modal>
-  );
-};
-
-const ResetPasswordModal: React.FC<ResetPasswordModalProps> = ({
-  visible,
-  onClose,
-  onSubmit,
-}) => {
-  const [email, setEmail] = useState<string>("");
-  const [token, setToken] = useState<string>("");
-  const [newPassword, setNewPassword] = useState<string>("");
-  const [newPasswordConfirmation, setNewPasswordConfirmation] =
-    useState<string>("");
-
-  const handleOk = async () => {
-    try {
-      await onSubmit({
-        email,
-        token,
-        newPassword,
-        newPasswordConfirmation,
-      });
-      message.success("Password reset successfully.");
-      onClose();
-    } catch (error) {
-      message.error("Failed to reset password.");
-    }
-  };
-
-  return (
-    <Modal
-      title="Reset Password"
-      visible={visible}
-      onOk={handleOk}
-      onCancel={onClose}
-      okText="Save"
-      cancelText="Cancel"
-    >
-      <div>
-        <div>
-          <label>Email:</label>
-          <Input
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            type="email"
-          />
-        </div>
-        <div style={{ marginTop: "1rem" }}>
-          <label>Token:</label>
-          <Input value={token} onChange={(e) => setToken(e.target.value)} />
-        </div>
-        <div style={{ marginTop: "1rem" }}>
-          <label>New Password:</label>
-          <Input.Password
-            value={newPassword}
-            onChange={(e) => setNewPassword(e.target.value)}
-          />
-        </div>
-        <div style={{ marginTop: "1rem" }}>
-          <label>Confirm New Password:</label>
-          <Input.Password
-            value={newPasswordConfirmation}
-            onChange={(e) => setNewPasswordConfirmation(e.target.value)}
-          />
-        </div>
-      </div>
-    </Modal>
-  );
-};
-
-// Main component to handle both modals
 const PasswordRecovery: React.FC = () => {
-  const [forgotVisible, setForgotVisible] = useState<boolean>(true);
-  const [resetVisible, setResetVisible] = useState<boolean>(false);
+  const [visibleEmailModal, setVisibleEmailModal] = useState(false);
+  const [visibleResetModal, setVisibleResetModal] = useState(false);
+  const [email, setEmail] = useState("");
+  const [resetEmail, setResetEmail] = useState("");
+  const [token, setToken] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [newPasswordConfirmation, setNewPasswordConfirmation] = useState("");
 
-  const forgetPassword = async (email: string) => {
-    return new Promise<void>((resolve, reject) => {
-      setTimeout(() => {
-        if (email === "test@example.com") {
-          resolve();
-        } else {
-          reject();
-        }
-      }, 1000);
-    });
+  // Open the email modal
+  const showEmailModal = () => {
+    setVisibleEmailModal(true);
   };
 
-  const resetPassword = async (values: {
-    email: string;
-    token: string;
-    newPassword: string;
-    newPasswordConfirmation: string;
-  }) => {
-    // Call the API for reset password
-    return new Promise<void>((resolve, reject) => {
-      setTimeout(() => {
-        if (values.token === "12345") {
-          resolve();
-        } else {
-          reject();
-        }
-      }, 1000);
-    });
+  // Handle email submission without promises
+  const handleEmailSubmit = () => {
+    ApiService.forgetPassword(email);
+    console.log(email);
+    setVisibleEmailModal(false);
+    setVisibleResetModal(true); // Show the second modal after calling the API
+  };
+
+  // Handle password reset submission using async/await
+  const handleResetSubmit = async () => {
+    const values = {
+      email: resetEmail,
+      token: token,
+      newPassword: newPassword,
+      newPassword_confirmation: newPasswordConfirmation,
+    };
+    try {
+      const response = await ApiService.resetPassword(values);
+      console.log(response);
+      setVisibleResetModal(false);
+      // Clear inputs if needed
+      setResetEmail("");
+      setToken("");
+      setNewPassword("");
+      setNewPasswordConfirmation("");
+    } catch (error) {
+      console.error("Error resetting password:", error);
+      message.error("Failed to reset password. Please try again.");
+    }
   };
 
   return (
     <>
-      <ForgotPasswordModal
-        visible={forgotVisible}
-        onClose={() => setForgotVisible(false)}
-        onSubmit={async (email) => {
-          try {
-            await forgetPassword(email);
-            setForgotVisible(false);
-            setResetVisible(true);
-          } catch (error) {
-            message.error("Email not found.");
-          }
-        }}
-      />
-      <ResetPasswordModal
-        visible={resetVisible}
-        onClose={() => setResetVisible(false)}
-        onSubmit={resetPassword}
-      />
+      <Button type="primary" onClick={showEmailModal}>
+        Forgot Password?
+      </Button>
+
+      {/* Email Modal */}
+      <Modal
+        title="Reset Password"
+        open={visibleEmailModal}
+        onCancel={() => setVisibleEmailModal(false)}
+        footer={null}
+      >
+        <Input
+          placeholder="Enter your email"
+          value={email}
+          type="required"
+          onChange={(e) => setEmail(e.target.value)}
+        />
+        <Button
+          type="primary"
+          onClick={handleEmailSubmit}
+          style={{ marginTop: 16 }}
+        >
+          Submit
+        </Button>
+      </Modal>
+
+      {/* Reset Password Modal */}
+      <Modal
+        title="Set New Password"
+        open={visibleResetModal}
+        onCancel={() => setVisibleResetModal(false)}
+        footer={null}
+      >
+        <Input
+          placeholder="Enter your email"
+          value={resetEmail}
+          onChange={(e) => setResetEmail(e.target.value)}
+          style={{ marginTop: 16 }}
+        />
+        <Input
+          placeholder="Enter the token from your email"
+          value={token}
+          onChange={(e) => setToken(e.target.value)}
+        />
+        <Input.Password
+          placeholder="New Password"
+          value={newPassword}
+          onChange={(e) => setNewPassword(e.target.value)}
+          style={{ marginTop: 16 }}
+        />
+        <Input.Password
+          placeholder="Confirm New Password"
+          value={newPasswordConfirmation}
+          onChange={(e) => setNewPasswordConfirmation(e.target.value)}
+          style={{ marginTop: 16 }}
+        />
+        <Button
+          type="primary"
+          onClick={handleResetSubmit}
+          style={{ marginTop: 16 }}
+        >
+          Reset Password
+        </Button>
+      </Modal>
     </>
   );
 };

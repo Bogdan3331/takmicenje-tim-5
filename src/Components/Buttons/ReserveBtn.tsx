@@ -7,8 +7,8 @@ import { Dayjs } from "dayjs";
 interface ReserveBtnProps {
   carId: number;
   carPrice: number;
-  startDateProp?: Dayjs | null; // Optional prop
-  endDateProp?: Dayjs | null; // Optional prop
+  startDateProp?: Dayjs | null;
+  endDateProp?: Dayjs | null;
 }
 
 const ReserveBtn: React.FC<ReserveBtnProps> = ({
@@ -29,27 +29,19 @@ const ReserveBtn: React.FC<ReserveBtnProps> = ({
   const [totalPrice, setTotalPrice] = useState<number>(0);
   const authToken = localStorage.getItem("auth_token");
 
-  // Show the modal
   const showModal = () => {
     setIsModalOpen(true);
   };
 
-  // Close the modal
   const handleCancel = () => {
     setIsModalOpen(false);
   };
 
-  // Handle reservation API call
   const handleReserve = async () => {
     if (!authToken) {
       navigate("/sign-in", { replace: true });
       return;
     }
-
-    // if (!startDateTime || !endDateTime) {
-    //   console.error("Please select both start and end date-time.");
-    //   return;
-    // }
 
     const values = {
       carId,
@@ -89,20 +81,18 @@ const ReserveBtn: React.FC<ReserveBtnProps> = ({
         const calculatedPrice = diffInDays * carPrice + carPrice;
         setTotalPrice(calculatedPrice);
       } else {
-        setTotalPrice(0); // Reset price if dates are not fully selected
+        setTotalPrice(0);
       }
     },
     [carPrice]
   );
 
-  // Initial price calculation if props are provided
   useEffect(() => {
     if (startDateProp && endDateProp) {
       calculateTotalPrice(startDateProp, endDateProp);
     }
   }, [startDateProp, endDateProp, calculateTotalPrice]);
 
-  // Recalculate price when user selects dates in the DatePicker
   useEffect(() => {
     if (!startDateProp && !endDateProp) {
       calculateTotalPrice(startDateTime, endDateTime);
@@ -158,7 +148,6 @@ const ReserveBtn: React.FC<ReserveBtnProps> = ({
             </>
           )}
 
-          {/* Show total price */}
           <div className="form-section">
             <p>
               {totalPrice > 0

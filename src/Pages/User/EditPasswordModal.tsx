@@ -7,7 +7,7 @@ interface EditPasswordModalProps {
   onUpdate: (values: {
     currentPassword: string;
     newPassword: string;
-    newPasswordConfirmation: string;
+    newPassword_confirmation: string;
   }) => Promise<void>;
 }
 
@@ -18,12 +18,11 @@ const EditPasswordModal: React.FC<EditPasswordModalProps> = ({
 }) => {
   const [currentPassword, setCurrentPassword] = useState<string>("");
   const [newPassword, setNewPassword] = useState<string>("");
-  const [newPasswordConfirmation, setNewPasswordConfirmation] =
+  const [newPassword_confirmation, setnewPassword_confirmation] =
     useState<string>("");
 
   const handleOk = async () => {
-    // Call onUpdate with the current password, new password, and confirm password values
-    await onUpdate({ currentPassword, newPassword, newPasswordConfirmation });
+    await onUpdate({ currentPassword, newPassword, newPassword_confirmation });
   };
 
   return (
@@ -53,8 +52,8 @@ const EditPasswordModal: React.FC<EditPasswordModalProps> = ({
         <div style={{ marginTop: "1rem" }}>
           <label>Confirm New Password:</label>
           <Input.Password
-            value={newPasswordConfirmation}
-            onChange={(e) => setNewPasswordConfirmation(e.target.value)}
+            value={newPassword_confirmation}
+            onChange={(e) => setnewPassword_confirmation(e.target.value)}
           />
         </div>
       </div>

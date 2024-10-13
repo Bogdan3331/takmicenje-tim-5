@@ -39,7 +39,7 @@ const UserPage: React.FC = () => {
   const handleUpdatePassword = async (values: {
     currentPassword: string;
     newPassword: string;
-    newPasswordConfirmation: string;
+    newPassword_confirmation: string;
   }) => {
     try {
       await ApiService.editPassword(values); // Call your API service for password update

@@ -235,7 +235,8 @@ const ApiService = {
   },
 
   async forgetPassword(email) {
-    return this.post("forgot-password", email);
+    const res = this.post("forgot-password", { email });
+    console.log(res);
   },
 
   async resetPassword(values) {
