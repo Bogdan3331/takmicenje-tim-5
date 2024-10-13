@@ -1,4 +1,3 @@
-// src/App.tsx
 import React from "react";
 import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
 import PrivateRoute from "./Pages/PrivateRoute";
@@ -12,9 +11,10 @@ import Header from "./Components/Header";
 import Footer from "./Pages/Footer/Footer";
 import ApiService from "./Shared/api";
 import CarDetails from "./Pages/CarsList/CarDetails";
-import AboutUs from "./Pages/AboutUs/AboutUs"; // Import About Us page
+import AboutUs from "./Pages/AboutUs/AboutUs";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import AdminPage from "./Pages/Admin/AdminPage";
+import AdminLocations from "./Pages/Admin/AdminMap/AdminLocations";
 
 const LayoutWrapper: React.FC<{ children: React.ReactNode }> = ({
   children,
@@ -138,6 +138,14 @@ function App() {
                 </LayoutWrapper>
               }
             />
+          }
+        />
+        <Route
+          path="/admin-map" // About Us route
+          element={
+            <LayoutWrapper>
+              <AdminLocations />
+            </LayoutWrapper>
           }
         />
       </Routes>

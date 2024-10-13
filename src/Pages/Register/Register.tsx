@@ -6,7 +6,7 @@ interface RegisterForm {
   name: string;
   email: string;
   password: string;
-  passwordConfirmation: string;
+  password_confirmation: string;
 }
 
 const RegisterPage: React.FC = () => {
@@ -14,9 +14,9 @@ const RegisterPage: React.FC = () => {
     name: "",
     email: "",
     password: "",
-    passwordConfirmation: "",
+    password_confirmation: "",
   });
-  
+
   const navigate = useNavigate();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -28,7 +28,7 @@ const RegisterPage: React.FC = () => {
     e.preventDefault();
 
     // Password confirmation check
-    if (form.password !== form.passwordConfirmation) {
+    if (form.password !== form.password_confirmation) {
       alert("Passwords do not match");
       return;
     }
@@ -96,12 +96,14 @@ const RegisterPage: React.FC = () => {
         </div>
 
         <div className="mt-4">
-          <label className="text-lg text-black font-medium">Confirm Password:</label>
+          <label className="text-lg text-black font-medium">
+            Confirm Password:
+          </label>
           <input
             type="password"
             id="passwordConfirmation"
-            name="passwordConfirmation"
-            value={form.passwordConfirmation}
+            name="password_confirmation"
+            value={form.password_confirmation}
             onChange={handleChange}
             className="w-full text-black border-2 border-gray-100 rounded-xl p-4 mt-1 bg-transparent"
             placeholder="Confirm your password"

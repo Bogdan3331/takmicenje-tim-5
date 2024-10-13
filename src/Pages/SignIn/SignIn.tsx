@@ -23,12 +23,13 @@ const SignInPage: React.FC = () => {
 
     try {
       const response = await ApiService.signIn(email, password);
+      console.log(response);
 
       if (response.error) {
         setError(response.error);
       } else {
         localStorage.setItem("auth_token", response.data.token);
-        navigate("/vehicle-list");
+        navigate("/");
       }
     } catch (error: any) {
       setError(error.message);
@@ -100,7 +101,6 @@ const SignInPage: React.FC = () => {
           Register
         </button>
       </div>
-      {/* Password Recovery Modals */}
       {showPasswordRecovery && <PasswordRecovery />}
     </div>
   );

@@ -1,36 +1,34 @@
 import React, { useState } from "react";
-import { Modal, Form, Input, Select, Button } from "antd";
+import { Modal, Button } from "antd";
 import ApiService from "../../../Shared/api";
 
 interface EditUserModalProps {
   visible: boolean;
   onClose: () => void;
-  userId: number; // ID of the user to edit
-  initialName: string; // Current name of the user
-  initialAdmin: boolean; // Current admin status
+  userId: number;
+  userName: string;
+  fetchData: () => void; // Add fetchData to trigger the user reload
 }
 
 const EditUserModal: React.FC<EditUserModalProps> = ({
   visible,
   onClose,
   userId,
-  initialName,
-  initialAdmin,
+  userName,
+  fetchData, // Destructure fetchData
 }) => {
-  const [name, setName] = useState<string>(initialName);
-  const [isAdmin, setIsAdmin] = useState<boolean>(initialAdmin);
   const [loading, setLoading] = useState<boolean>(false);
 
-  const handleSave = async () => {
+  const handleConfirm = async () => {
     setLoading(true);
-
     try {
-      const values = { name, admin: isAdmin };
+      const values = { name: userName, admin: 1 }; // Always send admin: 1
       const response = await ApiService.editUserData(userId, values);
 
       if (!response.error) {
         alert("User updated successfully.");
-        onClose(); // Close the modal on success
+        fetchData(); // Trigger the user list refresh
+        onClose();
       } else {
         alert("Failed to update user.");
       }
@@ -43,35 +41,25 @@ const EditUserModal: React.FC<EditUserModalProps> = ({
   };
 
   return (
-    <Modal title="Edit User" visible={visible} onCancel={onClose} footer={null}>
-      <Form layout="vertical">
-        <Form.Item label="Name" required>
-          <Input
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            placeholder="Enter user name"
-          />
-        </Form.Item>
-
-        <Form.Item label="Admin" required>
-          <Select
-            value={isAdmin}
-            onChange={(value: boolean) => setIsAdmin(value)}
-          >
-            <Select.Option value={true}>True</Select.Option>
-            <Select.Option value={false}>False</Select.Option>
-          </Select>
-        </Form.Item>
-
-        <Form.Item>
-          <Button type="primary" onClick={handleSave} loading={loading}>
-            Save
-          </Button>
-          <Button onClick={onClose} style={{ marginLeft: "10px" }}>
-            Cancel
-          </Button>
-        </Form.Item>
-      </Form>
+    <Modal
+      title="Confirm Edit"
+      open={visible}
+      onCancel={onClose}
+      footer={[
+        <Button key="cancel" onClick={onClose}>
+          Cancel
+        </Button>,
+        <Button
+          key="confirm"
+          type="primary"
+          onClick={handleConfirm}
+          loading={loading}
+        >
+          Confirm
+        </Button>,
+      ]}
+    >
+      <p>Are you sure you want to update {userName} to admin?</p>
     </Modal>
   );
 };

@@ -135,6 +135,7 @@ const ApiService = {
   },
 
   async editUserData(id, values) {
+    console.log(id, values);
     return this.put(`/user/${id}`, values);
   },
 
@@ -157,7 +158,11 @@ const ApiService = {
   },
 
   async updateCar(id, values) {
-    return this.post(`admin/car/${id}`, values);
+    return this.post(`admin/car/${id}`, values, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
   },
 
   async createCar(values) {
@@ -179,17 +184,21 @@ const ApiService = {
     let search = { search: searchQuery, page };
     try {
       const { startDate, endDate, available, filter } = data;
-      const { type, gear, passengers} = filter;
-      const fuelType = filter.fuel
-      let brand = filter.manufacturer
-      if(searchQuery) brand = searchQuery;
+      const { type, gear, passengers } = filter;
+      const fuelType = filter.fuel;
+      let brand = filter.manufacturer;
+      if (searchQuery) brand = searchQuery;
       search = {
         page,
         search: searchQuery,
         startDate,
         endDate,
         available,
-        type, brand, fuelType, gear, passengers
+        type,
+        brand,
+        fuelType,
+        gear,
+        passengers,
       };
     } catch (error) {}
 

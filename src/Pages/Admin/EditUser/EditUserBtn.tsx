@@ -6,12 +6,14 @@ interface EditUserBtnProps {
   userId: number;
   userName: string;
   userAdmin: boolean;
+  fetchData: () => void; // Fetch data prop to trigger user list reload
 }
 
 const EditUserBtn: React.FC<EditUserBtnProps> = ({
   userId,
   userName,
   userAdmin,
+  fetchData, // Destructure fetchData prop
 }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
 
@@ -25,18 +27,19 @@ const EditUserBtn: React.FC<EditUserBtnProps> = ({
 
   return (
     <>
-      <Button type="primary" onClick={handleOpenModal}>
-        Edit User
-      </Button>
+      {!userAdmin && (
+        <Button type="primary" onClick={handleOpenModal}>
+          Upgrade to admin
+        </Button>
+      )}
 
-      {/* Render the EditUserModal only when the button is clicked */}
       {isModalVisible && (
         <EditUserModal
           visible={isModalVisible}
           onClose={handleCloseModal}
           userId={userId}
-          initialName={userName}
-          initialAdmin={userAdmin}
+          userName={userName}
+          fetchData={fetchData} // Pass fetchData to the modal
         />
       )}
     </>

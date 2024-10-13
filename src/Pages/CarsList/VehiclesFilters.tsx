@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import ApiService from "../../Shared/api";
 
 interface Filters {
@@ -39,7 +39,7 @@ const VehicleFilters: React.FC<VehicleFiltersProps> = ({
     passengers: [],
   });
 
-  const fetchFilterOptions = async () => {
+  const fetchFilterOptions = useCallback(async () => {
     try {
       console.log(page);
       const response = await ApiService.getVehicleFilters();
@@ -61,11 +61,11 @@ const VehicleFilters: React.FC<VehicleFiltersProps> = ({
     } catch (error) {
       console.error("Error fetching vehicle data:", error);
     }
-  };
+  }, [page]);
 
   useEffect(() => {
     fetchFilterOptions();
-  }, []);
+  }, [fetchFilterOptions]);
 
   const handleFilterChange = (filterType: keyof Filters, value: string) => {
     setFilters((prevFilters) => ({

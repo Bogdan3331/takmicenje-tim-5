@@ -61,13 +61,12 @@ const VehicleList = () => {
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}
         lastPage={lastPage}
-        setLastPage={setLastPage} // Pass setLastPage to AvailableVehicles
+        setLastPage={setLastPage}
       />
 
-      {/* Pagination controls */}
       <Pagination
         current={currentPage}
-        total={lastPage * 6} // Adjust this based on your item count
+        total={lastPage * 6}
         onChange={(page) => setCurrentPage(page)}
         pageSize={6}
       />

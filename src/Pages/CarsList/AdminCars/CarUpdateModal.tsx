@@ -19,6 +19,7 @@ const CarUpdateModal: React.FC<CarUpdateModalProps> = ({
 }) => {
   const [form] = Form.useForm();
   const [loading, setLoading] = useState<boolean>(false);
+  const [selectedImage, setSelectedImage] = useState(null);
 
   useEffect(() => {
     if (carId && visible) {
@@ -27,7 +28,6 @@ const CarUpdateModal: React.FC<CarUpdateModalProps> = ({
           const response = await ApiService.getVehicleData(carId);
           const carData = response.data.data;
           form.setFieldsValue({
-            image: carData.image,
             fuelType: carData.fuelType,
             price: carData.price,
             description: carData.description,
@@ -45,6 +45,7 @@ const CarUpdateModal: React.FC<CarUpdateModalProps> = ({
 
   const handleUpdate = async (values: any) => {
     setLoading(true);
+    values.image = selectedImage;
     try {
       await ApiService.updateCar(carId, values); // Call update API
       console.log(values);
@@ -57,6 +58,10 @@ const CarUpdateModal: React.FC<CarUpdateModalProps> = ({
     }
   };
 
+  const handleImageChange = (event: any) => {
+    setSelectedImage(event.target.files[0]);
+  };
+
   return (
     <Modal
       open={visible}
@@ -65,13 +70,17 @@ const CarUpdateModal: React.FC<CarUpdateModalProps> = ({
       footer={null}
     >
       <Form form={form} onFinish={handleUpdate} layout="vertical">
-        {/* Reformat Image for it to work */}
-        {/* <Form.Item
-          label="Image URL"
+        <Form.Item
+          label="Image jpg format"
           name="image"
-          rules={[{ required: true, message: "Please enter image URL" }]}>
-          <Input placeholder="Enter image URL" />
-        </Form.Item> */}
+          rules={[{ required: false, message: "Please enter image URL" }]}
+        >
+          <Input
+            type="file"
+            onChange={handleImageChange}
+            placeholder="Enter image URL"
+          />
+        </Form.Item>
 
         {/* Fuel Type */}
         <Form.Item

@@ -17,6 +17,7 @@ const ReserveBtn: React.FC<ReserveBtnProps> = ({
   startDateProp,
   endDateProp,
 }) => {
+  console.log(startDateProp, endDateProp);
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [startDateTime, setStartDateTime] = useState<Dayjs | null>(
@@ -45,15 +46,23 @@ const ReserveBtn: React.FC<ReserveBtnProps> = ({
       return;
     }
 
-    if (!startDateTime || !endDateTime) {
-      console.error("Please select both start and end date-time.");
-      return;
-    }
+    // if (!startDateTime || !endDateTime) {
+    //   console.error("Please select both start and end date-time.");
+    //   return;
+    // }
 
     const values = {
       carId,
-      startDate: startDateTime.format("YYYY-MM-DD HH:mm"),
-      endDate: endDateTime.format("YYYY-MM-DD HH:mm"),
+      startDate: startDateProp
+        ? startDateProp.format("YYYY-MM-DD HH:mm")
+        : startDateTime
+        ? startDateTime.format("YYYY-MM-DD HH:mm")
+        : null,
+      endDate: endDateProp
+        ? endDateProp.format("YYYY-MM-DD HH:mm")
+        : endDateTime
+        ? endDateTime.format("YYYY-MM-DD HH:mm")
+        : null,
     };
 
     try {

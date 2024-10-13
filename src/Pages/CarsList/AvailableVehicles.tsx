@@ -55,12 +55,11 @@ const AvailableVehicles: React.FC<AvailableVehiclesProps> = ({
       setLoading(true);
       setError(null);
 
-
       const data = {
         startDate: startDate ? startDate.format("YYYY-MM-DD HH:mm") : undefined,
         endDate: endDate ? endDate.format("YYYY-MM-DD HH:mm") : undefined,
         available: startDate && endDate ? true : null,
-        filter: filters
+        filter: filters,
       };
 
       try {
@@ -74,11 +73,9 @@ const AvailableVehicles: React.FC<AvailableVehiclesProps> = ({
           throw new Error(response.error);
         }
 
-        // Set the vehicles data
         setVehicles(response.data.data);
 
-        // Set the lastPage using the response's lastPage value
-        setLastPage(response.data.lastPage); // Ensure this matches your API's response structure
+        setLastPage(response.data.lastPage);
       } catch (error: any) {
         console.error("Error fetching vehicles:", error);
         setError(error.message);
@@ -86,17 +83,17 @@ const AvailableVehicles: React.FC<AvailableVehiclesProps> = ({
         setLoading(false);
       }
     },
-    [searchQuery, startDate, endDate, setLastPage] // Add setLastPage to dependencies
+    [searchQuery, startDate, endDate, setLastPage]
   );
 
   useEffect(() => {
     fetchVehicles(currentPage, filters);
-  }, [currentPage, fetchVehicles]);
+  }, [currentPage, fetchVehicles, filters]);
 
   useEffect(() => {
     setCurrentPage(1);
     fetchVehicles(1, filters);
-  }, [filters]);
+  }, [filters, setCurrentPage, fetchVehicles]);
 
   const handleDeleteCar = async (carId: number) => {
     setLoading(true);
