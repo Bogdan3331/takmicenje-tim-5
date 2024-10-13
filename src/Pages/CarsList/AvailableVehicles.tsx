@@ -111,14 +111,14 @@ const AvailableVehicles: React.FC<AvailableVehiclesProps> = ({
 
   return (
     <div className="flex flex-col items-center mt-12 w-full px-4 box-border">
-      <div className="date-picker mb-4">
+      {/* Inputs arranged horizontally and aligned to the left */}
+      <div className="date-picker mb-4 flex space-x-4 w-full justify-start">
         <DatePicker
           showTime
           placeholder="Select pick up date"
           value={startDate}
           onChange={(date) => setStartDate(date)}
           format="YYYY-MM-DD HH:mm"
-          style={{ marginRight: "1rem" }}
         />
         <DatePicker
           showTime
@@ -127,14 +127,14 @@ const AvailableVehicles: React.FC<AvailableVehiclesProps> = ({
           onChange={(date) => setEndDate(date)}
           format="YYYY-MM-DD HH:mm"
         />
+        <Input
+          placeholder="Search by brand"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          style={{ width: "300px" }}
+        />
       </div>
 
-      <Input
-        placeholder="Search by brand"
-        value={searchQuery}
-        onChange={(e) => setSearchQuery(e.target.value)}
-        style={{ marginBottom: "1rem", width: "300px" }}
-      />
       {isAdmin === 1 && <CreateCarBtn />}
       {loading && <div>Loading...</div>}
       {error && <div>Error: {error}</div>}

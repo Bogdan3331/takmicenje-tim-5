@@ -72,7 +72,7 @@ const Header: React.FC = () => {
           <a href="/dashboard" className="text-white hover:text-blue-500">
             Reservations
           </a>
-          <a href="/about-us" className="text-white hover:text-blue-500">
+          <a href="/about-us" className="hidden lg:inline-block text-white hover:text-blue-500">
             About Us
           </a>
         </nav>

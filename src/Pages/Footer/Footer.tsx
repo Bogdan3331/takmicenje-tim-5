@@ -54,9 +54,9 @@ const Footer = () => {
             </button>
             <button
               className="block text-blue-400 hover:underline"
-              onClick={() => navigate("/register")}
+              onClick={() => navigate("/about-us")}
             >
-              Register
+              About Us
             </button>
           </div>
         </div>
