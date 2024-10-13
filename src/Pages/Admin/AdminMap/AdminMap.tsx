@@ -7,7 +7,6 @@ import ApiService from "../../../Shared/api";
 import Pusher from "pusher-js";
 import { useState, useEffect } from "react";
 
-// RecenterMap component to recenter map on position change
 const RecenterMap = ({ position }: { position: LatLngExpression }) => {
   const map = useMap();
   useEffect(() => {
@@ -81,10 +80,16 @@ const AdminMap: React.FC = () => {
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         attribution={attribution}
       />
-      <Marker icon={customIcon} position={position}>
-        <Popup>Belgrade, Serbia.</Popup>
-      </Marker>
-      {/* Recenter the map when position changes */}
+      <div className="car" id="25">
+        <Marker icon={customIcon} position={position}>
+          <Popup>Belgrade, Serbia.</Popup>
+        </Marker>
+      </div>
+      <div className="car" id="26">
+        <Marker icon={customIcon} position={position}>
+          <Popup>Belgrade, Serbia.</Popup>
+        </Marker>
+      </div>
       <RecenterMap position={position} />
     </MapContainer>
   );

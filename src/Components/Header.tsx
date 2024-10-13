@@ -2,50 +2,57 @@ import React from "react";
 import MoreBtn from "./Buttons/MoreBtn";
 import ApiService from "../Shared/api";
 import { MenuProps, message } from "antd";
-import { useNavigate } from "react-router-dom";
 
 const Header: React.FC = () => {
-  const navigate = useNavigate();
-
   const handleLogout = async () => {
     try {
       const response = await ApiService.logoutUser();
       if (!response.error) {
         localStorage.removeItem("auth_token");
         message.success("Logged out successfully.");
-        navigate("/");
+        window.location.href = "/";
       }
     } catch (error) {
       message.error("There was a problem with the logout operation.");
     }
   };
 
-  const renderMenuItems = () => {
-    var menuItems: MenuProps["items"] = [
+  const renderMenuItems = (): MenuProps["items"] => {
+    return [
       {
-        label: "My Profile",
+        label: (
+          <a
+            href="/show-profile"
+            style={{ color: "inherit", textDecoration: "none" }}
+          >
+            My Profile
+          </a>
+        ),
         key: "0",
-        onClick: () => {
-          navigate("/show-profile");
-        },
       },
       {
-        label: "Log Out",
+        label: (
+          <span
+            onClick={handleLogout}
+            style={{ color: "inherit", cursor: "pointer" }}
+          >
+            Log Out
+          </span>
+        ),
         key: "1",
-        onClick: () => {
-          handleLogout();
-          message.success("U have successfully logged out");
-        },
       },
       {
-        label: <p style={{ margin: "0" }}>Admin Page</p>,
+        label: (
+          <a
+            href="/admin-page"
+            style={{ color: "inherit", textDecoration: "none" }}
+          >
+            Admin Page
+          </a>
+        ),
         key: "2",
-        onClick: () => {
-          navigate("/admin-page");
-        },
       },
     ];
-    return menuItems;
   };
 
   return (
