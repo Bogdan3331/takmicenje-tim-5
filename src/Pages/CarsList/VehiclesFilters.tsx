@@ -49,7 +49,6 @@ const VehicleFilters: React.FC<VehicleFiltersProps> = ({
 
   const fetchFilterOptions = async () => {
     try {
-      console.log(page);
       const response = await ApiService.getVehiclesList(page);
       const data: Vehicle[] = response.data.data;
 

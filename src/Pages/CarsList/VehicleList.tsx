@@ -32,7 +32,8 @@ const VehicleList = () => {
     const fetchUserData = async () => {
       try {
         const userResponse = await ApiService.getUserData();
-        setIsAdmin(userResponse.data.admin);
+        setIsAdmin(userResponse.data.data.admin);
+        console.log(userResponse);
       } catch (error) {
         console.error("Error fetching user data:", error);
       }

@@ -22,7 +22,7 @@ const CreateCarModal: React.FC<CarCreateModalProps> = ({
   const handleCreate = async (values: any) => {
     setLoading(true);
     try {
-      await ApiService.createCar(selectedImage);
+      await ApiService.createCar(values);
       console.log(values);
       setLoading(false);
       onCreateSuccess();
@@ -46,7 +46,7 @@ const CreateCarModal: React.FC<CarCreateModalProps> = ({
     >
       <Form form={form} onFinish={handleCreate} layout="vertical">
         {/* Image */}
-        <Form.Item
+        {/* <Form.Item
           label="Image URL"
           name="image"
           rules={[{ required: true, message: "Please enter image URL" }]}
@@ -56,7 +56,7 @@ const CreateCarModal: React.FC<CarCreateModalProps> = ({
             onChange={handleImageChange}
             placeholder="Enter image URL"
           />
-        </Form.Item>
+        </Form.Item> */}
 
         {/* Fuel Type */}
         <Form.Item
@@ -80,6 +80,18 @@ const CreateCarModal: React.FC<CarCreateModalProps> = ({
         >
           <InputNumber
             placeholder="Enter price"
+            min={0}
+            style={{ width: "100%" }}
+          />
+        </Form.Item>
+
+        <Form.Item
+          label="Fuel Consumption"
+          name="fuelConsumption"
+          rules={[{ required: true, message: "Please enter Fuel Consumption" }]}
+        >
+          <InputNumber
+            placeholder="Fuel Consumption"
             min={0}
             style={{ width: "100%" }}
           />
