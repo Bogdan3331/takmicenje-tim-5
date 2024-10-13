@@ -1,4 +1,5 @@
 import axios from "axios";
+import Pusher from "pusher-js";
 
 export const API_BASE_URL = "http://api.tim5.cortexakademija.com:8080/api";
 
@@ -122,6 +123,21 @@ const ApiService = {
 
   async getUserData() {
     return this.get("show-profile");
+  },
+
+  //admin map
+
+  async getLocation() {
+    const pusher = new Pusher("cf3398f2961697904806", { cluster: "eu" });
+    const channel = pusher.subscribe("locations");
+    channel.bind("locations", function (data) {
+      console.log(data.carLocations);
+    });
+  },
+
+  async sendLocation(values) {
+    console.log(values);
+    return this.post("locations", values);
   },
 
   //admin calls

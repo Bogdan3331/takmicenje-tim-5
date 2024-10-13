@@ -1,41 +1,50 @@
-import React, { useEffect, useState } from "react";
-import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
+import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import "leaflet/dist/leaflet.css";
+import { LatLngExpression } from "leaflet";
+import pinIcon from "./Porsche.png";
+import L from "leaflet";
+import ApiService from "../../../Shared/api";
 
-interface MarkerLocation {
-  id: number;
-  position: { lat: number; lng: number }; // Latitude and Longitude
-  title?: string; // Optional title for the marker
-}
+const AdminMap: React.FC = () => {
+  const position: LatLngExpression = [42.44, 19.26];
 
-interface AdminMapProps {
-  locations: MarkerLocation[]; // Prop to receive locations
-}
-
-const AdminMap: React.FC<AdminMapProps> = ({ locations }) => {
-  const containerStyle = {
-    width: "100%",
-    height: "450px",
+  let data = {
+    carId: 25,
+    latitude: 42.44,
+    longitude: 19.26,
   };
 
-  const center = {
-    lat: 42.6904, // Default center latitude
-    lng: 19.398, // Default center longitude
-  };
+  const attribution: string =
+    '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
+
+  const customIcon = new L.Icon({
+    iconUrl: pinIcon,
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    popupAnchor: [1, -34],
+  });
+
+  setInterval(() => {
+    ApiService.sendLocation(data);
+  }, 5000);
+  setInterval(() => {
+    ApiService.getLocation();
+  }, 5000);
 
   return (
-    <LoadScript googleMapsApiKey="YOUR_GOOGLE_MAPS_API_KEY">
-      {" "}
-      {/* Replace with your API key */}
-      <GoogleMap mapContainerStyle={containerStyle} center={center} zoom={8}>
-        {locations.map((marker) => (
-          <Marker
-            key={marker.id}
-            position={marker.position}
-            title={marker.title}
-          />
-        ))}
-      </GoogleMap>
-    </LoadScript>
+    <MapContainer
+      center={position}
+      zoom={13}
+      style={{ height: "400px", width: "30rem" }}
+    >
+      <TileLayer
+        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        attribution={attribution}
+      />
+      <Marker icon={customIcon} position={position}>
+        <Popup>Belgrade, Serbia.</Popup>
+      </Marker>
+    </MapContainer>
   );
 };
 
