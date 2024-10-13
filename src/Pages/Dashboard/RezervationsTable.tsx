@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import ApiService from "../../Shared/api";
+import { message } from "antd";
 
 interface Reservation {
   id: number;
@@ -27,6 +28,31 @@ const RezervationsTable: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
+  const handleCancel = async (
+    reservationId: number,
+    getUsersReservations: () => void
+  ) => {
+    try {
+      const confirmation = window.confirm(
+        "Are you sure you want to cancel this reservation?"
+      );
+      if (!confirmation) return;
+
+      const response = await ApiService.cancelReservation(reservationId);
+
+      if (!response.error) {
+        message.success("Reservation canceled successfully.");
+        getUsersReservations(); // Refresh reservations list after cancellation
+      } else {
+        message.error("Failed to cancel the reservation. Please try again.");
+      }
+    } catch (error) {
+      message.error(
+        "An error occurred while trying to cancel the reservation."
+      );
+    }
+  };
+
   const fetchData = useCallback(async () => {
     try {
       const response = await ApiService.getUsersReservations();
@@ -37,7 +63,6 @@ const RezervationsTable: React.FC = () => {
 
       if (response.data.data) {
         const activeReservations = response.data.data;
-        console.log(response);
         // Filter out reservations that have ended
         const now = new Date();
         const filteredReservations = activeReservations.filter(
@@ -77,8 +102,6 @@ const RezervationsTable: React.FC = () => {
     fetchData();
   }, [fetchData]);
 
-  console.log("Vehicle Data:", vehicleData);
-
   return (
     <div className="reservations">
       <div className="flex justify-center">
@@ -115,11 +138,7 @@ const RezervationsTable: React.FC = () => {
                 </thead>
                 <tbody>
                   {reservations.map((reservation) => {
-                    const vehicle = vehicleData[reservation.carId]; // Access vehicle data for each reservation
-                    console.log(
-                      `Reservation ID: ${reservation.id}, Vehicle Data:`,
-                      vehicle
-                    ); // Log vehicle data for each reservation
+                    const vehicle = vehicleData[reservation.carId];
 
                     return (
                       <tr key={reservation.id} className="border-t">
@@ -130,7 +149,7 @@ const RezervationsTable: React.FC = () => {
                           {reservation.endDate}
                         </td>
                         <td className="px-4 py-2">
-                          {vehicle ? ( // Check if vehicle data exists
+                          {vehicle ? (
                             <div className="flex items-center space-x-4">
                               <img
                                 src={
@@ -138,7 +157,7 @@ const RezervationsTable: React.FC = () => {
                                   "https://via.placeholder.com/100"
                                 }
                                 alt={vehicle.brand}
-                                className="w-16 h-16 object-cover rounded-lg" // Add rounded corners to images
+                                className="w-16 h-16 object-cover rounded-lg"
                               />
                               <div>
                                 <p className="text-lg font-semibold">
@@ -156,6 +175,18 @@ const RezervationsTable: React.FC = () => {
                                 <p className="text-gray-600">
                                   {vehicle.description || "No Description"}
                                 </p>
+                                <button
+                                  style={{
+                                    backgroundColor: "red",
+                                    padding: "0.2rem 1rem",
+                                    borderRadius: "5px",
+                                  }}
+                                  onClick={() => {
+                                    handleCancel(reservation.id, fetchData);
+                                  }}
+                                >
+                                  Cancel
+                                </button>
                               </div>
                             </div>
                           ) : (

@@ -33,7 +33,6 @@ const EndedReservationsTable: React.FC = () => {
   const fetchData = useCallback(async () => {
     try {
       const response = await ApiService.getUsersReservations();
-      console.log(response);
       if (response.error) {
         setError(response.error);
       }
@@ -47,7 +46,6 @@ const EndedReservationsTable: React.FC = () => {
         setReservations(endedReservations);
 
         const vehiclePromises = endedReservations.map(async (reservation) => {
-          console.log(endedReservations);
           const vehicleResponse = await ApiService.getVehicleData(
             reservation.carId
           );

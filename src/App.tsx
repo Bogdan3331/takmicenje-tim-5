@@ -107,9 +107,13 @@ function App() {
         <Route
           path="/vehicle-list"
           element={
-            <LayoutWrapper>
-              <VehicleList />
-            </LayoutWrapper>
+            <PrivateRoute
+              element={
+                <LayoutWrapper>
+                  <VehicleList />
+                </LayoutWrapper>
+              }
+            />
           }
         />
         <Route

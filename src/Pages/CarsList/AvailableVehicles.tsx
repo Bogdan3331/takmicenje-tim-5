@@ -41,8 +41,7 @@ const AvailableVehicles: React.FC<AvailableVehiclesProps> = ({
   isAdmin,
   currentPage,
   setCurrentPage,
-  lastPage,
-  setLastPage, // Destructure setLastPage from props
+  setLastPage,
 }) => {
   const [startDate, setStartDate] = useState<Dayjs | undefined>(undefined);
   const [endDate, setEndDate] = useState<Dayjs | undefined>(undefined);
@@ -71,7 +70,6 @@ const AvailableVehicles: React.FC<AvailableVehiclesProps> = ({
           searchQuery,
           data
         );
-        console.log(response);
         if (response.error) {
           throw new Error(response.error);
         }
@@ -102,6 +100,7 @@ const AvailableVehicles: React.FC<AvailableVehiclesProps> = ({
     setLoading(true);
     try {
       await ApiService.deleteCar(carId);
+      await fetchVehicles(currentPage, filters);
     } catch (error) {
       console.error("Error deleting car:", error);
     } finally {
@@ -111,7 +110,6 @@ const AvailableVehicles: React.FC<AvailableVehiclesProps> = ({
 
   return (
     <div className="flex flex-col items-center mt-12 w-full px-4 box-border">
-      {/* Inputs arranged horizontally and aligned to the left */}
       <div className="date-picker mb-4 flex space-x-4 w-full justify-start">
         <DatePicker
           showTime
@@ -133,9 +131,9 @@ const AvailableVehicles: React.FC<AvailableVehiclesProps> = ({
           onChange={(e) => setSearchQuery(e.target.value)}
           style={{ width: "300px" }}
         />
+        {isAdmin === 1 && <CreateCarBtn />}
       </div>
 
-      {isAdmin === 1 && <CreateCarBtn />}
       {loading && <div>Loading...</div>}
       {error && <div>Error: {error}</div>}
 
@@ -179,6 +177,12 @@ const AvailableVehicles: React.FC<AvailableVehiclesProps> = ({
                   <span className="text-2xl font-bold">{car.price} €</span>
                   <p className="text-gray-500">per day</p>
                 </div>
+                <ReserveBtn
+                  carId={car.id}
+                  carPrice={car.price}
+                  startDateProp={startDate}
+                  endDateProp={endDate}
+                />
                 {isAdmin === 1 && (
                   <Button
                     type="primary"
@@ -187,20 +191,17 @@ const AvailableVehicles: React.FC<AvailableVehiclesProps> = ({
                     Delete Car
                   </Button>
                 )}
-                <ReserveBtn
-                  carId={car.id}
-                  carPrice={car.price}
-                  startDateProp={startDate}
-                  endDateProp={endDate}
-                />
-                {isAdmin === 1 && <UpdateCarBtn carId={car.id} />}
+                {isAdmin === 1 && (
+                  <UpdateCarBtn
+                    carId={car.id}
+                    onUpdate={() => fetchVehicles(currentPage, filters)}
+                  />
+                )}
               </div>
             </div>
           </div>
         ))}
       </div>
-
-      {/* Pagination moved to VehicleList */}
     </div>
   );
 };

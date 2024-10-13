@@ -23,8 +23,7 @@ const CreateCarModal: React.FC<CarCreateModalProps> = ({
     setLoading(true);
     values.image = selectedImage;
     try {
-      const reponse = await ApiService.createCar(values);
-      console.log(reponse);
+      await ApiService.createCar(values);
       setLoading(false);
       onCreateSuccess();
       onCancel();

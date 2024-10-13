@@ -1,5 +1,4 @@
 import axios from "axios";
-import Pusher from "pusher-js";
 
 export const API_BASE_URL = "http://api.tim5.cortexakademija.com:8080/api";
 
@@ -128,7 +127,6 @@ const ApiService = {
   //admin map
 
   async sendLocation(values) {
-    console.log(values);
     return this.post("locations", values);
   },
 
@@ -143,7 +141,6 @@ const ApiService = {
   },
 
   async editUserData(id, values) {
-    console.log(id, values);
     return this.put(`/user/${id}`, values);
   },
 
@@ -156,8 +153,6 @@ const ApiService = {
   },
 
   async getUserReservations(id) {
-    console.log("ova funkcija");
-    console.log(id);
     return this.get(`admin/user/${id}/reservation`);
   },
 
@@ -174,7 +169,6 @@ const ApiService = {
   },
 
   async createCar(values) {
-    console.log(values);
     return this.post("admin/car", values, {
       headers: {
         "Content-Type": "multipart/form-data",
@@ -234,6 +228,10 @@ const ApiService = {
     return this.post("logout");
   },
 
+  async cancelReservation(id) {
+    return this.delete(`reservation/${id}`);
+  },
+
   async editUser(values) {
     return this.post("update-profile", values);
   },
@@ -243,8 +241,7 @@ const ApiService = {
   },
 
   async forgetPassword(email) {
-    const res = this.post("forgot-password", { email });
-    console.log(res);
+    this.post("forgot-password", { email });
   },
 
   async resetPassword(values) {

@@ -18,7 +18,7 @@ const Header: React.FC = () => {
   };
 
   const renderMenuItems = (): MenuProps["items"] => {
-    return [
+    const items: MenuProps["items"] = [
       {
         label: (
           <a
@@ -53,6 +53,8 @@ const Header: React.FC = () => {
         key: "2",
       },
     ];
+
+    return items;
   };
 
   return (
@@ -72,7 +74,10 @@ const Header: React.FC = () => {
           <a href="/dashboard" className="text-white hover:text-blue-500">
             Reservations
           </a>
-          <a href="/about-us" className="hidden lg:inline-block text-white hover:text-blue-500">
+          <a
+            href="/about-us"
+            className="hidden lg:inline-block text-white hover:text-blue-500"
+          >
             About Us
           </a>
         </nav>

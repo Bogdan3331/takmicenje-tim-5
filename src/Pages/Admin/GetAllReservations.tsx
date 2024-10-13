@@ -37,10 +37,9 @@ const GetAllReservations: React.FC = () => {
 
   useEffect(() => {
     const fetchAllReservations = async () => {
-      setLoading(true); // Start loading state
+      setLoading(true);
       try {
         const response = await ApiService.getAllReservations();
-        console.log(response);
         if (response.error) {
           setError(response.error);
           return;
@@ -49,7 +48,6 @@ const GetAllReservations: React.FC = () => {
         if (response.data.data) {
           const allReservations = response.data.data;
           setReservations(allReservations);
-
           const vehiclePromises = allReservations.map(
             async (reservation: Reservation) => {
               const vehicleResponse = await ApiService.getVehicleData(
@@ -67,13 +65,11 @@ const GetAllReservations: React.FC = () => {
 
           setVehicleData(vehiclesById);
 
-          // Fetch user names based on userIds from reservations
           const userPromises = allReservations.map(
             async (reservation: Reservation) => {
               const userResponse = await ApiService.getUsersNames(
                 reservation.userId
               );
-              console.log(userResponse);
               return {
                 id: reservation.userId,
                 name: userResponse.data?.data.name || "Unknown User",

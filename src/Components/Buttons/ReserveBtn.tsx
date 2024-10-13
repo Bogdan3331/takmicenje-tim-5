@@ -17,7 +17,6 @@ const ReserveBtn: React.FC<ReserveBtnProps> = ({
   startDateProp,
   endDateProp,
 }) => {
-  console.log(startDateProp, endDateProp);
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [startDateTime, setStartDateTime] = useState<Dayjs | null>(
@@ -59,7 +58,6 @@ const ReserveBtn: React.FC<ReserveBtnProps> = ({
 
     try {
       const response = await ApiService.reserveVehicle(values);
-      console.log("Reservation Response:", response);
       setIsModalOpen(false);
       if (
         response.data.message === "Selected car is not available for that dates"

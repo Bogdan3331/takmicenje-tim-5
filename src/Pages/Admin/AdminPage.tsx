@@ -5,6 +5,7 @@ import GetAllReservations from "./GetAllReservations";
 import { Button, Dropdown, MenuProps, message } from "antd";
 import { EllipsisOutlined } from "@ant-design/icons";
 import EditUserBtn from "./EditUser/EditUserBtn";
+import { useNavigate } from "react-router-dom";
 
 interface User {
   id: number;
@@ -15,8 +16,9 @@ interface User {
 
 const AdminPage: React.FC = () => {
   const [users, setUsers] = useState<User[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+
+  const navigate = useNavigate();
 
   const handleDelete = async (id: number) => {
     try {
@@ -40,12 +42,27 @@ const AdminPage: React.FC = () => {
 
   const fetchData = useCallback(async () => {
     try {
-      const response = await ApiService.getUsers();
-
+      const response = await ApiService.getUserData();
+      if (response.data.data.admin === 0) {
+        navigate("/");
+        setTimeout(
+          () =>
+            alert("You are not allowed to visit that page. You are not Admin"),
+          1000
+        );
+      }
       if (response.error) {
         setError(response.error);
       }
+    } catch (error: any) {
+      setError(error.message);
+    }
 
+    try {
+      const response = await ApiService.getUsers();
+      if (response.error) {
+        setError(response.error);
+      }
       if (Array.isArray(response.data?.data)) {
         setUsers(response.data.data);
       } else {
@@ -53,10 +70,8 @@ const AdminPage: React.FC = () => {
       }
     } catch (error: any) {
       setError(error.message);
-    } finally {
-      setLoading(false);
     }
-  }, []);
+  }, [navigate]);
 
   useEffect(() => {
     fetchData();
@@ -93,40 +108,47 @@ const AdminPage: React.FC = () => {
     },
   ];
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
-
   if (error) {
     return <div>Error: {error}</div>;
   }
 
   return (
-    <div className="flex">
-      <div className="w-1/4 p-4 h-screen overflow-y-auto">
-        <h2 className="text-lg font-bold mb-4">Users</h2>
-        {users.map((user) => (
-          <div
-            key={user.id}
-            className="flex items-center justify-between p-2 bg-gray-700 mb-2 rounded-lg shadow-sm"
-          >
-            <span className="text-white">{user.name || "No Name"}</span>
-            <Dropdown
-              menu={{ items: renderUserOptions(user) }}
-              trigger={["click"]}
+    <div className="wrapper">
+      <a
+        style={{
+          backgroundColor: "blue",
+          padding: "0.2rem 1rem",
+          borderRadius: "5px",
+        }}
+        href="/admin-map"
+      >
+        open map
+      </a>
+      <div className="flex">
+        <div className="w-1/4 p-4 h-screen overflow-y-auto">
+          <h2 className="text-lg font-bold mb-4">Users</h2>
+          {users.map((user) => (
+            <div
+              key={user.id}
+              className="flex items-center justify-between p-2 bg-gray-700 mb-2 rounded-lg shadow-sm"
             >
-              <Button
-                icon={<EllipsisOutlined />}
-                className="bg-transparent border-none shadow-none text-white hover:bg-transparent focus:bg-transparent active:bg-transparent"
-              />
-            </Dropdown>
-          </div>
-        ))}
+              <span className="text-white">{user.name || "No Name"}</span>
+              <Dropdown
+                menu={{ items: renderUserOptions(user) }}
+                trigger={["click"]}
+              >
+                <Button
+                  icon={<EllipsisOutlined />}
+                  className="bg-transparent border-none shadow-none text-white hover:bg-transparent focus:bg-transparent active:bg-transparent"
+                />
+              </Dropdown>
+            </div>
+          ))}
+        </div>
+        <div className="w-3/4 p-6">
+          <GetAllReservations />
+        </div>
       </div>
-      <div className="w-3/4 p-6">
-        <GetAllReservations />
-      </div>
-      <a href="/admin-map">open map</a>
     </div>
   );
 };

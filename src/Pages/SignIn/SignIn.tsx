@@ -22,8 +22,6 @@ const SignInPage: React.FC = () => {
 
     try {
       const response = await ApiService.signIn(email, password);
-      console.log(response);
-
       if (response.error) {
         setError(response.error);
       } else {

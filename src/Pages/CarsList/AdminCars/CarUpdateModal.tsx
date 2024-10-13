@@ -47,11 +47,10 @@ const CarUpdateModal: React.FC<CarUpdateModalProps> = ({
     setLoading(true);
     values.image = selectedImage;
     try {
-      await ApiService.updateCar(carId, values); // Call update API
-      console.log(values);
+      await ApiService.updateCar(carId, values);
       setLoading(false);
-      onUpdateSuccess(); // Notify parent of successful update
-      onCancel(); // Close the modal after successful update
+      onUpdateSuccess();
+      onCancel();
     } catch (error) {
       console.error("Error updating car:", error);
       setLoading(false);

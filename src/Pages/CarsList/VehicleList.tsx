@@ -33,7 +33,6 @@ const VehicleList = () => {
       try {
         const userResponse = await ApiService.getUserData();
         setIsAdmin(userResponse.data.data.admin);
-        console.log(userResponse);
       } catch (error) {
         console.error("Error fetching user data:", error);
       }

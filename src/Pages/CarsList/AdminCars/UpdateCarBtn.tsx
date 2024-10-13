@@ -4,9 +4,10 @@ import CarUpdateModal from "./CarUpdateModal";
 
 interface UpdateCarBtnProps {
   carId: number;
+  onUpdate: () => void; // Add this prop
 }
 
-const UpdateCarBtn: React.FC<UpdateCarBtnProps> = ({ carId }) => {
+const UpdateCarBtn: React.FC<UpdateCarBtnProps> = ({ carId, onUpdate }) => {
   const [updateModalVisible, setUpdateModalVisible] = useState(false);
 
   // Handle opening and closing the update modal
@@ -19,8 +20,14 @@ const UpdateCarBtn: React.FC<UpdateCarBtnProps> = ({ carId }) => {
 
   // Callback for successful update
   const handleUpdateSuccess = () => {
-    message.success("car updated successfully");
+    message.success("Car updated successfully");
+
     setUpdateModalVisible(false);
+
+    // Trigger the onUpdate callback passed from AvailableVehicles
+    if (onUpdate) {
+      onUpdate();
+    }
   };
 
   return (

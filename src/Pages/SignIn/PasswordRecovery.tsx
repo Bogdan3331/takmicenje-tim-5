@@ -11,20 +11,17 @@ const PasswordRecovery: React.FC = () => {
   const [newPassword, setNewPassword] = useState("");
   const [newPasswordConfirmation, setNewPasswordConfirmation] = useState("");
 
-  // Open the email modal
   const showEmailModal = () => {
     setVisibleEmailModal(true);
   };
 
-  // Handle email submission without promises
   const handleEmailSubmit = () => {
     ApiService.forgetPassword(email);
-    console.log(email);
     setVisibleEmailModal(false);
-    setVisibleResetModal(true); // Show the second modal after calling the API
+    setVisibleResetModal(true);
+    message.success("email sent successfully");
   };
 
-  // Handle password reset submission using async/await
   const handleResetSubmit = async () => {
     const values = {
       email: resetEmail,
@@ -33,10 +30,8 @@ const PasswordRecovery: React.FC = () => {
       newPassword_confirmation: newPasswordConfirmation,
     };
     try {
-      const response = await ApiService.resetPassword(values);
-      console.log(response);
+      await ApiService.resetPassword(values);
       setVisibleResetModal(false);
-      // Clear inputs if needed
       setResetEmail("");
       setToken("");
       setNewPassword("");

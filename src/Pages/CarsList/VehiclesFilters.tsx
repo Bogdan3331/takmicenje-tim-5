@@ -41,7 +41,6 @@ const VehicleFilters: React.FC<VehicleFiltersProps> = ({
 
   const fetchFilterOptions = useCallback(async () => {
     try {
-      console.log(page);
       const response = await ApiService.getVehicleFilters();
       const data = response.data.data;
 
@@ -61,7 +60,7 @@ const VehicleFilters: React.FC<VehicleFiltersProps> = ({
     } catch (error) {
       console.error("Error fetching vehicle data:", error);
     }
-  }, [page]);
+  }, []);
 
   useEffect(() => {
     fetchFilterOptions();
