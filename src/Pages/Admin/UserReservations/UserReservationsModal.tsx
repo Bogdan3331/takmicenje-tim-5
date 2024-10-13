@@ -17,13 +17,13 @@ interface Vehicle {
   brand: string;
   price: number;
   avgRate: number;
-  description: string; // Add other properties if needed
+  description: string;
 }
 
 interface UserReservationsModalProps {
   visible: boolean;
   onClose: () => void;
-  userId: number; // User ID passed from the parent component
+  userId: number;
 }
 
 const UserReservationsModal: React.FC<UserReservationsModalProps> = ({
@@ -40,26 +40,25 @@ const UserReservationsModal: React.FC<UserReservationsModalProps> = ({
 
   useEffect(() => {
     const fetchUserReservations = async () => {
-      setLoading(true); // Start loading state
+      setLoading(true);
       try {
         const response = await ApiService.getUserReservations(userId);
-        console.log(response);
         if (response.error) {
           setError(response.error);
           return;
         }
 
         if (response.data.data) {
-          const allReservations = response.data.data; // Get all reservations
+          const allReservations = response.data.data;
 
-          setReservations(allReservations); // Set all reservations
+          setReservations(allReservations);
 
           const vehiclePromises = allReservations.map(
             async (reservation: Reservation) => {
               const vehicleResponse = await ApiService.getVehicleData(
                 reservation.carId
               );
-              return { id: reservation.carId, ...vehicleResponse.data.data }; // Adjust to access vehicle data
+              return { id: reservation.carId, ...vehicleResponse.data.data };
             }
           );
 
@@ -92,12 +91,13 @@ const UserReservationsModal: React.FC<UserReservationsModalProps> = ({
       open={visible}
       onCancel={onClose}
       footer={null}
+      width={900} // Expand the modal width
     >
       <div className="overflow-x-auto">
         {loading && <Spin />}
         {error && <div className="text-red-600">Error: {error}</div>}
         {!loading && !error && (
-          <table className="min-w-full bg-white border border-gray-200 rounded-lg shadow-lg">
+          <table className="w-full bg-white border border-gray-200 rounded-lg shadow-lg">
             <thead>
               <tr className="bg-gray-200 rounded-lg">
                 <th className="px-4 py-2 text-left font-semibold text-gray-700">
@@ -113,7 +113,7 @@ const UserReservationsModal: React.FC<UserReservationsModalProps> = ({
             </thead>
             <tbody>
               {reservations.map((reservation) => {
-                const vehicle = vehicleData[reservation.carId]; // Access vehicle data for each reservation
+                const vehicle = vehicleData[reservation.carId];
 
                 return (
                   <tr key={reservation.id} className="border-t">
