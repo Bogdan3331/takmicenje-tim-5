@@ -50,7 +50,7 @@ npm start
 This will start the application on http://localhost:3000.
 
 Project Structure
-bash
+``` bash
 Copy code
 ├── public
 ├── src
@@ -64,6 +64,7 @@ Copy code
 ├── package.json
 ├── tailwind.config.js
 └── tsconfig.json
+```
 components: Contains reusable UI components (e.g., buttons, forms)
 pages: Contains the different pages for the application (e.g., SignInPage, VehicleList, AdminPage)
 Shared: Contains shared utilities like the api.js file which simplifies the interaction with the backend using plain JavaScript
