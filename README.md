@@ -1,46 +1,72 @@
-# Getting Started with Create React App
+Rent-a-Car Web Application
+This project is a Rent-a-Car platform designed to make vehicle reservations user-friendly and easy to manage. The application allows users to sign in, register, browse available cars, and make reservations. It features a clean, responsive UI and integrates map functionality for a better user experience.
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Features
 
-## Available Scripts
+- User Authentication: Sign in, register, and manage profiles
+- Vehicle Search and Filtering: Easily find and filter vehicles by various attributes (e.g., fuel type, gear, manufacturer)
+- Reservation Management: Reserve cars, view upcoming reservations, and leave ratings
+- Password Recovery: Recover forgotten passwords using a secure flow
+- Admin Dashboard: Admin users can manage vehicles, locations, and reservations
+- Interactive Maps: Locate rental locations via interactive maps using Leaflet
+- Responsive Design: Mobile-friendly design powered by Tailwind CSS
+  Technologies Used
+- React: A JavaScript library for building user interfaces
+- TypeScript: Enhances JavaScript with static typing for better developer experience
+- Tailwind CSS: A utility-first CSS framework for quickly designing responsive layouts
+- Ant Design: Provides elegant UI components such as modals and forms
+- React Router: A routing library for seamless page navigation
+- Axios: Simplifies HTTP requests for API integration
+- Leaflet: A JavaScript library for interactive maps used to display rental locations
+- Plain JavaScript: Simplified API service layer in api.js for handling HTTP requests
+  User-Friendly Design
+  This application was built with a focus on simplicity and ease of use. The UI is intuitive, making it easy for users to browse cars, filter by various criteria, and make reservations within just a few clicks. For the convenience of users, the password recovery feature allows seamless resetting of forgotten credentials.
 
-In the project directory, you can run:
+Why Leaflet?
+To enhance the overall experience, Leaflet is integrated for interactive map functionality. Users can easily visualize and navigate to rental locations, making it convenient to find available vehicles near them.
 
-### `npm start`
+Installation
+Clone the repository:
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+bash
+Copy code
+git clone https://github.com/your-username/rent-a-car.git
+Navigate to the project directory:
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+bash
+Copy code
+cd rent-a-car
+Install dependencies:
 
-### `npm test`
+bash
+Copy code
+npm install
+Running the Application
+To start the development server, run:
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+bash
+Copy code
+npm start
+This will start the application on http://localhost:3000.
 
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+Project Structure
+bash
+Copy code
+├── public
+├── src
+│ ├── components
+│ ├── pages
+│ ├── Shared
+│ ├── styles
+│ ├── App.tsx
+│ ├── index.tsx
+│ ├── api.js
+├── package.json
+├── tailwind.config.js
+└── tsconfig.json
+components: Contains reusable UI components (e.g., buttons, forms)
+pages: Contains the different pages for the application (e.g., SignInPage, VehicleList, AdminPage)
+Shared: Contains shared utilities like the api.js file which simplifies the interaction with the backend using plain JavaScript
+styles: Contains global styles, utilities, and Tailwind configurations
+Contributing
+Feel free to submit issues or pull requests if you would like to contribute to this project.

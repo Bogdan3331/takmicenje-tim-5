@@ -19,17 +19,18 @@ const SignInPage: React.FC = () => {
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    setError(null);
 
     try {
       const response = await ApiService.signIn(email, password);
-      if (response.error) {
-        setError(response.error);
-      } else {
+      if (response && !response.error) {
         localStorage.setItem("auth_token", response.data.token);
         navigate("/");
+      } else {
+        setError(response.error || "Invalid credentials. Please try again.");
       }
     } catch (error: any) {
-      setError(error.message);
+      setError("An unexpected error occurred. Please try again later.");
     }
   };
 
@@ -43,11 +44,12 @@ const SignInPage: React.FC = () => {
         <div>
           <label className="text-lg text-black font-medium">Email:</label>
           <input
-            type="text"
+            type="email"
             value={email}
             onChange={handleEmailChange}
             className="w-full text-black border-2 border-gray-100 rounded-xl p-4 mt-1 bg-transparent"
-            placeholder="Enter your username"
+            placeholder="Enter your email"
+            required
           />
         </div>
         <div className="mt-4">
@@ -58,6 +60,7 @@ const SignInPage: React.FC = () => {
             onChange={handlePasswordChange}
             className="w-full border-2 text-black border-gray-100 rounded-xl p-4 mt-1 bg-transparent"
             placeholder="Enter your password"
+            required
           />
         </div>
         {error && <p className="text-red-500 mt-4">{error}</p>}
