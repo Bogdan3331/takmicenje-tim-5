@@ -63,9 +63,9 @@ Copy code
 ├── tailwind.config.js
 └── tsconfig.json
 ```
-components: Contains reusable UI components (e.g., buttons, forms)
-pages: Contains the different pages for the application (e.g., SignInPage, VehicleList, AdminPage)
-Shared: Contains shared utilities like the api.js file which simplifies the interaction with the backend using plain JavaScript
-styles: Contains global styles, utilities, and Tailwind configurations
-Contributing
+components: Contains reusable UI components (e.g., buttons, forms)  
+pages: Contains the different pages for the application (e.g., SignInPage, VehicleList, AdminPage)  
+Shared: Contains shared utilities like the api.js file which simplifies the interaction with the backend using plain JavaScript  
+styles: Contains global styles, utilities, and Tailwind configurations  
+Contributing  
 Feel free to submit issues or pull requests if you would like to contribute to this project.
