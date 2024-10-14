@@ -28,25 +28,23 @@ To enhance the overall experience, Leaflet is integrated for interactive map fun
 Installation
 Clone the repository:
 
-bash
-Copy code
+```bash
 git clone https://github.com/your-username/rent-a-car.git
 Navigate to the project directory:
-
-bash
-Copy code
+```
+```bash
 cd rent-a-car
 Install dependencies:
-
-bash
-Copy code
+```
+```bash
 npm install
+```
 Running the Application
 To start the development server, run:
 
-bash
-Copy code
+```bash
 npm start
+```
 This will start the application on http://localhost:3000.
 
 Project Structure
